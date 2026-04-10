@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0052FF;
+  --color-primary-container: #0038B6;
+  --color-on-primary: #ffffff;
+  --color-surface: #ffffff;
+  --color-background: #ffffff;
+  --color-surface-container: #F7F9FB;
+  --color-surface-container-low: #F2F4F6;
+  --color-surface-container-high: #E6E8EA;
+  --color-outline-variant: #E0E3E5;
+  --color-on-surface: #191C1E;
+  --color-on-surface-variant: #434656;
+  --color-error: #BA1A1A;
+
+  --font-headline: "Manrope", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Inter", sans-serif;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+}
+
+@layer base {
+  body {
+    @apply bg-surface font-body text-on-surface;
+    background-color: var(--color-surface);
+  }
+}
+
+@layer components {
+  .glass-panel, .glass-card, .nav-glass {
+    @apply bg-white/70 backdrop-blur-xl border border-outline-variant/30;
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .hero-gradient-text {
+    @apply bg-linear-to-br from-primary to-primary-container bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply bg-linear-to-br from-primary to-primary-container text-white shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all;
+  }
+
+}
+
+/* Custom styles from Stitch */
+.selection\:bg-primary\/20 ::selection {
+  background-color: rgba(0, 82, 255, 0.2);
+  color: #0052FF;
+}
