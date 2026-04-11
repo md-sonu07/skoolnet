@@ -253,10 +253,10 @@ export default function Activity() {
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-xs text-slate-500">by {activity.user}</span>
-                      <span className={`text-xs font-medium px-2 py-1 rounded-full ${getStatusColor(activity.status)}`}>
+                      <span className={`text-xs font-medium px-2 py-1 rounded-md ${getStatusColor(activity.status)}`}>
                         {activity.status}
                       </span>
-                      <span className={`text-xs font-medium px-2 py-1 rounded-full ${getPriorityColor(activity.priority)}`}>
+                      <span className={`text-xs font-medium px-2 py-1 rounded-md ${getPriorityColor(activity.priority)}`}>
                         {activity.priority}
                       </span>
                     </div>

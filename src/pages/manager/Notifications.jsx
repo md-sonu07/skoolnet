@@ -1,3 +1,4 @@
+import AppIcon from '../../components/common/AppIcon';
 import {
   DashboardPage,
   MetricCard,
@@ -20,9 +21,11 @@ export default function ManagerNotifications() {
       actions={
         <>
           <button type="button" className="btn-primary">
+            <AppIcon name="add" size={16} className="mr-2" />
             Create campaign
           </button>
           <button type="button" className="btn-secondary">
+            <AppIcon name="folder" size={16} className="mr-2" />
             Browse templates
           </button>
         </>

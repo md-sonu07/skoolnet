@@ -51,7 +51,7 @@ export default function SiteNavbar() {
             >
               <AppIcon name="notifications" size={20} />
             </button>
-            <Link to="/manager" className="h-10 w-10 overflow-hidden rounded-full border-2 border-primary/10">
+            <Link to="/dashboard/manager/overview" className="h-10 w-10 overflow-hidden rounded-full border-2 border-primary/10">
               <img
                 alt="User profile"
                 className="h-full w-full object-cover"

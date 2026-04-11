@@ -12,8 +12,8 @@ import {
 const userStats = [
   { label: 'Total Users', value: '153', change: '+9', helper: 'Active accounts', tone: 'blue' },
   { label: 'Platform Admins', value: '12', change: '+2', helper: 'Full access', tone: 'purple' },
-  { label: 'School Admins', value: '84', change: '+5', helper: 'School management', tone: 'emerald' },
-  { label: 'Coaching Owners', value: '39', change: '+3', helper: 'Center management', tone: 'amber' },
+  { label: 'School Admins', value: '84', change: '+5', helper: 'Management', tone: 'emerald' },
+  { label: 'Coaching', value: '39', change: '+3', helper: 'Management', tone: 'amber' },
   { label: 'Support Staff', value: '18', change: '0', helper: 'Help desk', tone: 'rose' },
   { label: 'Pending', value: '17', change: '5 urgent', helper: 'Awaiting approval', tone: 'orange' },
 ];
@@ -142,7 +142,7 @@ export default function UserManagement() {
     { value: 'all', label: 'All Roles' },
     { value: 'Platform Manager', label: 'Platform Manager' },
     { value: 'School Admin', label: 'School Admin' },
-    { value: 'Coaching Owner', label: 'Coaching Owner' },
+    { value: 'Coaching', label: 'Coaching' },
     { value: 'Support Staff', label: 'Support Staff' },
   ];
 
@@ -207,7 +207,7 @@ export default function UserManagement() {
             'Total Users': 'groups',
             'Platform Admins': 'shield_check',
             'School Admins': 'school',
-            'Coaching Owners': 'rocket_launch',
+            'Coaching': 'rocket_launch',
             'Support Staff': 'support_agent',
             'Pending': 'pending'
           };

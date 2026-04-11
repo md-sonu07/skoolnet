@@ -89,7 +89,7 @@ export function StatusBadge({ tone = 'slate', children }) {
   const toneClass = badgeTones[tone] ?? badgeTones.slate;
 
   return (
-    <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${toneClass}`}>
+    <span className={`inline-flex rounded-md px-3 py-1 text-xs font-semibold ${toneClass}`}>
       {children}
     </span>
   );

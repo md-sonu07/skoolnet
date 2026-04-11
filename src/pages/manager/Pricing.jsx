@@ -15,7 +15,7 @@ const pricingStats = [
   { label: 'Revenue', value: '₹8.7L', change: '+18%', helper: 'This month', tone: 'emerald' },
   { label: 'Active Schools', value: '84', change: '+6', helper: 'Using plans', tone: 'amber' },
   { label: 'Avg Plan Value', value: '₹10.3K', change: '+5%', helper: 'Per school', tone: 'rose' },
-  { label: 'Pending Requests', value: '3', change: '-2', helper: 'Custom plan requests', tone: 'orange' },
+  { label: 'Pending', value: '3', change: '-2', helper: 'Custom plan', tone: 'orange' },
 ];
 
 const pricingPlans = [
