@@ -18,9 +18,9 @@
   --font-body: "Inter", sans-serif;
   --font-label: "Inter", sans-serif;
 
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-3xl: 2rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
 }
 
 @layer base {
@@ -32,8 +32,33 @@
 
 @layer components {
   .glass-panel, .glass-card, .nav-glass {
-    @apply bg-white/70 backdrop-blur-xl border border-outline-variant/30;
+    @apply bg-white/78 backdrop-blur-xl border border-outline-variant/60 shadow-[0_18px_60px_rgba(15,23,42,0.06)];
     -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .glass-sidebar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f8fafc;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
   }
 
   .hero-gradient-text {
@@ -41,9 +66,12 @@
   }
 
   .btn-primary {
-    @apply bg-linear-to-br from-primary to-primary-container text-white shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(0,82,255,0.18)] transition-all hover:-translate-y-0.5 hover:bg-primary-container active:translate-y-0;
   }
 
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-outline-variant bg-white px-5 py-3 text-sm font-semibold text-on-surface transition-colors hover:bg-surface-container-low;
+  }
 }
 
 /* Custom styles from Stitch */

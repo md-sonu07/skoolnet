@@ -1,36 +1,11 @@
 import React from 'react';
-import AppIcon from '../components/AppIcon';
+import AppIcon from '../../components/common/AppIcon';
+import SiteLayout from '../../layouts/SiteLayout';
 
 const About = () => {
   return (
-    <div className="bg-surface text-on-surface font-body selection:bg-primary/10">
-      <nav className="fixed top-0 w-full z-50 flex items-center justify-between px-8 h-20 glass-nav glass-panel">
-        <div className="flex items-center gap-12">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-linear-to-br from-primary to-blue-400 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-              <AppIcon className="text-white" name="school" size={22} />
-            </div>
-            <span className="text-2xl font-extrabold font-headline tracking-tight text-primary">Skoolnet</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8">
-            <a className="text-on-surface-variant hover:text-primary transition-colors font-medium text-sm" href="/">Home</a>
-            <a className="text-primary font-bold border-b-2 border-primary py-1 text-sm" href="/about">About</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors font-medium text-sm" href="/services">Services</a>
-          </div>
-        </div>
-        <div className="flex items-center gap-6">
-          <button className="text-on-surface-variant hover:text-primary transition-all">
-            <AppIcon name="notifications" size={20} />
-          </button>
-          <button className="text-on-surface-variant hover:text-primary transition-all">
-            <AppIcon name="settings" size={20} />
-          </button>
-          <div className="h-10 w-10 rounded-full bg-surface-container-high overflow-hidden ring-2 ring-primary/10">
-            <img alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCghv75CobM3uPFOJIIzzvBJ9Iksv7yOofAv4fGfVSErynd27UgeKTxtrgWR-FuP5rvlAh10Mu8_yi8_6_22Pj8wIVorHjbDxHQbCRn5teSpIn17Bn1-XeB-X5PAWsRZLxvOU8lUhDul9evbXsfHg26rRwGbV9XPDsEcEFWzCwO0t4d43IFhJxjM-6yLzGn4uCKYAesEqMvk9F76e_ZUkK7jsgCYqaik9b6MxykzODuEdT89s0f0dqnAGCjzZ7b4P0gsAZy_6moxg"/>
-          </div>
-        </div>
-      </nav>
-      <main className="pt-40 pb-24 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
+    <SiteLayout>
+      <main className="mx-auto max-w-7xl px-6 pb-24 md:px-12 lg:px-24">
         <section className="mb-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -140,29 +115,7 @@ const About = () => {
           </div>
         </section>
       </main>
-      <footer className="bg-surface border-t border-outline-variant/20">
-        <div className="max-w-7xl mx-auto px-12 py-12 flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-8 md:mb-0">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-6 bg-primary rounded-lg flex items-center justify-center">
-                <AppIcon className="text-white" name="school" size={14} />
-              </div>
-              <span className="font-headline text-lg font-black text-on-surface">Skoolnet</span>
-            </div>
-            <p className="text-on-surface-variant font-label text-[10px] uppercase tracking-[0.2em]">Elevating Education Management</p>
-          </div>
-          <div className="flex gap-10 mb-8 md:mb-0">
-            <a className="font-label text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors font-bold" href="/about">About</a>
-            <a className="font-label text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors font-bold" href="#">Careers</a>
-            <a className="font-label text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors font-bold" href="#">Privacy</a>
-            <a className="font-label text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors font-bold" href="#">Terms</a>
-          </div>
-          <div className="text-on-surface-variant font-label text-[11px] uppercase tracking-widest font-medium opacity-60">
-            © 2024 Skoolnet Digital Curator Edition
-          </div>
-        </div>
-      </footer>
-    </div>
+    </SiteLayout>
   );
 };
 

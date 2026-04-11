@@ -1,38 +1,11 @@
 import React from 'react';
-import AppIcon from '../components/AppIcon';
+import AppIcon from '../../components/common/AppIcon';
+import SiteLayout from '../../layouts/SiteLayout';
 
 const Services = () => {
   return (
-    <div className="bg-surface font-body text-on-surface selection:bg-primary/20 selection:text-primary">
-      <nav className="fixed top-0 w-full z-50 nav-glass glass-panel flex items-center justify-between px-8 h-20">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-linear-to-br from-primary to-primary-container rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-            <AppIcon className="text-white" name="school" size={22} />
-          </div>
-          <div className="text-2xl font-black text-primary font-headline tracking-tighter">
-            Skoolnet
-          </div>
-        </div>
-        <div className="hidden md:flex items-center gap-8">
-          <a className="text-slate-500 hover:text-primary transition-all duration-300 font-semibold text-sm" href="/">Home</a>
-          <a className="text-primary font-bold border-b-2 border-primary transition-all duration-300 text-sm" href="/services">Services</a>
-          <a className="text-slate-500 hover:text-primary transition-all duration-300 font-semibold text-sm" href="/pricing">Pricing</a>
-          <a className="text-slate-500 hover:text-primary transition-all duration-300 font-semibold text-sm" href="/contact">Support</a>
-        </div>
-        <div className="flex items-center gap-4">
-          <button className="p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-all duration-300">
-            <AppIcon name="contrast" size={20} />
-          </button>
-          <button className="p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-all duration-300 relative">
-            <AppIcon name="notifications" size={20} />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-          </button>
-          <div className="h-10 w-10 rounded-full bg-slate-100 overflow-hidden border-2 border-primary/10">
-            <img alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKxrdCF2nIwJ45NCuDZtuVx3VOLUzMvfMKJD_uNrG6v0OZYrDTMqp-bCGf3_h-Ao95f0T1EzWpc3rVEm8GGfvecC_QYse6e5WmBY8165hVcAmxKW_PfL-gcnmeEn_xPUTNVYHRwVdXOEThcYEbAD1eChATZxayoFEAlNSwAsFEQ-7yNumcJAfoKysQRgSZedqr1hWnPrhjqJojdXg9ArnF9Q4flfAajR7FlV-Yxwy5HJVmbUheXUi9D4si82NyWmIsYXOZzy2c8g0"/>
-          </div>
-        </div>
-      </nav>
-      <main className="pt-36 pb-24 px-8 max-w-7xl mx-auto">
+    <SiteLayout>
+      <main className="mx-auto max-w-7xl px-8 pb-24">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
           <div className="max-w-2xl">
             <h1 className="text-5xl md:text-6xl font-extrabold font-headline tracking-tighter text-on-surface mb-6 leading-[1.1]">
@@ -82,13 +55,7 @@ const Services = () => {
           />
         </div>
       </main>
-      <footer className="footer-section bg-white border-t border-slate-100 mt-24 py-12">
-          <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
-              <div className="text-primary font-bold">Skoolnet Services</div>
-              <div className="text-slate-400 text-sm">© 2024 Skoolnet Inc.</div>
-          </div>
-      </footer>
-    </div>
+    </SiteLayout>
   );
 };
 
