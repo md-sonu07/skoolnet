@@ -188,7 +188,7 @@ const landingSettingsCategories = [
       },
       {
         id: 'mission',
-        title: 'Mission & Vision',
+        title: 'Mission',
         icon: 'rocket_launch',
         description: 'Mission and vision statement section',
         settings: [
@@ -200,7 +200,7 @@ const landingSettingsCategories = [
       },
       {
         id: 'problem',
-        title: 'Problem vs Solution',
+        title: 'Problem',
         icon: 'compare',
         description: 'Problem and solution comparison section',
         settings: [
@@ -285,7 +285,7 @@ const landingSettingsCategories = [
       },
       {
         id: 'cta',
-        title: 'CTA Section',
+        title: 'CTA',
         icon: 'ads_click',
         description: 'Call-to-action section at bottom',
         settings: [
@@ -550,7 +550,7 @@ const settingsCategories = [
       { label: 'Enable Banner', type: 'toggle', enabled: false, description: 'Show announcement banner' },
       { label: 'Banner Text', type: 'text', value: '', description: 'Banner message text' },
       { label: 'Banner Link', type: 'text', value: '', description: 'Banner link URL (optional)' },
-      { label: 'Banner Style', type: 'select', value: 'info', options: ['info', 'success', 'warning', 'error'], description: 'Banner color style' },
+      { label: 'Banner Style', type: 'select', value: 'info', options: ['Info', 'Success', 'Warning', 'Error'], description: 'Banner color style' },
     ]
   },
   {
@@ -628,6 +628,7 @@ export default function ManagerSettings() {
             onChange={(val) => onChange(setting.label, val)}
             options={setting.options?.map(opt => ({ label: opt, value: opt }))}
             placeholder={`Select ${setting.label.toLowerCase()}`}
+            className="min-w-45 captilaize"
           />
         );
       case 'toggle':
@@ -1312,7 +1313,7 @@ export default function ManagerSettings() {
         <div className="w-full">
           {activeCategory.title === 'Landing Website' && (
             <div className="space-y-6">
-              <div className="flex flex-wrap gap-2 border-b border-outline-variant/30 pb-4">
+              <div className="flex gap-2 overflow-x-auto border-b border-slate-200">
                 {landingSettingsCategories.map((category) => (
                   <button
                     key={category.title}
@@ -1320,33 +1321,32 @@ export default function ManagerSettings() {
                       setActiveLandingCategory(category);
                       setActiveHomeSection(category.sections?.[0] || null);
                     }}
-                    className={`px-4 py-2.5 font-semibold text-sm rounded-lg transition-all ${
+                    className={`px-4 py-2 text-sm font-medium whitespace-nowrap border-b-2 transition-all flex items-center gap-2 ${
                       activeLandingCategory.title === category.title
-                        ? 'bg-primary text-white shadow-md'
-                        : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+                        ? 'border-primary text-primary'
+                        : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <AppIcon name={category.icon} size={16} />
-                      {category.title}
-                    </div>
+                    <AppIcon name={category.icon} size={16} />
+                    {category.title}
                   </button>
                 ))}
               </div>
 
               {(activeLandingCategory.title === 'Home Page' || activeLandingCategory.title === 'Services Page' || activeLandingCategory.title === 'About Page' || activeLandingCategory.title === 'Contact Page' || activeLandingCategory.title === 'SEO') && activeLandingCategory.sections && (
                 <>
-                  <div className="bg-slate-50 rounded-xl p-1 flex flex-wrap gap-1">
+                  <div className="flex gap-2 overflow-x-auto border-b border-slate-200">
                     {activeLandingCategory.sections.map((section) => (
                       <button
                         key={section.id}
                         onClick={() => setActiveHomeSection(section)}
-                        className={`flex-1 min-w-[180px] px-4 py-2.5 rounded-lg font-medium text-sm transition-all text-center ${
+                        className={`px-3 py-1.5 text-sm font-medium whitespace-nowrap border-b-2 transition-all flex items-center gap-2 ${
                           activeHomeSection?.id === section.id
-                            ? 'bg-white text-primary shadow-sm'
-                            : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                            ? 'border-primary text-primary'
+                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                         }`}
                       >
+                        <AppIcon name={section.icon} size={14} />
                         {section.title}
                       </button>
                     ))}
