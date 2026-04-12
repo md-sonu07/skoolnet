@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AppIcon from '../../components/common/AppIcon';
 import SettingsNavigation from '../../components/common/SettingsNavigation';
+import Dropdown from '../../components/common/Dropdown';
 import {
   DashboardPage,
   MetricCard,
@@ -379,6 +380,88 @@ const landingSettingsCategories = [
       },
     ]
   },
+  {
+    title: 'SEO',
+    description: 'Manage SEO settings for all landing pages',
+    icon: 'search',
+    sections: [
+      {
+        id: 'home',
+        title: 'Home Page SEO',
+        icon: 'home',
+        description: 'SEO settings for Home Page',
+        settings: [
+          { label: 'Page Title', type: 'text', value: 'Skoolnet - School Management Software', description: 'Browser tab title' },
+          { label: 'Meta Description', type: 'textarea', value: 'Skoolnet is a comprehensive school management software for modern institutions.', description: 'Meta description for search engines' },
+          { label: 'Meta Keywords', type: 'text', value: 'school management, education software, student management system', description: 'Comma-separated keywords' },
+          { label: 'OG Title', type: 'text', value: 'Skoolnet - Manage Your School Smartly', description: 'Open Graph title' },
+          { label: 'OG Description', type: 'textarea', value: 'Transform your institution into a high-performance digital ecosystem.', description: 'Open Graph description' },
+          { label: 'Canonical URL', type: 'text', value: 'https://skoolnet.ai', description: 'Canonical URL' },
+          { label: 'No Index', type: 'toggle', enabled: false, description: 'Prevent search engines from indexing' },
+        ]
+      },
+      {
+        id: 'services',
+        title: 'Services Page SEO',
+        icon: 'category',
+        description: 'SEO settings for Services Page',
+        settings: [
+          { label: 'Page Title', type: 'text', value: 'Skoolnet Services - Educational Software Solutions', description: 'Browser tab title' },
+          { label: 'Meta Description', type: 'textarea', value: 'Explore Skoolnet educational software services for schools.', description: 'Meta description for search engines' },
+          { label: 'Meta Keywords', type: 'text', value: 'school software, education technology, fee management', description: 'Comma-separated keywords' },
+          { label: 'OG Title', type: 'text', value: 'Skoolnet Services - Everything Your School Needs', description: 'Open Graph title' },
+          { label: 'OG Description', type: 'textarea', value: 'Deploy a comprehensive ecosystem built for modern institutions.', description: 'Open Graph description' },
+          { label: 'Canonical URL', type: 'text', value: 'https://skoolnet.ai/services', description: 'Canonical URL' },
+          { label: 'No Index', type: 'toggle', enabled: false, description: 'Prevent search engines from indexing' },
+        ]
+      },
+      {
+        id: 'about',
+        title: 'About Page SEO',
+        icon: 'info',
+        description: 'SEO settings for About Page',
+        settings: [
+          { label: 'Page Title', type: 'text', value: 'About Skoolnet - Developer Team Behind Skoolnet', description: 'Browser tab title' },
+          { label: 'Meta Description', type: 'textarea', value: 'Learn about the developer team behind Skoolnet school management software.', description: 'Meta description for search engines' },
+          { label: 'Meta Keywords', type: 'text', value: 'about skoolnet, school software company, edtech', description: 'Comma-separated keywords' },
+          { label: 'OG Title', type: 'text', value: 'Meet the Skoolnet Team', description: 'Open Graph title' },
+          { label: 'OG Description', type: 'textarea', value: "We're a small, focused engineering team who felt the pain of broken school management first-hand.", description: 'Open Graph description' },
+          { label: 'Canonical URL', type: 'text', value: 'https://skoolnet.ai/about', description: 'Canonical URL' },
+          { label: 'No Index', type: 'toggle', enabled: false, description: 'Prevent search engines from indexing' },
+        ]
+      },
+      {
+        id: 'contact',
+        title: 'Contact Page SEO',
+        icon: 'contact_mail',
+        description: 'SEO settings for Contact Page',
+        settings: [
+          { label: 'Page Title', type: 'text', value: 'Contact Skoolnet - Get in Touch', description: 'Browser tab title' },
+          { label: 'Meta Description', type: 'textarea', value: 'Contact Skoolnet for school management software demos and support.', description: 'Meta description for search engines' },
+          { label: 'Meta Keywords', type: 'text', value: 'contact skoolnet, school software support, demo request', description: 'Comma-separated keywords' },
+          { label: 'OG Title', type: 'text', value: 'Contact Skoolnet - We Are Here to Help', description: 'Open Graph title' },
+          { label: 'OG Description', type: 'textarea', value: 'Our team of educational technology experts is ready to help you.', description: 'Open Graph description' },
+          { label: 'Canonical URL', type: 'text', value: 'https://skoolnet.ai/contact', description: 'Canonical URL' },
+          { label: 'No Index', type: 'toggle', enabled: false, description: 'Prevent search engines from indexing' },
+        ]
+      },
+      {
+        id: 'global',
+        title: 'Global SEO',
+        icon: 'language',
+        description: 'Global SEO settings for entire site',
+        settings: [
+          { label: 'Site Name', type: 'text', value: 'Skoolnet', description: 'Organization/site name' },
+          { label: 'Site URL', type: 'text', value: 'https://skoolnet.ai', description: 'Main site URL' },
+          { label: 'Default OG Image', type: 'text', value: '/og-image.png', description: 'Default Open Graph image URL' },
+          { label: 'Twitter Handle', type: 'text', value: '@skoolnet', description: 'Twitter username' },
+          { label: 'Schema Type', type: 'select', value: 'SoftwareApplication', options: ['SoftwareApplication', 'Education', 'Business', 'Organization'], description: 'Schema.org type' },
+          { label: 'Google Analytics ID', type: 'text', value: '', description: 'Google Analytics tracking ID (optional)' },
+          { label: 'Enable Breadcrumbs', type: 'toggle', enabled: true, description: 'Enable breadcrumb structured data' },
+        ]
+      },
+    ]
+  },
 ];
 
 const settingsCategories = [
@@ -389,13 +472,85 @@ const settingsCategories = [
     settings: []
   },
   {
-    title: 'User Management',
-    description: 'Control user access, roles, and permissions',
-    icon: 'users',
+    title: 'Branding',
+    description: 'Customize logo, colors, and brand identity',
+    icon: 'palette',
     settings: [
-      { label: 'Enable user registration', type: 'toggle', enabled: true, description: 'Allow new users to register' },
-      { label: 'Require email verification', type: 'toggle', enabled: true, description: 'Users must verify email before access' },
-      { label: 'Default user role', type: 'select', value: 'Student', options: ['Student', 'Teacher', 'Admin'], description: 'Default role for new users' },
+      { label: 'Site Name', type: 'text', value: 'Skoolnet', description: 'Organization name' },
+      { label: 'Logo', type: 'text', value: '/logo.svg', description: 'Logo file path' },
+      { label: 'Favicon', type: 'text', value: '/favicon.ico', description: 'Favicon file path' },
+      { label: 'Primary Color', type: 'text', value: '#0052FF', description: '_primary brand color' },
+      { label: 'Accent Color', type: 'text', value: '#00D4AA', description: 'Secondary brand color' },
+      { label: 'Font Family', type: 'text', value: 'Inter, system-ui', description: 'Primary font family' },
+    ]
+  },
+  // {
+  //   title: 'Email',
+  //   description: 'Configure email templates and settings',
+  //   icon: 'mail',
+  //   settings: [
+  //     { label: 'Sender Name', type: 'text', value: 'Skoolnet', description: 'Email sender name' },
+  //     { label: 'Sender Email', type: 'text', value: 'noreply@skoolnet.ai', description: 'Email sender address' },
+  //     { label: 'Support Email', type: 'text', value: 'support@skoolnet.ai', description: 'Support email address' },
+  //     { label: 'Enable Welcome Email', type: 'toggle', enabled: true, description: 'Send welcome email to new users' },
+  //     { label: 'Enable Password Reset', type: 'toggle', enabled: true, description: 'Allow password reset emails' },
+  //   ]
+  // },
+  {
+    title: 'Social Media',
+    description: 'Manage social media links and sharing',
+    icon: 'share',
+    settings: [
+      { label: 'Facebook URL', type: 'text', value: '', description: 'Facebook page URL' },
+      { label: 'Twitter URL', type: 'text', value: '', description: 'Twitter profile URL' },
+      { label: 'LinkedIn URL', type: 'text', value: '', description: 'LinkedIn page URL' },
+      { label: 'Instagram URL', type: 'text', value: '', description: 'Instagram profile URL' },
+      { label: 'YouTube URL', type: 'text', value: '', description: 'YouTube channel URL' },
+    ]
+  },
+  // {
+  //   title: 'Integrations',
+  //   description: 'Connect third-party services and APIs',
+  //   icon: 'extension',
+  //   settings: [
+  //     { label: 'Google OAuth', type: 'toggle', enabled: false, description: 'Enable Google login' },
+  //     { label: 'Google Client ID', type: 'text', value: '', description: 'Google OAuth client ID' },
+  //     { label: 'Stripe Key', type: 'text', value: '', description: 'Stripe publishable key' },
+  //     { label: 'Webhook URL', type: 'text', value: '', description: 'Webhook endpoint URL' },
+  //     { label: 'API Key', type: 'text', value: '', description: 'REST API key' },
+  //   ]
+  // },
+  {
+    title: 'Analytics',
+    description: 'Configure analytics and tracking',
+    icon: 'analytics',
+    settings: [
+      { label: 'Google Analytics ID', type: 'text', value: '', description: 'GA4 measurement ID' },
+      { label: 'Enable Tracking', type: 'toggle', enabled: true, description: 'Enable analytics tracking' },
+      { label: 'IP Anonymization', type: 'toggle', enabled: true, description: 'Anonymize user IP addresses' },
+    ]
+  },
+  {
+    title: 'Legal',
+    description: 'Legal pages and compliance settings',
+    icon: 'gavel',
+    settings: [
+      { label: 'Enable Privacy Policy', type: 'toggle', enabled: true, description: 'Show privacy policy page' },
+      { label: 'Privacy Policy Link', type: 'text', value: '/privacy', description: 'Privacy policy page URL' },
+      { label: 'Enable Terms of Service', type: 'toggle', enabled: true, description: 'Show terms of service' },
+      { label: 'Terms Link', type: 'text', value: '/terms', description: 'Terms of service URL' },
+      { label: 'Cookie Consent', type: 'toggle', enabled: true, description: 'Show cookie consent banner' },
+    ]
+  },
+  {
+    title: 'Announcement',
+    description: 'Site-wide announcements and banners',
+    icon: 'campaign',
+    settings: [
+      { label: 'Enable Banner', type: 'toggle', enabled: false, description: 'Show announcement banner' },
+      { label: 'Banner Text', type: 'text', value: '', description: 'Banner message text' },
+      { label: 'Banner Link', type: 'text', value: '', description: 'Banner link URL (optional)' },
+      { label: 'Banner Style', type: 'select', value: 'info', options: ['info', 'success', 'warning', 'error'], description: 'Banner color style' },
     ]
   },
   {
@@ -468,15 +623,12 @@ export default function ManagerSettings() {
         );
       case 'select':
         return (
-          <select
+          <Dropdown
             value={value}
-            onChange={(e) => onChange(setting.label, e.target.value)}
-            className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
-          >
-            {setting.options?.map((option, optIndex) => (
-              <option key={optIndex} value={option}>{option}</option>
-            ))}
-          </select>
+            onChange={(val) => onChange(setting.label, val)}
+            options={setting.options?.map(opt => ({ label: opt, value: opt }))}
+            placeholder={`Select ${setting.label.toLowerCase()}`}
+          />
         );
       case 'toggle':
         return (
@@ -930,6 +1082,101 @@ export default function ManagerSettings() {
       );
     }
 
+    if (activeLandingCategory.title === 'SEO') {
+      const previewUrl = activeHomeSection?.id === 'home' ? 'skoolnet.ai' : activeHomeSection?.id === 'services' ? 'skoolnet.ai/services' : activeHomeSection?.id === 'about' ? 'skoolnet.ai/about' : activeHomeSection?.id === 'contact' ? 'skoolnet.ai/contact' : 'skoolnet.ai';
+      return (
+        <div className="mt-6 bg-white rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
+          <div className="bg-slate-50 px-6 py-3 border-b border-outline-variant/30 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+              </div>
+              <span className="text-xs text-slate-500 font-mono ml-2">{previewUrl}</span>
+            </div>
+            <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+              SEO Preview
+            </span>
+          </div>
+          <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 min-h-[280px]">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+              <div className="bg-slate-100 px-4 py-2 border-b border-slate-200">
+                <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <AppIcon name="search" size={12} />
+                  <span>Google Search Preview</span>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="mb-3">
+                  <div className="text-blue-600 text-xl truncate hover:underline cursor-pointer">
+                    {landingSettings['Page Title'] || 'Skoolnet - School Management Software'}
+                  </div>
+                </div>
+                <div className="text-green-700 text-sm mb-1 truncate">
+                  {activeHomeSection?.id === 'home' ? 'https://skoolnet.ai' : activeHomeSection?.id === 'services' ? 'https://skoolnet.ai/services' : activeHomeSection?.id === 'about' ? 'https://skoolnet.ai/about' : activeHomeSection?.id === 'contact' ? 'https://skoolnet.ai/contact' : 'https://skoolnet.ai'}
+                </div>
+                <div className="text-slate-600 text-sm leading-snug">
+                  {landingSettings['Meta Description']?.substring(0, 160) || 'Meta description for search engines...'}
+                </div>
+                {(activeHomeSection?.id === 'global' || !activeHomeSection?.id) && (
+                  <div className="mt-4 pt-4 border-t border-slate-200">
+                    <h4 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                      <AppIcon name="settings" size={16} />
+                      Global SEO Settings
+                    </h4>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div><span className="text-slate-500">Site Name:</span> <span className="font-medium">{landingSettings['Site Name'] || 'Skoolnet'}</span></div>
+                      <div><span className="text-slate-500">URL:</span> <span className="font-medium">{landingSettings['Site URL'] || 'https://skoolnet.ai'}</span></div>
+                      <div><span className="text-slate-500">Twitter:</span> <span className="font-medium">{landingSettings['Twitter Handle'] || '@skoolnet'}</span></div>
+                      <div><span className="text-slate-500">Schema:</span> <span className="font-medium">{landingSettings['Schema Type'] || 'SoftwareApplication'}</span></div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="mt-4 bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+              <div className="bg-blue-50 px-4 py-2 border-b border-slate-200">
+                <div className="flex items-center gap-2 text-xs text-blue-700">
+                  <AppIcon name="share" size={12} />
+                  <span>Social Media Preview (Open Graph)</span>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="h-24 bg-slate-100 rounded-lg flex items-center justify-center mb-3">
+                  <AppIcon name="image" size={32} className="text-slate-300" />
+                </div>
+                <div className="text-slate-900 font-semibold mb-1">
+                  {landingSettings['OG Title'] || 'Skoolnet'}
+                </div>
+                <div className="text-slate-600 text-sm">
+                  {landingSettings['OG Description']?.substring(0, 100) || 'Open Graph description...'}
+                </div>
+                <div className="text-slate-500 text-xs mt-2">
+                  skoolnet.ai
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 bg-white rounded-xl shadow-md border border-slate-200 p-4">
+              <h4 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
+                <AppIcon name="code" size={16} />
+                Structured Data (JSON-LD)
+              </h4>
+              <pre className="text-xs bg-slate-800 text-green-400 p-3 rounded-lg overflow-x-auto">
+{`{
+  "@context": "https://schema.org",
+  "@type": "${landingSettings['Schema Type'] || 'SoftwareApplication'}",
+  "name": "${landingSettings['Site Name'] || 'Skoolnet'}",
+  "url": "${landingSettings['Site URL'] || 'https://skoolnet.ai'}",
+  "description": "${(landingSettings['Meta Description'] || '').substring(0, 80)}..."
+}`}
+              </pre>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     // Home Page preview (existing code)
     return (
       <div className="mt-6 bg-white rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
@@ -1087,7 +1334,7 @@ export default function ManagerSettings() {
                 ))}
               </div>
 
-              {(activeLandingCategory.title === 'Home Page' || activeLandingCategory.title === 'Services Page' || activeLandingCategory.title === 'About Page' || activeLandingCategory.title === 'Contact Page') && activeLandingCategory.sections && (
+              {(activeLandingCategory.title === 'Home Page' || activeLandingCategory.title === 'Services Page' || activeLandingCategory.title === 'About Page' || activeLandingCategory.title === 'Contact Page' || activeLandingCategory.title === 'SEO') && activeLandingCategory.sections && (
                 <>
                   <div className="bg-slate-50 rounded-xl p-1 flex flex-wrap gap-1">
                     {activeLandingCategory.sections.map((section) => (
