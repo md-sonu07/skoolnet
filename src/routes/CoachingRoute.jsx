@@ -1,21 +1,37 @@
 import { Navigate, Route } from 'react-router-dom';
 import CoachingLayout from '../layouts/CoachingLayout';
-import Attendance from '../pages/coaching/attendance/Attendance';
-import Batches from '../pages/coaching/batches/Batches';
-import Dashboard from '../pages/coaching/dashboard/Dashboard';
-import Payments from '../pages/coaching/payments/Payments';
-import Schedule from '../pages/coaching/schedule/Schedule';
-import Students from '../pages/coaching/students/Students';
+import Applications from '../pages/coaching/Applications';
+import Attendance from '../pages/coaching/Attendance';
+import Content from '../pages/coaching/Content';
+import Courses from '../pages/coaching/Courses';
+import Dashboard from '../pages/coaching/Dashboard';
+import Payments from '../pages/coaching/Payments';
+import Results from '../pages/coaching/Results';
+import Schedule from '../pages/coaching/Schedule';
+import Settings from '../pages/coaching/Settings';
+import Students from '../pages/coaching/Students';
+import Subscriptions from '../pages/coaching/Subscriptions';
+import Teachers from '../pages/coaching/Teachers';
+import Batches from '../pages/coaching/Batches';
+import Reports from '../pages/coaching/Reports';
 
 const coachingRoutes = (
   <Route path="/dashboard/coaching" element={<CoachingLayout />}>
     <Route index element={<Navigate to="overview" replace />} />
     <Route path="overview" element={<Dashboard />} />
-    <Route path="batches" element={<Batches />} />
     <Route path="students" element={<Students />} />
+    <Route path="teachers" element={<Teachers />} />
+    <Route path="courses" element={<Courses />} />
+    <Route path="batches" element={<Batches />} />
     <Route path="attendance" element={<Attendance />} />
-    <Route path="payments" element={<Payments />} />
     <Route path="schedule" element={<Schedule />} />
+    <Route path="content" element={<Content />} />
+    <Route path="payments" element={<Payments />} />
+    <Route path="subscriptions" element={<Subscriptions />} />
+    <Route path="applications" element={<Applications />} />
+    <Route path="results" element={<Results />} />
+    <Route path="reports" element={<Reports />} />
+    <Route path="settings" element={<Settings />} />
   </Route>
 );
 

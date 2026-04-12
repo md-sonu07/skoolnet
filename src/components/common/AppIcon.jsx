@@ -106,6 +106,10 @@ import {
   Split,
   Columns,
   Share2,
+  BookOpen,
+  PlayCircle,
+  Folder,
+  Award,
 } from 'lucide-react';
 
 const iconMap = {
@@ -238,6 +242,14 @@ const iconMap = {
   split: Split,
   columns: Columns,
   share: Share2,
+  // Coaching icons
+  menu_book: BookOpen,
+  card_membership: Award,
+  play_circle: PlayCircle,
+  picture_as_pdf: FileText,
+  payment_gateways: CreditCard,
+  folder: Folder,
+  image: FileText,
 };
 
 export default function AppIcon({ name, className, strokeWidth = 2, ...props }) {

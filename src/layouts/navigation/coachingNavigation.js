@@ -1,17 +1,25 @@
 export const coachingNavItems = [
   { label: 'Overview', icon: 'dashboard', to: 'overview' },
   { label: 'Students', icon: 'group', to: 'students' },
-  { label: 'Batches', icon: 'group', to: 'batches' },
+  { label: 'Teachers', icon: 'school', to: 'teachers' },
+  { label: 'Courses', icon: 'menu_book', to: 'courses' },
+  { label: 'Batches', icon: 'schedule', to: 'batches' },
   { label: 'Attendance', icon: 'monitoring', to: 'attendance' },
+  { label: 'Schedule', icon: 'event', to: 'schedule' },
+  { label: 'Content', icon: 'folder', to: 'content' },
   { label: 'Payments', icon: 'payments', to: 'payments' },
-  { label: 'Schedule', icon: 'calendar_today', to: 'schedule' },
+  { label: 'Subscriptions', icon: 'card_membership', to: 'subscriptions' },
+  { label: 'Applications', icon: 'work', to: 'applications' },
+  { label: 'Results', icon: 'assignment', to: 'results' },
+  { label: 'Reports', icon: 'analytics', to: 'reports' },
+  { label: 'Settings', icon: 'settings', to: 'settings' },
 ];
 
 export const coachingHeader = {
   userName: 'Center Admin',
   userRole: 'Coaching Manager',
-  userAvatar: 'https://lh3.googleusercontent.com/a/ACg8ocK9E4n2VbVZ8xJvX8YGxXq5KJyG3VlT6NFOzbEmey9ua5GE_7locUazze5tBIOXEYJcvrgCva-TZd5RvYxvaZeM0m5RvNsTiN69P-JveNwpySSiz5SIGxP5hbVDW2r3rrkl0g5zG8fy1oufDYI5OzLwbTp4QsowZTn7YfqAVpmUTAhaIWWpExxyxXdjlpf9obF301W3SToNPS7eX7gkccJ9uDeh9unR-ozQwvNr8uOxYJeBnEuMzhhAGHxi96dfdpgWM-9t-2WzxAk',
-  searchPlaceholder: 'Search students or batches...',
+  userAvatar: 'https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff&size=128',
+  searchPlaceholder: 'Search students, courses, or payments...',
   quickActions: [
     { icon: 'notifications' },
     { icon: 'add' },
