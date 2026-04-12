@@ -87,27 +87,296 @@ const landingSettingsCategories = [
     title: 'Services Page',
     description: 'Manage services and features display',
     icon: 'category',
-    settings: [
-      { label: 'Page Title', type: 'text', value: 'Educational Intelligence Redefined.', description: 'Services page main title' },
-      { label: 'Page Description', type: 'textarea', value: 'Deploy a comprehensive ecosystem built for modern institutions.', description: 'Services page description' },
+    sections: [
+      {
+        id: 'hero',
+        title: 'Page Hero',
+        icon: 'campaign',
+        description: 'Main hero area with title and CTAs',
+        settings: [
+          { label: 'Page Title', type: 'text', value: 'Educational Intelligence Redefined.', description: 'Services page main title' },
+          { label: 'Page Description', type: 'textarea', value: 'Deploy a comprehensive ecosystem built for modern institutions.', description: 'Services page description' },
+          { label: 'Primary CTA Button', type: 'text', value: 'Get Started Free', description: 'Primary CTA button text' },
+          { label: 'Primary CTA Link', type: 'text', value: '/pricing', description: 'Primary CTA button URL' },
+          { label: 'Secondary CTA Button', type: 'text', value: 'View Pricing', description: 'Secondary CTA button text' },
+          { label: 'Secondary CTA Link', type: 'text', value: '/pricing', description: 'Secondary CTA button URL' },
+        ]
+      },
+      {
+        id: 'featured',
+        title: 'Featured Service',
+        icon: 'star',
+        description: 'Featured service section (Fee Management)',
+        settings: [
+          { label: 'Featured Title', type: 'text', value: 'Fee Management', description: 'Featured service title' },
+          { label: 'Featured Description', type: 'textarea', value: 'A secure financial gateway that handles automated invoicing.', description: 'Featured service description' },
+          { label: 'Feature 1', type: 'text', value: 'Automated billing', description: 'First feature' },
+          { label: 'Feature 2', type: 'text', value: 'Online payments', description: 'Second feature' },
+          { label: 'Feature 3', type: 'text', value: 'Overdue alerts', description: 'Third feature' },
+          { label: 'Feature 4', type: 'text', value: 'Reconciliation reports', description: 'Fourth feature' },
+          { label: 'Button Text', type: 'text', value: 'Explore Fee Management', description: 'CTA button text' },
+          { label: 'Button Link', type: 'text', value: '/contact', description: 'CTA button URL' },
+        ]
+      },
+      {
+        id: 'services',
+        title: 'Services Grid',
+        icon: 'grid_view',
+        description: 'Service cards display section',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'Everything Your School Needs', description: 'Services grid title' },
+          { label: 'Enable All Tab', type: 'toggle', enabled: true, description: 'Show All category tab' },
+          { label: 'Enable Administration', type: 'toggle', enabled: true, description: 'Show Administration category' },
+          { label: 'Enable Academics', type: 'toggle', enabled: true, description: 'Show Academics category' },
+          { label: 'Enable Finance', type: 'toggle', enabled: true, description: 'Show Finance category' },
+          { label: 'Enable Communication', type: 'toggle', enabled: true, description: 'Show Communication category' },
+        ]
+      },
+      {
+        id: 'capabilities',
+        title: 'Capabilities',
+        icon: 'verified',
+        description: 'Platform capabilities section',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'Built for scale, designed for simplicity.', description: 'Capabilities section title' },
+          { label: 'Capability 1', type: 'text', value: 'Cloud-based, zero-infrastructure setup', description: 'First capability' },
+          { label: 'Capability 2', type: 'text', value: 'Multi-school and multi-branch management', description: 'Second capability' },
+          { label: 'Capability 3', type: 'text', value: 'Role-based access for all user types', description: 'Third capability' },
+          { label: 'Capability 4', type: 'text', value: 'Real-time data sync across devices', description: 'Fourth capability' },
+          { label: 'Capability 5', type: 'text', value: 'Automated reporting and scheduled exports', description: 'Fifth capability' },
+          { label: 'Capability 6', type: 'text', value: 'Open API for third-party integrations', description: 'Sixth capability' },
+          { label: 'Capability 7', type: 'text', value: '99.9 % uptime SLA with 24/7 support', description: 'Seventh capability' },
+          { label: 'Capability 8', type: 'text', value: 'GDPR-compliant data handling', description: 'Eighth capability' },
+        ]
+      },
+      {
+        id: 'cta',
+        title: 'CTA Section',
+        icon: 'ads_click',
+        description: 'Bottom call-to-action section',
+        settings: [
+          { label: 'CTA Title', type: 'text', value: 'Not sure which plan fits your school?', description: 'CTA section title' },
+          { label: 'CTA Description', type: 'textarea', value: 'Our team will walk you through every module.', description: 'CTA section description' },
+          { label: 'Primary Button', type: 'text', value: 'Book a Free Demo', description: 'Primary button text' },
+          { label: 'Primary Link', type: 'text', value: '/contact', description: 'Primary button URL' },
+          { label: 'Secondary Button', type: 'text', value: 'Contact Sales', description: 'Secondary button text' },
+          { label: 'Secondary Link', type: 'text', value: '/contact', description: 'Secondary button URL' },
+        ]
+      },
     ]
   },
   {
     title: 'About Page',
     description: 'Manage about page content and team information',
     icon: 'info',
-    settings: [
-      { label: 'Page Title', type: 'text', value: 'The Developer Team Behind Skoolnet.', description: 'About page main title' },
-      { label: 'Page Description', type: 'textarea', value: "We're a small, focused engineering team.", description: 'About page description' },
+    sections: [
+      {
+        id: 'hero',
+        title: 'Hero Section',
+        icon: 'campaign',
+        description: 'Main landing area with headline and CTAs',
+        settings: [
+          { label: 'Hero Eyebrow', type: 'text', value: 'Built by Developers · For Education', description: 'Hero eyebrow text' },
+          { label: 'Hero Title', type: 'text', value: 'The Developer Team Behind Skoolnet.', description: 'Hero main title' },
+          { label: 'Hero Subtitle', type: 'textarea', value: "We're a small, focused engineering team who felt the pain of broken school management first-hand.", description: 'Hero subtitle text' },
+          { label: 'Primary CTA Button', type: 'text', value: 'Get Started Free', description: 'Primary CTA button text' },
+          { label: 'Primary CTA Link', type: 'text', value: '/pricing', description: 'Primary CTA button URL' },
+          { label: 'Secondary CTA Button', type: 'text', value: 'View on GitHub', description: 'Secondary CTA button text' },
+          { label: 'Secondary CTA Link', type: 'text', value: 'https://github.com', description: 'Secondary CTA button URL' },
+        ]
+      },
+      {
+        id: 'mission',
+        title: 'Mission & Vision',
+        icon: 'rocket_launch',
+        description: 'Mission and vision statement section',
+        settings: [
+          { label: 'Mission Title', type: 'text', value: 'Our Mission', description: 'Mission section title' },
+          { label: 'Mission Content', type: 'textarea', value: 'To empower educational institutions with developer-grade digital tools that simplify complexity.', description: 'Mission statement text' },
+          { label: 'Vision Title', type: 'text', value: 'Our Vision', description: 'Vision section title' },
+          { label: 'Vision Content', type: 'textarea', value: 'A world where every school runs on software that is as reliable as the engineers who build it.', description: 'Vision statement text' },
+        ]
+      },
+      {
+        id: 'problem',
+        title: 'Problem vs Solution',
+        icon: 'compare',
+        description: 'Problem and solution comparison section',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'The Shift in Management', description: 'Section title' },
+          { label: 'Problem 1', type: 'text', value: 'Fragmented data across disconnected platforms', description: 'First problem' },
+          { label: 'Solution 1', type: 'text', value: 'Unified ecosystem with real-time sync', description: 'First solution' },
+          { label: 'Problem 2', type: 'text', value: 'Manual, error-prone entry', description: 'Second problem' },
+          { label: 'Solution 2', type: 'text', value: 'Intelligent automation', description: 'Second solution' },
+          { label: 'Problem 3', type: 'text', value: 'Clunky interfaces', description: 'Third problem' },
+          { label: 'Solution 3', type: 'text', value: 'Clean, developer-crafted UI', description: 'Third solution' },
+        ]
+      },
+      {
+        id: 'stack',
+        title: 'Tech Stack',
+        icon: 'code',
+        description: 'Technology stack display',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'Built on a Modern Stack', description: 'Tech stack section title' },
+          { label: 'Tech 1', type: 'text', value: 'React + Vite', description: 'First technology' },
+          { label: 'Tech 2', type: 'text', value: 'Django REST Framework', description: 'Second technology' },
+          { label: 'Tech 3', type: 'text', value: 'MySQL', description: 'Third technology' },
+          { label: 'Tech 4', type: 'text', value: 'Redis', description: 'Fourth technology' },
+          { label: 'Tech 5', type: 'text', value: 'Docker + AWS', description: 'Fifth technology' },
+          { label: 'Tech 6', type: 'text', value: 'GitHub Actions', description: 'Sixth technology' },
+        ]
+      },
+      {
+        id: 'timeline',
+        title: 'Timeline',
+        icon: 'timeline',
+        description: 'Company timeline section',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'From First Commit to 500 Schools', description: 'Timeline section title' },
+          { label: 'Timeline 1 Year', type: 'text', value: '2023', description: 'First timeline year' },
+          { label: 'Timeline 1 Title', type: 'text', value: 'Problem Identified', description: 'First timeline title' },
+          { label: 'Timeline 1 Description', type: 'textarea', value: 'A dev team noticed school management ran on spreadsheets.', description: 'First timeline description' },
+          { label: 'Timeline 2 Year', type: 'text', value: '2024 Q1', description: 'Second timeline year' },
+          { label: 'Timeline 2 Title', type: 'text', value: 'First Commit', description: 'Second timeline title' },
+          { label: 'Timeline 2 Description', type: 'textarea', value: 'Skoolnet v0.1 was a single-module attendance tracker.', description: 'Second timeline description' },
+          { label: 'Timeline 3 Year', type: 'text', value: '2024 Q3', description: 'Third timeline year' },
+          { label: 'Timeline 3 Title', type: 'text', value: 'Platform Expanded', description: 'Third timeline title' },
+          { label: 'Timeline 3 Description', type: 'textarea', value: 'Fee management, student portals, and analytics shipped.', description: 'Third timeline description' },
+          { label: 'Timeline 4 Year', type: 'text', value: '2025', description: 'Fourth timeline year' },
+          { label: 'Timeline 4 Title', type: 'text', value: 'Scaling', description: 'Fourth timeline title' },
+          { label: 'Timeline 4 Description', type: 'textarea', value: 'Crossed 500 schools and 1.2M students managed.', description: 'Fourth timeline description' },
+        ]
+      },
+      {
+        id: 'team',
+        title: 'Team',
+        icon: 'groups',
+        description: 'Team members display',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'The Engineers Behind Skoolnet', description: 'Team section title' },
+          { label: 'Team Member 1 Name', type: 'text', value: 'Danish Farhan', description: 'First team member name' },
+          { label: 'Team Member 1 Role', type: 'text', value: 'Founder & Lead Engineer', description: 'First team member role' },
+          { label: 'Team Member 2 Name', type: 'text', value: 'Arjun Mehta', description: 'Second team member name' },
+          { label: 'Team Member 2 Role', type: 'text', value: 'Backend Architect', description: 'Second team member role' },
+          { label: 'Team Member 3 Name', type: 'text', value: 'Sana Qureshi', description: 'Third team member name' },
+          { label: 'Team Member 3 Role', type: 'text', value: 'Frontend Engineer', description: 'Third team member role' },
+          { label: 'Team Member 4 Name', type: 'text', value: 'Ravi Sharma', description: 'Fourth team member name' },
+          { label: 'Team Member 4 Role', type: 'text', value: 'DevOps & Infrastructure', description: 'Fourth team member role' },
+        ]
+      },
+      {
+        id: 'values',
+        title: 'Values',
+        icon: 'verified',
+        description: 'Company values section',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'Our Engineering Values', description: 'Values section title' },
+          { label: 'Value 1 Title', type: 'text', value: 'Code-first Thinking', description: 'First value title' },
+          { label: 'Value 1 Description', type: 'textarea', value: 'Every product decision starts with engineering.', description: 'First value description' },
+          { label: 'Value 2 Title', type: 'text', value: 'Education is the Mission', description: 'Second value title' },
+          { label: 'Value 2 Description', type: 'textarea', value: 'We build Skoolnet because we believe good software changes how institutions operate.', description: 'Second value description' },
+          { label: 'Value 3 Title', type: 'text', value: 'Ship Iteratively', description: 'Third value title' },
+          { label: 'Value 3 Description', type: 'textarea', value: 'We prefer working software over perfect plans.', description: 'Third value description' },
+          { label: 'Value 4 Title', type: 'text', value: 'Privacy by Design', description: 'Fourth value title' },
+          { label: 'Value 4 Description', type: 'textarea', value: 'Student data is sacred. We enforce FERPA-compliant handling.', description: 'Fourth value description' },
+        ]
+      },
+      {
+        id: 'cta',
+        title: 'CTA Section',
+        icon: 'ads_click',
+        description: 'Call-to-action section at bottom',
+        settings: [
+          { label: 'CTA Title', type: 'text', value: 'Want to contribute or partner?', description: 'CTA section title' },
+          { label: 'CTA Description', type: 'textarea', value: "We're always open to passionate devs and educators.", description: 'CTA section description' },
+          { label: 'Primary Button', type: 'text', value: 'Get Started Free', description: 'Primary button text' },
+          { label: 'Primary Link', type: 'text', value: '/pricing', description: 'Primary button URL' },
+          { label: 'Secondary Button', type: 'text', value: 'Contact Us', description: 'Secondary button text' },
+          { label: 'Secondary Link', type: 'text', value: '/contact', description: 'Secondary button URL' },
+        ]
+      },
     ]
   },
   {
     title: 'Contact Page',
     description: 'Configure contact information and form settings',
     icon: 'contact_mail',
-    settings: [
-      { label: 'Page Title', type: 'text', value: 'Get in Touch', description: 'Contact page main title' },
-      { label: 'Support Email', type: 'text', value: 'support@skoolnet.ai', description: 'Customer support email' },
+    sections: [
+      {
+        id: 'hero',
+        title: 'Hero Section',
+        icon: 'campaign',
+        description: 'Main landing area with title and stats',
+        settings: [
+          { label: 'Hero Eyebrow', type: 'text', value: "We're here to help 24/7", description: 'Hero eyebrow text' },
+          { label: 'Hero Title', type: 'text', value: 'Get in Touch', description: 'Hero main title' },
+          { label: 'Hero Description', type: 'textarea', value: 'Our team of educational technology experts is ready to help.', description: 'Hero description text' },
+          { label: 'Stat 1 Label', type: 'text', value: '24/7', description: 'First stat label' },
+          { label: 'Stat 1 Value', type: 'text', value: 'Support Available', description: 'First stat value' },
+          { label: 'Stat 2 Label', type: 'text', value: '<1hr', description: 'Second stat label' },
+          { label: 'Stat 2 Value', type: 'text', value: 'Response Time', description: 'Second stat value' },
+          { label: 'Stat 3 Label', type: 'text', value: '500+', description: 'Third stat label' },
+          { label: 'Stat 3 Value', type: 'text', value: 'Happy Schools', description: 'Third stat value' },
+        ]
+      },
+      {
+        id: 'methods',
+        title: 'Contact Methods',
+        icon: 'contact_phone',
+        description: 'Quick contact options',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'Quick Contact Options', description: 'Contact methods section title' },
+          { label: 'Method 1 Title', type: 'text', value: 'Email', description: 'First contact method title' },
+          { label: 'Method 1 Description', type: 'text', value: 'Get a response within 24 hours', description: 'First method description' },
+          { label: 'Method 1 Action', type: 'text', value: 'support@skoolnet.ai', description: 'First method action' },
+          { label: 'Method 2 Title', type: 'text', value: 'Phone', description: 'Second contact method title' },
+          { label: 'Method 2 Description', type: 'text', value: 'Mon-Fri: 9am - 6pm EST', description: 'Second method description' },
+          { label: 'Method 2 Action', type: 'text', value: '+1 (555) 000-1234', description: 'Second method action' },
+          { label: 'Method 3 Title', type: 'text', value: 'Demo', description: 'Third contact method title' },
+          { label: 'Method 3 Description', type: 'text', value: '30-minute guided tour', description: 'Third method description' },
+          { label: 'Method 3 Action', type: 'text', value: 'Book a Call', description: 'Third method action' },
+        ]
+      },
+      {
+        id: 'office',
+        title: 'Office Info',
+        icon: 'location_on',
+        description: 'Office location and hours',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'Visit Our Office', description: 'Office info section title' },
+          { label: 'Office Title', type: 'text', value: 'Silicon Valley Headquarters', description: 'Office name' },
+          { label: 'Office Address', type: 'textarea', value: '101 Innovation Way, Silicon Valley, CA 94025', description: 'Office address' },
+          { label: 'Hours Weekday', type: 'text', value: 'Monday - Friday: 9:00 AM - 6:00 PM', description: 'Weekday hours' },
+          { label: 'Hours Saturday', type: 'text', value: 'Saturday: 10:00 AM - 2:00 PM', description: 'Saturday hours' },
+          { label: 'Hours Sunday', type: 'text', value: 'Sunday: Closed', description: 'Sunday hours' },
+        ]
+      },
+      {
+        id: 'quick',
+        title: 'Quick Help',
+        icon: 'help',
+        description: 'Quick help section',
+        settings: [
+          { label: 'Section Title', type: 'text', value: 'Need Quick Help?', description: 'Quick help section title' },
+          { label: 'Section Description', type: 'textarea', value: 'Check our help center or schedule a demo.', description: 'Quick help description' },
+          { label: 'Primary Button', type: 'text', value: 'Visit Help Center', description: 'Primary button text' },
+          { label: 'Primary Link', type: 'text', value: '/about', description: 'Primary button URL' },
+          { label: 'Secondary Button', type: 'text', value: 'Schedule Demo', description: 'Secondary button text' },
+          { label: 'Secondary Link', type: 'text', value: '/contact', description: 'Secondary button URL' },
+        ]
+      },
+      {
+        id: 'map',
+        title: 'Map Section',
+        icon: 'map',
+        description: 'Office map section',
+        settings: [
+          { label: 'Location Title', type: 'text', value: 'Visit Our Silicon Valley Office', description: 'Map location title' },
+          { label: 'Get Directions Button', type: 'text', value: 'Get Directions', description: 'Directions button text' },
+          { label: 'Schedule Visit Button', type: 'text', value: 'Schedule Visit', description: 'Visit button text' },
+        ]
+      },
     ]
   },
 ];
@@ -236,6 +505,432 @@ export default function ManagerSettings() {
 
   const renderPreview = () => {
     if (!activeHomeSection) return null;
+    
+    if (activeLandingCategory.title === 'Services Page') {
+      return (
+        <div className="mt-6 bg-white rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
+          <div className="bg-slate-50 px-6 py-3 border-b border-outline-variant/30 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+              </div>
+              <span className="text-xs text-slate-500 font-mono ml-2">skoolnet.ai/services</span>
+            </div>
+            <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+              {activeHomeSection.title} Preview
+            </span>
+          </div>
+          <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 min-h-[280px]">
+            {activeHomeSection.id === 'hero' && (
+              <div className="text-center max-w-2xl mx-auto py-8">
+                <h2 className="text-4xl font-black text-slate-900 mb-4">
+                  {landingSettings['Page Title'] || 'Educational Intelligence Redefined.'}
+                </h2>
+                <p className="text-slate-600 text-lg mb-8 max-w-lg mx-auto">
+                  {landingSettings['Page Description'] || 'Deploy a comprehensive ecosystem...'}
+                </p>
+                <div className="flex justify-center gap-4">
+                  <span className="px-6 py-3 bg-primary text-white font-semibold rounded-xl">
+                    {landingSettings['Primary CTA Button'] || 'Get Started Free'}
+                  </span>
+                  <span className="px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl">
+                    {landingSettings['Secondary CTA Button'] || 'View Pricing'}
+                  </span>
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'featured' && (
+              <div className="bg-primary rounded-xl p-8 text-white flex flex-col md:flex-row items-center gap-8">
+                <div className="flex-1">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/15 border border-white/20 mb-4 w-fit">
+                    <AppIcon name="star" size={13} className="text-white" />
+                    <span className="text-xs font-semibold text-white uppercase">Featured Service</span>
+                  </div>
+                  <h3 className="text-2xl font-black mb-3">{landingSettings['Featured Title'] || 'Fee Management'}</h3>
+                  <p className="text-white/80 mb-4 max-w-md">{landingSettings['Featured Description'] || 'A secure financial gateway...'}</p>
+                  <ul className="grid grid-cols-2 gap-2 mb-4">
+                    {[landingSettings['Feature 1'], landingSettings['Feature 2'], landingSettings['Feature 3'], landingSettings['Feature 4']].filter(Boolean).map((f, i) => (
+                      <li key={i} className="flex items-center gap-2 text-white/85 text-sm">
+                        <AppIcon name="check_circle" size={14} className="text-white" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <span className="px-6 py-2.5 bg-white text-primary rounded-lg font-semibold text-sm">
+                    {landingSettings['Button Text'] || 'Explore Fee Management'}
+                  </span>
+                </div>
+                <div className="w-full md:w-64 h-40 bg-white/10 rounded-xl flex items-center justify-center">
+                  <AppIcon name="payments" size={48} className="text-white/50" />
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'services' && (
+              <div>
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-black text-slate-900">{landingSettings['Section Title'] || 'Everything Your School Needs'}</h3>
+                </div>
+                <div className="flex flex-wrap gap-2 justify-center mb-4">
+                  {['All', 'Administration', 'Academics', 'Finance', 'Communication'].map((cat, i) => (
+                    <span key={cat} className={`px-4 py-2 rounded-lg text-sm font-medium ${i === 0 ? 'bg-primary text-white' : 'bg-white border border-slate-200 text-slate-600'}`}>
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {['School Management', 'Coaching Management', 'Attendance', 'Student Dashboard', 'Performance Analytics', 'Communication Hub'].map((s, i) => (
+                    <div key={i} className="bg-white rounded-xl p-4 border border-slate-200">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                        <AppIcon name="school" size={20} className="text-primary" />
+                      </div>
+                      <h4 className="font-bold text-slate-900 mb-1">{s}</h4>
+                      <p className="text-xs text-slate-500 line-clamp-2">Centralise every administrative operation...</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'capabilities' && (
+              <div>
+                <h3 className="text-2xl font-black text-slate-900 mb-6 text-center">
+                  {landingSettings['Section Title'] || 'Built for scale, designed for simplicity.'}
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[1,2,3,4,5,6,7,8].map((i) => (
+                    <div key={i} className="flex items-center gap-3 bg-white rounded-xl p-4 border border-slate-200">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <AppIcon name="check" size={16} className="text-primary" />
+                      </div>
+                      <span className="text-sm text-slate-700">
+                        {landingSettings[`Capability ${i}`] || `Capability ${i}`}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'cta' && (
+              <div className="bg-white rounded-xl p-8 border border-slate-200 text-center">
+                <h3 className="text-2xl font-black text-slate-900 mb-3">
+                  {landingSettings['CTA Title'] || 'Not sure which plan fits your school?'}
+                </h3>
+                <p className="text-slate-600 mb-6 max-w-md mx-auto">
+                  {landingSettings['CTA Description'] || 'Our team will walk you through every module.'}
+                </p>
+                <div className="flex justify-center gap-4">
+                  <span className="px-6 py-3 bg-primary text-white font-semibold rounded-xl">
+                    {landingSettings['Primary Button'] || 'Book a Free Demo'}
+                  </span>
+                  <span className="px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl">
+                    {landingSettings['Secondary Button'] || 'Contact Sales'}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (activeLandingCategory.title === 'About Page') {
+      const previewUrl = 'skoolnet.ai/about';
+      return (
+        <div className="mt-6 bg-white rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
+          <div className="bg-slate-50 px-6 py-3 border-b border-outline-variant/30 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+              </div>
+              <span className="text-xs text-slate-500 font-mono ml-2">{previewUrl}</span>
+            </div>
+            <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+              {activeHomeSection.title} Preview
+            </span>
+          </div>
+          <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 min-h-[280px]">
+            {activeHomeSection.id === 'hero' && (
+              <div className="bg-white rounded-xl shadow-md p-8 border border-slate-200 max-w-2xl mx-auto">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary/10 border border-primary/20 mb-4 w-fit">
+                  <span className="w-2 h-2 rounded-full bg-primary" />
+                  <span className="text-xs font-semibold text-primary uppercase">{landingSettings['Hero Eyebrow'] || 'Built by Developers'}</span>
+                </div>
+                <h2 className="text-3xl font-black text-slate-900 mb-3">
+                  {landingSettings['Hero Title'] || 'The Developer Team Behind Skoolnet.'}
+                </h2>
+                <p className="text-slate-600 text-base max-w-lg mx-auto leading-relaxed mb-6">
+                  {landingSettings['Hero Subtitle'] || "We're a small, focused team..."}
+                </p>
+                <div className="flex justify-center gap-4">
+                  <span className="px-6 py-3 bg-primary text-white font-semibold rounded-xl text-sm">
+                    {landingSettings['Primary CTA Button'] || 'Get Started Free'}
+                  </span>
+                  <span className="px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl text-sm">
+                    {landingSettings['Secondary CTA Button'] || 'View on GitHub'}
+                  </span>
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'mission' && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white rounded-xl p-6 border border-slate-200">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <AppIcon name="rocket_launch" size={20} className="text-primary" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">{landingSettings['Mission Title'] || 'Our Mission'}</h3>
+                  <p className="text-sm text-slate-600">{landingSettings['Mission Content']?.substring(0, 100) || 'Mission statement...'}...</p>
+                </div>
+                <div className="bg-white rounded-xl p-6 border border-slate-200">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <AppIcon name="visibility" size={20} className="text-primary" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">{landingSettings['Vision Title'] || 'Our Vision'}</h3>
+                  <p className="text-sm text-slate-600">{landingSettings['Vision Content']?.substring(0, 100) || 'Vision statement...'}...</p>
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'problem' && (
+              <div className="rounded-xl overflow-hidden border border-slate-200 grid grid-cols-2">
+                <div className="bg-white p-6 border-r border-slate-200">
+                  <h3 className="text-sm font-bold text-red-500 uppercase mb-4">The Problem</h3>
+                  <ul className="space-y-2">
+                    {[landingSettings['Problem 1'], landingSettings['Problem 2'], landingSettings['Problem 3']].filter(Boolean).map((p, i) => (
+                      <li key={i} className="text-sm text-slate-600 flex items-center gap-2">
+                        <AppIcon name="close" size={14} className="text-red-400" />
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="bg-primary/5 p-6">
+                  <h3 className="text-sm font-bold text-primary uppercase mb-4">The Solution</h3>
+                  <ul className="space-y-2">
+                    {[landingSettings['Solution 1'], landingSettings['Solution 2'], landingSettings['Solution 3']].filter(Boolean).map((s, i) => (
+                      <li key={i} className="text-sm text-slate-700 flex items-center gap-2">
+                        <AppIcon name="check" size={14} className="text-primary" />
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'stack' && (
+              <div>
+                <h3 className="text-xl font-black text-slate-900 mb-6 text-center">{landingSettings['Section Title'] || 'Built on a Modern Stack'}</h3>
+                <div className="grid grid-cols-3 gap-3">
+                  {[landingSettings['Tech 1'], landingSettings['Tech 2'], landingSettings['Tech 3'], landingSettings['Tech 4'], landingSettings['Tech 5'], landingSettings['Tech 6']].filter(Boolean).map((tech, i) => (
+                    <div key={i} className="bg-white rounded-xl p-4 border border-slate-200 text-center">
+                      <span className="text-sm font-semibold text-slate-700">{tech}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'timeline' && (
+              <div>
+                <h3 className="text-xl font-black text-slate-900 mb-6 text-center">{landingSettings['Section Title'] || 'Our Story'}</h3>
+                <div className="space-y-3">
+                  {[
+                    { year: landingSettings['Timeline 1 Year'], title: landingSettings['Timeline 1 Title'] },
+                    { year: landingSettings['Timeline 2 Year'], title: landingSettings['Timeline 2 Title'] },
+                    { year: landingSettings['Timeline 3 Year'], title: landingSettings['Timeline 3 Title'] },
+                    { year: landingSettings['Timeline 4 Year'], title: landingSettings['Timeline 4 Title'] },
+                  ].filter(t => t.year).map((item, i) => (
+                    <div key={i} className="flex items-center gap-4 bg-white rounded-lg p-4 border border-slate-200">
+                      <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded">{item.year}</span>
+                      <span className="text-sm font-medium text-slate-700">{item.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'team' && (
+              <div>
+                <h3 className="text-xl font-black text-slate-900 mb-6 text-center">{landingSettings['Section Title'] || 'The Team'}</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { name: landingSettings['Team Member 1 Name'], role: landingSettings['Team Member 1 Role'] },
+                    { name: landingSettings['Team Member 2 Name'], role: landingSettings['Team Member 2 Role'] },
+                    { name: landingSettings['Team Member 3 Name'], role: landingSettings['Team Member 3 Role'] },
+                    { name: landingSettings['Team Member 4 Name'], role: landingSettings['Team Member 4 Role'] },
+                  ].filter(m => m.name).map((member, i) => (
+                    <div key={i} className="bg-white rounded-xl p-4 border border-slate-200 text-center">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-sm font-bold text-primary">{member.name?.charAt(0)}</span>
+                      </div>
+                      <h4 className="font-bold text-slate-900 text-sm">{member.name}</h4>
+                      <p className="text-xs text-slate-500">{member.role}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'values' && (
+              <div>
+                <h3 className="text-xl font-black text-slate-900 mb-6 text-center">{landingSettings['Section Title'] || 'Our Values'}</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { title: landingSettings['Value 1 Title'], desc: landingSettings['Value 1 Description'] },
+                    { title: landingSettings['Value 2 Title'], desc: landingSettings['Value 2 Description'] },
+                    { title: landingSettings['Value 3 Title'], desc: landingSettings['Value 3 Description'] },
+                    { title: landingSettings['Value 4 Title'], desc: landingSettings['Value 4 Description'] },
+                  ].filter(v => v.title).map((value, i) => (
+                    <div key={i} className="bg-white rounded-xl p-4 border border-slate-200">
+                      <h4 className="font-bold text-slate-900 text-sm mb-1">{value.title}</h4>
+                      <p className="text-xs text-slate-500">{value.desc?.substring(0, 60) || 'Value description...'}...</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'cta' && (
+              <div className="bg-primary rounded-2xl p-10 text-center shadow-lg relative overflow-hidden">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
+                <div className="relative z-10">
+                  <h2 className="text-3xl font-black text-white mb-4">{landingSettings['CTA Title'] || 'Want to contribute?'}</h2>
+                  <p className="text-white/75 text-base mb-8 max-w-md mx-auto">{landingSettings['CTA Description'] || "We're always open..."}</p>
+                  <div className="flex justify-center gap-4">
+                    <span className="px-8 py-3 bg-white text-primary font-bold rounded-xl text-sm">
+                      {landingSettings['Primary Button'] || 'Get Started Free'}
+                    </span>
+                    <span className="px-8 py-3 bg-white/10 border border-white/30 text-white font-bold rounded-xl text-sm">
+                      {landingSettings['Secondary Button'] || 'Contact Us'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (activeLandingCategory.title === 'Contact Page') {
+      const previewUrl = 'skoolnet.ai/contact';
+      return (
+        <div className="mt-6 bg-white rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
+          <div className="bg-slate-50 px-6 py-3 border-b border-outline-variant/30 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+              </div>
+              <span className="text-xs text-slate-500 font-mono ml-2">{previewUrl}</span>
+            </div>
+            <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+              {activeHomeSection.title} Preview
+            </span>
+          </div>
+          <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 min-h-[280px]">
+            {activeHomeSection.id === 'hero' && (
+              <div className="bg-white rounded-xl shadow-md p-8 border border-slate-200 max-w-2xl mx-auto">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary/10 border border-primary/20 mb-4 w-fit">
+                  <AppIcon name="support_agent" size={14} className="text-primary" />
+                  <span className="text-xs font-semibold text-primary">{landingSettings['Hero Eyebrow'] || "We're here to help 24/7"}</span>
+                </div>
+                <h2 className="text-3xl font-black text-slate-900 mb-3">
+                  {landingSettings['Hero Title'] || 'Get in Touch'}
+                </h2>
+                <p className="text-slate-600 text-base max-w-lg mx-auto leading-relaxed mb-6">
+                  {landingSettings['Hero Description'] || 'Our team is ready to help...'}
+                </p>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">{landingSettings['Stat 1 Label'] || '24/7'}</div>
+                    <div className="text-xs text-slate-500">{landingSettings['Stat 1 Value'] || 'Support'}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">{landingSettings['Stat 2 Label'] || '<1hr'}</div>
+                    <div className="text-xs text-slate-500">{landingSettings['Stat 2 Value'] || 'Response'}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">{landingSettings['Stat 3 Label'] || '500+'}</div>
+                    <div className="text-xs text-slate-500">{landingSettings['Stat 3 Value'] || 'Schools'}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'methods' && (
+              <div>
+                <h3 className="text-lg font-black text-slate-900 mb-4 text-center">{landingSettings['Section Title'] || 'Quick Contact Options'}</h3>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { title: landingSettings['Method 1 Title'], desc: landingSettings['Method 1 Description'], action: landingSettings['Method 1 Action'] },
+                    { title: landingSettings['Method 2 Title'], desc: landingSettings['Method 2 Description'], action: landingSettings['Method 2 Action'] },
+                    { title: landingSettings['Method 3 Title'], desc: landingSettings['Method 3 Description'], action: landingSettings['Method 3 Action'] },
+                  ].filter(m => m.title).map((method, i) => (
+                    <div key={i} className="bg-white rounded-xl p-4 border border-slate-200">
+                      <h4 className="font-bold text-slate-900 text-sm mb-1">{method.title}</h4>
+                      <p className="text-xs text-slate-500 mb-2">{method.desc}</p>
+                      <span className="text-xs text-primary font-medium">{method.action}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'office' && (
+              <div className="bg-white rounded-xl p-6 border border-slate-200">
+                <h3 className="text-lg font-black text-slate-900 mb-4">{landingSettings['Section Title'] || 'Visit Our Office'}</h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <AppIcon name="location_on" size={18} className="text-primary" />
+                    <div>
+                      <p className="font-semibold text-slate-900">{landingSettings['Office Title'] || 'Silicon Valley HQ'}</p>
+                      <p className="text-sm text-slate-500">{landingSettings['Office Address'] || 'Address...'}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <AppIcon name="schedule" size={18} className="text-primary" />
+                    <div className="text-sm text-slate-600">
+                      <p>{landingSettings['Hours Weekday'] || 'Mon-Fri: 9AM - 6PM'}</p>
+                      <p>{landingSettings['Hours Saturday'] || 'Sat: 10AM - 2PM'}</p>
+                      <p>{landingSettings['Hours Sunday'] || 'Sun: Closed'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'quick' && (
+              <div className="bg-gradient-to-r from-primary to-primary/80 rounded-xl p-8 text-white text-center">
+                <h3 className="text-xl font-black mb-2">{landingSettings['Section Title'] || 'Need Quick Help?'}</h3>
+                <p className="text-white/80 mb-6 text-sm">{landingSettings['Section Description'] || 'Check our help center...'}</p>
+                <div className="flex justify-center gap-3">
+                  <span className="px-4 py-2 bg-white text-primary rounded-lg font-semibold text-sm">
+                    {landingSettings['Primary Button'] || 'Visit Help Center'}
+                  </span>
+                  <span className="px-4 py-2 bg-white/20 text-white rounded-lg font-semibold text-sm border border-white/30">
+                    {landingSettings['Secondary Button'] || 'Schedule Demo'}
+                  </span>
+                </div>
+              </div>
+            )}
+            {activeHomeSection.id === 'map' && (
+              <div className="bg-white rounded-xl p-6 border border-slate-200">
+                <h3 className="text-lg font-black text-slate-900 mb-4">{landingSettings['Location Title'] || 'Visit Our Office'}</h3>
+                <div className="h-32 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                  <AppIcon name="map" size={32} className="text-slate-400" />
+                </div>
+                <div className="flex gap-3">
+                  <span className="px-4 py-2 bg-primary text-white rounded-lg font-semibold text-sm">
+                    {landingSettings['Get Directions Button'] || 'Get Directions'}
+                  </span>
+                  <span className="px-4 py-2 border border-slate-200 text-slate-700 rounded-lg font-semibold text-sm">
+                    {landingSettings['Schedule Visit Button'] || 'Schedule Visit'}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // Home Page preview (existing code)
     return (
       <div className="mt-6 bg-white rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
         <div className="bg-slate-50 px-6 py-3 border-b border-outline-variant/30 flex items-center justify-between">
@@ -392,14 +1087,14 @@ export default function ManagerSettings() {
                 ))}
               </div>
 
-              {activeLandingCategory.title === 'Home Page' && activeLandingCategory.sections && (
+              {(activeLandingCategory.title === 'Home Page' || activeLandingCategory.title === 'Services Page' || activeLandingCategory.title === 'About Page' || activeLandingCategory.title === 'Contact Page') && activeLandingCategory.sections && (
                 <>
                   <div className="bg-slate-50 rounded-xl p-1 flex flex-wrap gap-1">
                     {activeLandingCategory.sections.map((section) => (
                       <button
                         key={section.id}
                         onClick={() => setActiveHomeSection(section)}
-                        className={`flex-1 min-w-[140px] px-4 py-2.5 rounded-lg font-medium text-sm transition-all text-center ${
+                        className={`flex-1 min-w-[180px] px-4 py-2.5 rounded-lg font-medium text-sm transition-all text-center ${
                           activeHomeSection?.id === section.id
                             ? 'bg-white text-primary shadow-sm'
                             : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
@@ -445,7 +1140,7 @@ export default function ManagerSettings() {
                 </>
               )}
 
-              {activeLandingCategory.title !== 'Home Page' && (
+              {(activeLandingCategory.title === 'Home Page' || activeLandingCategory.title === 'Services Page') && (
                 <SectionCard 
                   title={activeLandingCategory.title}
                   description={activeLandingCategory.description}

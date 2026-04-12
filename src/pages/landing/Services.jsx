@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import SiteLayout from '../../layouts/SiteLayout';
 
-/* ─────────────────────────────────────────
-   Data
-───────────────────────────────────────── */
+/* Data */
 const CATEGORIES = ['All', 'Administration', 'Academics', 'Finance', 'Communication'];
 
 const SERVICES = [
@@ -64,9 +62,9 @@ const CAPABILITIES = [
   'GDPR-compliant data handling',
 ];
 
-/* ─────────────────────────────────────────
+/* 
    Sub-components
-───────────────────────────────────────── */
+ */
 const ServiceCard = ({ icon, title, tag, desc, highlights }) => (
   <div className="group glass-panel rounded-2xl border border-outline-variant/50 p-7 flex flex-col gap-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
     {/* Icon + Tag row */}
@@ -107,9 +105,9 @@ const ServiceCard = ({ icon, title, tag, desc, highlights }) => (
   </div>
 );
 
-/* ─────────────────────────────────────────
+/* 
    Page
-───────────────────────────────────────── */
+ */
 const Services = () => {
   const [activeTab, setActiveTab] = useState('All');
 
