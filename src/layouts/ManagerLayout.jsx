@@ -1,6 +1,6 @@
 import DashboardShell from '../components/layout/DashboardShell';
-import DashboardSidebar from '../components/layout/DashboardSidebar';
-import DashboardTopbar from '../components/layout/DashboardTopbar';
+import ManagerSidebar from '../components/layout/ManagerSidebar';
+import ManagerTopbar from '../components/layout/ManagerTopbar';
 import {
   managerHeader,
   managerNavItems,
@@ -10,8 +10,8 @@ import {
 export default function ManagerLayout() {
   return (
     <DashboardShell
-      topbar={<DashboardTopbar {...managerHeader} />}
-      sidebar={<DashboardSidebar {...managerSidebarContent} navItems={managerNavItems} upgradePlan={managerSidebarContent.upgradePlan} />}
+      topbar={<ManagerTopbar {...managerHeader} />}
+      sidebar={<ManagerSidebar {...managerSidebarContent} navItems={managerNavItems} upgradePlan={managerSidebarContent.upgradePlan} />}
     />
   );
 }

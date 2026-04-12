@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import AppIcon from '../common/AppIcon';
 
-export default function DashboardSidebar({ badge, title, navItems }) {
+export default function SchoolSidebar({ badge, title, navItems }) {
   return (
     <aside className="h-screen w-64 fixed left-0 top-0 glass-sidebar flex flex-col py-6 z-[60] font-['Inter'] text-sm font-medium">
       <div className="px-6 mb-6 flex items-center gap-3 shrink-0">
@@ -22,7 +22,7 @@ export default function DashboardSidebar({ badge, title, navItems }) {
         {navItems.map(item => (
           <NavLink
             key={item.to}
-            to={`/dashboard/manager/${item.to}`}
+            to={`/dashboard/school/${item.to}`}
             className={({ isActive }) =>
               [
                 'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-150 ease-out border',
@@ -33,7 +33,7 @@ export default function DashboardSidebar({ badge, title, navItems }) {
             }
           >
             <AppIcon name={item.icon} size={20} />
-            <span className={item.label === 'Dashboard' ? 'font-semibold' : ''}>
+            <span>
               {item.label}
             </span>
           </NavLink>

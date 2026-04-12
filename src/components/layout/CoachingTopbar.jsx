@@ -1,6 +1,12 @@
 import AppIcon from '../common/AppIcon';
 
-export default function DashboardTopbar({ userName, userRole, userAvatar, searchPlaceholder, quickActions = [] }) {
+export default function CoachingTopbar({ 
+  userName = 'User', 
+  userRole = 'Admin', 
+  userAvatar = 'https://ui-avatars.com/api/?name=User&background=6366f1&color=fff&size=128', 
+  searchPlaceholder = 'Search...', 
+  quickActions = [] 
+}) {
   return (
     <header className="fixed top-0 right-0 left-64 h-16 z-50 bg-white/70 backdrop-blur-xl flex items-center justify-between px-8 border-b border-slate-100 font-['Manrope'] tracking-tight">
       <div className="flex items-center flex-1 max-w-xl">

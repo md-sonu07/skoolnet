@@ -8,19 +8,19 @@ export const coachingNavItems = [
 ];
 
 export const coachingHeader = {
-  badge: 'Coaching Dashboard',
-  title: 'Batch and growth desk',
-  description:
-    'Manage batch schedules, trainers, student outcomes, and coaching center performance from one workspace.',
+  userName: 'Center Admin',
+  userRole: 'Coaching Manager',
+  userAvatar: 'https://lh3.googleusercontent.com/a/ACg8ocK9E4n2VbVZ8xJvX8YGxXq5KJyG3VlT6NFOzbEmey9ua5GE_7locUazze5tBIOXEYJcvrgCva-TZd5RvYxvaZeM0m5RvNsTiN69P-JveNwpySSiz5SIGxP5hbVDW2r3rrkl0g5zG8fy1oufDYI5OzLwbTp4QsowZTn7YfqAVpmUTAhaIWWpExxyxXdjlpf9obF301W3SToNPS7eX7gkccJ9uDeh9unR-ozQwvNr8uOxYJeBnEuMzhhAGHxi96dfdpgWM-9t-2WzxAk',
+  searchPlaceholder: 'Search students or batches...',
   quickActions: [
-    { label: 'Create batch', icon: 'group' },
-    { label: 'Performance view', icon: 'monitoring', variant: 'secondary' },
+    { icon: 'notifications' },
+    { icon: 'add' },
+    { icon: 'settings' },
   ],
 };
 
 export const coachingSidebarContent = {
   badge: 'Coaching Ops',
-  title: 'Center dashboard',
-  description:
-    'This dashboard keeps day-to-day coaching operations visible across batches, trainers, and performance.',
+  title: 'Skoolnet',
+  description: '',
 };

@@ -1,6 +1,6 @@
 import DashboardShell from '../components/layout/DashboardShell';
-import DashboardSidebar from '../components/layout/DashboardSidebar';
-import DashboardTopbar from '../components/layout/DashboardTopbar';
+import CoachingSidebar from '../components/layout/CoachingSidebar';
+import CoachingTopbar from '../components/layout/CoachingTopbar';
 import {
   coachingHeader,
   coachingNavItems,
@@ -10,8 +10,8 @@ import {
 export default function CoachingLayout() {
   return (
     <DashboardShell
-      topbar={<DashboardTopbar {...coachingHeader} />}
-      sidebar={<DashboardSidebar {...coachingSidebarContent} navItems={coachingNavItems} />}
+      topbar={<CoachingTopbar {...coachingHeader} />}
+      sidebar={<CoachingSidebar {...coachingSidebarContent} navItems={coachingNavItems} />}
     />
   );
 }

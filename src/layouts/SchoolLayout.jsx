@@ -1,6 +1,6 @@
 import DashboardShell from '../components/layout/DashboardShell';
-import DashboardSidebar from '../components/layout/DashboardSidebar';
-import DashboardTopbar from '../components/layout/DashboardTopbar';
+import SchoolSidebar from '../components/layout/SchoolSidebar';
+import SchoolTopbar from '../components/layout/SchoolTopbar';
 import {
   schoolHeader,
   schoolNavItems,
@@ -10,8 +10,8 @@ import {
 export default function SchoolLayout() {
   return (
     <DashboardShell
-      topbar={<DashboardTopbar {...schoolHeader} />}
-      sidebar={<DashboardSidebar {...schoolSidebarContent} navItems={schoolNavItems} />}
+      topbar={<SchoolTopbar {...schoolHeader} />}
+      sidebar={<SchoolSidebar {...schoolSidebarContent} navItems={schoolNavItems} />}
     />
   );
 }
