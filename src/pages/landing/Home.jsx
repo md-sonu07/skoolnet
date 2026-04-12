@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import SiteLayout from '../../layouts/SiteLayout';
 
@@ -129,18 +130,22 @@ const Home = () => {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <button
+              <Link
+                to="/pricing"
                 id="hero-get-started"
-                className="btn-primary px-8 py-3 text-base"
+                className="btn-primary px-8 py-3 text-base inline-flex items-center gap-2"
               >
+                <AppIcon name="rocket_launch" size={18} />
                 Get Started Free
-              </button>
-              <button
+              </Link>
+              <Link
+                to="/contact"
                 id="hero-book-demo"
-                className="btn-secondary px-8 py-3 text-base"
+                className="btn-secondary px-8 py-3 text-base inline-flex items-center gap-2"
               >
+                <AppIcon name="calendar_today" size={18} />
                 Book a Demo
-              </button>
+              </Link>
             </div>
           </div>
         </section>
@@ -342,18 +347,22 @@ const Home = () => {
             </div>
 
             <div className="relative z-10 flex flex-wrap gap-3 justify-center">
-              <button
+              <Link
+                to="/pricing"
                 id="cta-get-started"
-                className="px-8 py-3 bg-white text-primary font-bold rounded-xl text-base hover:bg-surface-container transition-colors shadow-sm"
+                className="px-8 py-3 bg-white text-primary font-bold rounded-xl text-base hover:bg-surface-container transition-colors shadow-sm inline-flex items-center gap-2"
               >
+                <AppIcon name="rocket_launch" size={18} />
                 Get Started Free
-              </button>
-              <button
+              </Link>
+              <Link
+                to="/contact"
                 id="cta-contact"
-                className="px-8 py-3 bg-white/10 border border-white/30 text-white font-bold rounded-xl text-base hover:bg-white/20 transition-colors"
+                className="px-8 py-3 bg-white/10 border border-white/30 text-white font-bold rounded-xl text-base hover:bg-white/20 transition-colors inline-flex items-center gap-2"
               >
+                <AppIcon name="call" size={18} />
                 Talk to Sales
-              </button>
+              </Link>
             </div>
           </div>
         </section>

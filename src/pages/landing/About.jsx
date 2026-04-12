@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import SiteLayout from '../../layouts/SiteLayout';
 
@@ -164,9 +165,10 @@ const About = () => (
 
               {/* CTAs */}
               <div className="flex flex-wrap gap-3 mb-10">
-                <button id="about-get-started" className="btn-primary px-7 py-3 text-base">
+                <Link to="/pricing" id="about-get-started" className="btn-primary px-7 py-3 text-base inline-flex items-center gap-2">
+                  <AppIcon name="rocket_launch" size={18} />
                   Get Started Free
-                </button>
+                </Link>
                 <a
                   id="about-github"
                   href="https://github.com"
@@ -446,12 +448,14 @@ const About = () => (
             </p>
           </div>
           <div className="relative z-10 flex flex-wrap gap-3 justify-center">
-            <button id="about-cta-started" className="px-8 py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-surface-container transition-colors shadow-sm">
+            <Link to="/pricing" id="about-cta-started" className="px-8 py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-surface-container transition-colors shadow-sm inline-flex items-center gap-2">
+              <AppIcon name="rocket_launch" size={16} />
               Get Started Free
-            </button>
-            <button id="about-cta-contact" className="px-8 py-3 bg-white/10 border border-white/30 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors">
+            </Link>
+            <Link to="/contact" id="about-cta-contact" className="px-8 py-3 bg-white/10 border border-white/30 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors inline-flex items-center gap-2">
+              <AppIcon name="mail" size={16} />
               Contact Us
-            </button>
+            </Link>
           </div>
         </div>
       </section>

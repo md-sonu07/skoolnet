@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import SiteLayout from '../../layouts/SiteLayout';
 
@@ -95,14 +96,14 @@ const ServiceCard = ({ icon, title, tag, desc, highlights }) => (
     </ul>
 
     {/* Link */}
-    <button className="flex items-center gap-1.5 text-primary text-sm font-semibold group/btn pt-2 border-t border-outline-variant/40 w-fit font-label">
+    <Link to="/contact" className="flex items-center gap-1.5 text-primary text-sm font-semibold group/btn pt-2 border-t border-outline-variant/40 w-fit font-label">
       Learn more
       <AppIcon
         name="arrow_forward"
         size={14}
         className="transition-transform duration-150 group-hover/btn:translate-x-1"
       />
-    </button>
+    </Link>
   </div>
 );
 
@@ -147,12 +148,14 @@ const Services = () => {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <button id="services-get-started" className="btn-primary px-7 py-3 text-base">
+              <Link to="/pricing" id="services-get-started" className="btn-primary px-7 py-3 text-base inline-flex items-center gap-2">
+                <AppIcon name="rocket_launch" size={18} />
                 Get Started Free
-              </button>
-              <button id="services-view-pricing" className="btn-secondary px-7 py-3 text-base">
+              </Link>
+              <Link to="/pricing" id="services-view-pricing" className="btn-secondary px-7 py-3 text-base inline-flex items-center gap-2">
+                <AppIcon name="credit_card" size={18} />
                 View Pricing
-              </button>
+              </Link>
             </div>
           </div>
         </section>
@@ -183,12 +186,14 @@ const Services = () => {
                   </li>
                 ))}
               </ul>
-              <button
+              <Link
+                to="/contact"
                 id="fee-management-learn-more"
-                className="px-7 py-3 bg-white text-primary rounded-xl font-bold text-sm hover:bg-surface-container transition-colors w-fit"
+                className="px-7 py-3 bg-white text-primary rounded-xl font-bold text-sm hover:bg-surface-container transition-colors w-fit inline-flex items-center gap-2"
               >
+                <AppIcon name="payments" size={16} />
                 Explore Fee Management
-              </button>
+              </Link>
             </div>
             {/* Image side */}
             <div className="md:w-[440px] min-h-[280px] relative overflow-hidden">
@@ -288,12 +293,14 @@ const Services = () => {
               </p>
             </div>
             <div className="flex flex-wrap gap-3 justify-center">
-              <button id="services-cta-demo" className="btn-primary px-8 py-3 text-base">
+              <Link to="/contact" id="services-cta-demo" className="btn-primary px-8 py-3 text-base inline-flex items-center gap-2">
+                <AppIcon name="calendar_today" size={18} />
                 Book a Free Demo
-              </button>
-              <button id="services-cta-contact" className="btn-secondary px-8 py-3 text-base">
+              </Link>
+              <Link to="/contact" id="services-cta-contact" className="btn-secondary px-8 py-3 text-base inline-flex items-center gap-2">
+                <AppIcon name="call" size={18} />
                 Contact Sales
-              </button>
+              </Link>
             </div>
           </div>
         </section>

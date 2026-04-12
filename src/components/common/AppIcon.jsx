@@ -70,6 +70,22 @@ import {
   MapPinned,
   Navigation,
   Route,
+  // Missing icons
+  Save,
+  History,
+  Grid3x3,
+  Info,
+  Layout,
+  DatabaseBackup,
+  GitCommit,
+  User,
+  Zap,
+  Lock,
+  Terminal,
+  Database,
+  Cloud,
+  RotateCcw,
+  Webhook,
 } from 'lucide-react';
 
 const iconMap = {
@@ -155,6 +171,26 @@ const iconMap = {
   map_pinned: MapPinned,
   navigation: Navigation,
   route: Route,
+  // Missing icon mappings
+  save: Save,
+  history: History,
+  category: Grid3x3,
+  info: Info,
+  contact_mail: Mail,
+  layout: Layout,
+  backup: DatabaseBackup,
+  commit: GitCommit,
+  remove_circle: XCircle,
+  person: User,
+  call: Phone,
+  speed: Zap,
+  lock: Lock,
+  web: Globe,
+  terminal: Terminal,
+  storage: Database,
+  cloud: Cloud,
+  autorenew: RotateCcw,
+  webhook: Webhook,
 };
 
 export default function AppIcon({ name, className, strokeWidth = 2, ...props }) {

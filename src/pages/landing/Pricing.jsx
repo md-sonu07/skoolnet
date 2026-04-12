@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import SiteLayout from '../../layouts/SiteLayout';
 
@@ -116,16 +117,20 @@ const PricingCard = ({ plan, yearly }) => {
         ))}
       </div>
 
-      <button
+      <Link
+        to={plan.cta === 'Contact Sales' ? '/contact' : '/dashboard'}
         className={[
-          'w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300',
+          'w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 inline-flex items-center justify-center gap-2 text-center',
           plan.primary
             ? 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20'
             : 'btn-secondary',
         ].join(' ')}
       >
+        {plan.cta === 'Contact Sales' && <AppIcon name="headset" size={16} />}
+        {plan.cta === 'Get Started' && <AppIcon name="rocket_launch" size={16} />}
+        {plan.cta === 'Start Free Trial' && <AppIcon name="rocket_launch" size={16} />}
         {plan.cta}
-      </button>
+      </Link>
     </div>
   );
 };
@@ -385,18 +390,22 @@ const Pricing = () => {
             </div>
 
             <div className="relative z-10 flex flex-wrap gap-3 justify-center">
-              <button
+              <Link
+                to="/dashboard"
                 id="pricing-cta-trial"
-                className="px-8 py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-surface-container transition-colors shadow-sm"
+                className="px-8 py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-surface-container transition-colors shadow-sm inline-flex items-center gap-2"
               >
+                <AppIcon name="rocket_launch" size={16} />
                 Start Free Trial
-              </button>
-              <button
+              </Link>
+              <Link
+                to="/contact"
                 id="pricing-cta-sales"
-                className="px-8 py-3 bg-white/10 border border-white/30 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors"
+                className="px-8 py-3 bg-white/10 border border-white/30 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors inline-flex items-center gap-2"
               >
+                <AppIcon name="call" size={16} />
                 Talk to Sales
-              </button>
+              </Link>
             </div>
           </div>
         </section>

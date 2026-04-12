@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import SiteLayout from '../../layouts/SiteLayout';
 
@@ -356,14 +357,14 @@ const Contact = () => {
                   Check out our comprehensive help center or schedule a demo with our team.
                 </p>
                 <div className="space-y-3">
-                  <button className="w-full px-6 py-3 bg-white/20 backdrop-blur-sm rounded-xl hover:bg-white/30 transition-all flex items-center justify-center gap-2">
+                  <Link to="/about" className="w-full px-6 py-3 bg-white/20 backdrop-blur-sm rounded-xl hover:bg-white/30 transition-all flex items-center justify-center gap-2">
                     <AppIcon name="help_center" size={20} />
                     Visit Help Center
-                  </button>
-                  <button className="w-full px-6 py-3 bg-white text-primary font-semibold rounded-xl hover:bg-white/90 transition-all flex items-center justify-center gap-2">
+                  </Link>
+                  <Link to="/contact" className="w-full px-6 py-3 bg-white text-primary font-semibold rounded-xl hover:bg-white/90 transition-all flex items-center justify-center gap-2">
                     <AppIcon name="calendar_today" size={20} />
                     Schedule Demo
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -421,14 +422,14 @@ const Contact = () => {
                       </div>
                     </div>
                     <div className="flex gap-4">
-                      <button className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors flex items-center gap-2">
+                      <Link to="/contact" className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors flex items-center gap-2">
                         <AppIcon name="map" size={18} />
                         Get Directions
-                      </button>
-                      <button className="px-6 py-3 bg-surface-container-high text-on-surface font-semibold rounded-xl border border-outline-variant/40 hover:bg-surface-container-highest transition-colors flex items-center gap-2">
+                      </Link>
+                      <Link to="/contact" className="px-6 py-3 bg-surface-container-high text-on-surface font-semibold rounded-xl border border-outline-variant/40 hover:bg-surface-container-highest transition-colors flex items-center gap-2">
                         <AppIcon name="video_call" size={18} />
                         Schedule Visit
-                      </button>
+                      </Link>
                     </div>
                   </div>
                   
