@@ -7,6 +7,7 @@ export const managerNavItems = [
   { label: 'Global Pricing', icon: 'edit', to: 'global-pricing' },
   { label: 'Activity', icon: 'activity', to: 'activity' },
   { label: 'Notifications', icon: 'notifications', to: 'notifications' },
+  { label: 'Messages', icon: 'mail', to: 'contact' },
   { label: 'Users', icon: 'group', to: 'users' },
   { label: 'Settings', icon: 'settings', to: 'settings' },
 ];

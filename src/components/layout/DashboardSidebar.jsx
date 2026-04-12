@@ -4,7 +4,7 @@ import AppIcon from '../common/AppIcon';
 export default function DashboardSidebar({ badge, title, navItems }) {
   return (
     <aside className="h-screen w-64 fixed left-0 top-0 glass-sidebar flex flex-col py-6 z-[60] font-['Inter'] text-sm font-medium">
-      <div className="px-6 mb-10 flex items-center gap-3">
+      <div className="px-6 mb-6 flex items-center gap-3 shrink-0">
         <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
           <AppIcon name="school" size={20} className="text-white" />
         </div>
@@ -18,7 +18,7 @@ export default function DashboardSidebar({ badge, title, navItems }) {
         </div>
       </div>
       
-      <nav className="flex-1 px-4 space-y-1">
+      <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto custom-scrollbar">
         {navItems.map(item => (
           <NavLink
             key={item.to}
@@ -40,10 +40,13 @@ export default function DashboardSidebar({ badge, title, navItems }) {
         ))}
       </nav>
       
-      <div className="px-6 mt-auto">
-        <a className="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-red-500 transition-colors" href="#">
-          <AppIcon name="logout" size={20} />
-          <span>Logout</span>
+      <div className="px-4 pt-2 mt-4 border-t border-slate-200">
+        <a 
+          className="flex items-center gap-3 px-4 py-2.5 text-slate-500 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all group" 
+          href="#"
+        >
+          <AppIcon name="logout" size={18} className="text-slate-400 group-hover:text-red-500" />
+          <span className="text-sm font-medium">Logout</span>
         </a>
       </div>
     </aside>
