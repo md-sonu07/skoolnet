@@ -565,7 +565,7 @@ const settingsCategories = [
 ];
 
 export default function ManagerSettings() {
-  const [activeCategory, setActiveCategory] = useState(settingsCategories[0]);
+  const [activeCategory, setActiveCategory] = useState(settingsCategories[1]);
   const [activeLandingCategory, setActiveLandingCategory] = useState(landingSettingsCategories[0]);
   const [activeHomeSection, setActiveHomeSection] = useState(landingSettingsCategories[0]?.sections?.[0] || null);
   const [settings, setSettings] = useState(

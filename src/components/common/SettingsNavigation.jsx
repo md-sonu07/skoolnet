@@ -13,13 +13,8 @@ const SettingsNavigation = ({
     if (buttonText) {
       return buttonText(category);
     }
-    return category.title === 'User Management' ? 'Users' :
-           category.title === 'Security Settings' ? 'Security' :
-           category.title === 'Communication' ? 'Communication' :
-           category.title === 'System Configuration' ? 'System' :
-           category.title === 'Features & Integrations' ? 'Features' :
-           category.title === 'Content & Display' ? 'Display' : category.title;
-  };
+    return category.title;
+  }
 
   return (
     <div className={`lg:col-span-1 border-b border-slate-200 ${className}`}>
