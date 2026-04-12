@@ -22,7 +22,7 @@ export default function DashboardSidebar({ badge, title, navItems }) {
         {navItems.map(item => (
           <NavLink
             key={item.to}
-            to={item.to}
+            to={`/dashboard/manager/${item.to}`}
             className={({ isActive }) =>
               [
                 'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-150 ease-out border',

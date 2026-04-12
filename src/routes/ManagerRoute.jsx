@@ -3,6 +3,7 @@ import ManagerLayout from '../layouts/ManagerLayout';
 import Activity from '../pages/manager/Activity';
 import Coaching from '../pages/manager/Coaching';
 import Dashboard from '../pages/manager/Dashboard';
+import GlobalPricing from '../pages/manager/GlobalPricing';
 import Notifications from '../pages/manager/Notifications';
 import Partners from '../pages/manager/Partners';
 import Pricing from '../pages/manager/Pricing';
@@ -18,6 +19,7 @@ const managerRoutes = (
     <Route path="coaching" element={<Coaching />} />
     <Route path="partners" element={<Partners />} />
     <Route path="pricing" element={<Pricing />} />
+    <Route path="global-pricing" element={<GlobalPricing />} />
     <Route path="activity" element={<Activity />} />
     <Route path="notifications" element={<Notifications />} />
     <Route path="users" element={<Users />} />

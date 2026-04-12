@@ -4,6 +4,7 @@ export const managerNavItems = [
   { label: 'Coaching', icon: 'rocket_launch', to: 'coaching' },
   { label: 'Partners', icon: 'group', to: 'partners' },
   { label: 'Pricing', icon: 'payments', to: 'pricing' },
+  { label: 'Global Pricing', icon: 'edit', to: 'global-pricing' },
   { label: 'Activity', icon: 'activity', to: 'activity' },
   { label: 'Notifications', icon: 'notifications', to: 'notifications' },
   { label: 'Users', icon: 'group', to: 'users' },
