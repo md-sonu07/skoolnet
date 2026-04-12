@@ -139,13 +139,6 @@ export default function ManagerSettings() {
         activeCategory={activeCategory}
         onCategoryChange={setActiveCategory}
       />
-      
-      {/* <SettingsNavigation
-        categories={settingsCategories}
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-        buttonText={"WebSite Settings"}
-      /> */}
 
       <div className="w-full">
         {/* Settings Content */}

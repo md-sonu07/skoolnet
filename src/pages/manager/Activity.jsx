@@ -238,7 +238,7 @@ export default function Activity() {
             paginatedActivities.map((activity) => (
               <div key={activity.id} className="border border-slate-100 rounded-xl p-4 hover:bg-slate-50 transition-colors">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                     <AppIcon name={getTypeIcon(activity.type)} size={16} className="text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">

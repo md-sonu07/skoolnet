@@ -314,7 +314,7 @@ const Contact = () => {
                 </h3>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                       <AppIcon name="location_on" size={24} className="text-primary" />
                     </div>
                     <div>
@@ -323,7 +323,7 @@ const Contact = () => {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                       <AppIcon name="schedule" size={24} className="text-primary" />
                     </div>
                     <div>
@@ -336,7 +336,7 @@ const Contact = () => {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                       <AppIcon name="directions_car" size={24} className="text-primary" />
                     </div>
                     <div>
@@ -434,29 +434,29 @@ const Contact = () => {
                   
                   {/* Quick Contact */}
                   <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
-                    <h4 className="text-xl font-headline font-bold text-white mb-4">
+                    <h4 className="text-xl font-headline font-bold text-black/80 mb-4">
                       Need Immediate Assistance?
                     </h4>
-                    <p className="text-white/90 mb-6">
+                    <p className="text-black/80 mb-6">
                       Our support team is ready to help you with any questions about Skoolnet.
                     </p>
                     <div className="space-y-3">
-                      <a href="tel:+15550001234" className="flex items-center gap-3 text-white hover:text-white/80 transition-colors">
+                      <a href="tel:+15550001234" className="flex items-center gap-3 text-black/80 hover:text-black/60 transition-colors">
                         <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                           <AppIcon name="call" size={18} />
                         </div>
                         <div>
                           <p className="font-semibold">Call Us</p>
-                          <p className="text-sm text-white/80">+1 (555) 000-1234</p>
+                          <p className="text-sm text-black/80">+1 (555) 000-1234</p>
                         </div>
                       </a>
-                      <a href="mailto:support@skoolnet.ai" className="flex items-center gap-3 text-white hover:text-white/80 transition-colors">
+                      <a href="mailto:support@skoolnet.ai" className="flex items-center gap-3 text-black/80 hover:text-black/60 transition-colors">
                         <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                           <AppIcon name="mail" size={18} />
                         </div>
                         <div>
                           <p className="font-semibold">Email Us</p>
-                          <p className="text-sm text-white/80">support@skoolnet.ai</p>
+                          <p className="text-sm text-black/80">support@skoolnet.ai</p>
                         </div>
                       </a>
                     </div>
@@ -475,7 +475,7 @@ const ContactMethod = ({ icon, title, description, action, link }) => (
   <div className="bg-white rounded-xl shadow-md border border-outline-variant/20 p-6 hover:shadow-lg transition-shadow">
     {/* First Row: Icon + Title + Description */}
     <div className="flex items-start gap-4 mb-4">
-      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
         <AppIcon name={icon} size={24} className="text-primary" />
       </div>
       <div className="text-left flex-1">
