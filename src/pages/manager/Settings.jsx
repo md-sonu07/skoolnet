@@ -1289,7 +1289,7 @@ export default function ManagerSettings() {
         </>
       }
     >
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+      <MetricGrid>
         {systemStats.map((stat, index) => (
           <MetricCard
             key={index}
@@ -1301,7 +1301,7 @@ export default function ManagerSettings() {
             tone={stat.tone}
           />
         ))}
-      </div>
+      </MetricGrid>
 
       <SettingsNavigation
         categories={settingsCategories}
