@@ -35,7 +35,7 @@ export function DashboardPage({ eyebrow, title, description, actions, children }
 }
 
 export function MetricGrid({ children }) {
-  return <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">{children}</div>;
+  return <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">{children}</div>;
 }
 
 export function MetricCard({ icon, label, value, change, helper, tone = 'blue' }) {

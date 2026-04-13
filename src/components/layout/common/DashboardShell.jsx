@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import MobileBottomNav from './MobileBottomNav';
 
-export default function DashboardShell({ topbar: Topbar, sidebar: Sidebar, showBottomNav = false }) {
+export default function DashboardShell({ topbar: Topbar, sidebar: Sidebar, showBottomNav = false, context = {} }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const openSidebar = () => setMobileMenuOpen(true);
@@ -35,7 +35,7 @@ export default function DashboardShell({ topbar: Topbar, sidebar: Sidebar, showB
         </div>
         
         <div className={`pt-14 md:pt-24 pb-20 md:pb-12 px-4 md:px-8 max-w-[1600px] mx-auto bg-background/30 ${showBottomNav ? 'min-h-screen' : ''}`}>
-          <Outlet />
+          <Outlet context={context} />
         </div>
         {showBottomNav && <MobileBottomNav onOpenSidebar={openSidebar} />}
       </main>

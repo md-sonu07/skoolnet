@@ -1,3 +1,4 @@
+import { useOutletContext } from 'react-router-dom';
 import {
   DashboardPage,
   MetricCard,
@@ -7,20 +8,27 @@ import {
 } from '../../../components/common/DashboardPrimitives';
 
 export default function CoachingStudentDashboard() {
+  const { user } = useOutletContext();
+  const userName = user.name || 'Student';
+  
   return (
     <DashboardPage
       eyebrow="Student dashboard"
-      title="NEET Foundation - Dashboard"
+      title={`Hi, ${userName}`}
     >
-      <div className="mb-4">
-        <MetricCard icon="school" label="My Course" value="NEET Foundation" change="Active" helper="Current course" className="bg-primary/5 border-primary/20" />
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="w-full lg:w-1/3">
+          <MetricCard icon="school" label="My Course" value="NEET Foundation" change="Active" helper="Current course" className="bg-primary/5 border-primary/20" />
+        </div>
+        
+        <div className="flex-1">
+          <MetricGrid>
+            <MetricCard icon="monitoring" label="Attendance" value="96%" change="+2%" helper="This month" tone="emerald" />
+            <MetricCard icon="folder_open" label="Pending" value="3" change="Assignments" helper="Due this week" tone="amber" />
+            <MetricCard icon="payments" label="Fee Status" value="Paid" change="Jan 2024" helper="Up to date" tone="emerald" />
+          </MetricGrid>
+        </div>
       </div>
-      
-      <MetricGrid>
-        <MetricCard icon="monitoring" label="Attendance" value="96%" change="+2%" helper="This month" tone="emerald" className="sm:hidden block" />
-        <MetricCard icon="folder_open" label="Pending" value="3" change="Assignments" helper="Due this week" tone="amber" />
-        <MetricCard icon="payments" label="Fee Status" value="Paid" change="Jan 2024" helper="Up to date" tone="emerald" />
-      </MetricGrid>
 
       <div className="grid gap-4 md:gap-6 xl:grid-cols-2">
         <SectionCard title="Today's Schedule" description="Your classes for today">
