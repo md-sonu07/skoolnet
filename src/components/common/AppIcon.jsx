@@ -126,6 +126,8 @@ import {
   Key,
   EyeOff,
   UserPlus,
+  Building,
+  Badge,
 } from 'lucide-react';
 
 const iconMap = {
@@ -279,6 +281,9 @@ const iconMap = {
   person_add: UserPlus,
   public: Globe,
   key: Key,
+  phone: Phone,
+  business: Building,
+  badge: Badge,
 };
 
 export default function AppIcon({ name, className, strokeWidth = 2, ...props }) {
