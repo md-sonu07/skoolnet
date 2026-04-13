@@ -122,6 +122,10 @@ import {
   Volume2,
   VolumeX,
   Scroll,
+  LogIn,
+  Key,
+  EyeOff,
+  UserPlus,
 } from 'lucide-react';
 
 const iconMap = {
@@ -269,6 +273,12 @@ const iconMap = {
   shield_check: Shield,
   work: Briefcase,
   sync: RefreshCw,
+  login: LogIn,
+  visibility: Eye,
+  visibility_off: EyeOff,
+  person_add: UserPlus,
+  public: Globe,
+  key: Key,
 };
 
 export default function AppIcon({ name, className, strokeWidth = 2, ...props }) {
