@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import AppIcon from '../../../common/AppIcon';
 
 export default function CoachingStudentTopbar({ 
@@ -17,10 +18,10 @@ export default function CoachingStudentTopbar({
             <AppIcon name="school" size={18} className="text-white" />
           </div>
           <div>
-            <h1 className="font-['Manrope'] font-extrabold text-on-surface text-xl tracking-tight">
+            <h1 className="font-['Manrope'] -mb-1 font-extrabold text-on-surface text-xl tracking-tight">
               {title}
             </h1>
-            <p className="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">
+            <p className="text-[10px] mb-0.5 text-on-surface-variant uppercase tracking-widest font-bold">
               {userRole}
             </p>
           </div>
@@ -39,15 +40,22 @@ export default function CoachingStudentTopbar({
       <div className="flex items-center gap-2 md:gap-6">
         <div className="flex items-center gap-1 md:gap-4 text-on-surface-variant">
           {quickActions.map((action, index) => (
-            <button key={index} className="p-1.5 md:p-2 rounded-full transition-all hover:bg-slate-100">
+            <NavLink 
+              key={index} 
+              to={action.to || '#'}
+              className="p-1.5 md:p-2 rounded-full transition-all hover:bg-slate-100 text-on-surface-variant hover:text-primary"
+            >
               <AppIcon name={action.icon} size={20} />
-            </button>
+            </NavLink>
           ))}
         </div>
         
         <div className="h-6 md:h-8 w-px bg-slate-200 hidden md:block"></div>
         
-        <div className="flex items-center gap-2 md:gap-3">
+        <NavLink 
+          to="profile" 
+          className="flex items-center gap-2 md:gap-3 hover:bg-slate-100 rounded-full p-1 transition-all"
+        >
           <div className="text-right hidden md:block">
             <p className="text-xs font-bold text-on-surface">{userName}</p>
             <p className="text-[10px] text-on-surface-variant font-medium">{userRole}</p>
@@ -55,7 +63,7 @@ export default function CoachingStudentTopbar({
           <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-200 flex items-center justify-center">
             <AppIcon name="person" size={20} className="text-slate-500" />
           </div>
-        </div>
+        </NavLink>
       </div>
     </header>
   );

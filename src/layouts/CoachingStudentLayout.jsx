@@ -28,8 +28,8 @@ export default function CoachingStudentLayout() {
     userAvatar: student.avatar,
     searchPlaceholder: 'Search courses, assignments, results...',
     quickActions: [
-      { icon: 'notifications' },
-      { icon: 'mail' },
+      { icon: 'notifications', to: 'notices' },
+      { icon: 'mail', to: 'messages' },
     ],
   };
 
@@ -39,6 +39,7 @@ export default function CoachingStudentLayout() {
       sidebar={<CoachingStudentSidebar {...coachingStudentSidebarContent} navItems={coachingStudentNavItems} studentId={studentId} userRole={student.role} />}
       showBottomNav={true}
       context={{ user: student }}
+      bottomNavItems={coachingStudentNavItems}
     />
   );
 }
