@@ -607,7 +607,7 @@ export default function ManagerSettings() {
             type="text"
             value={value || ''}
             onChange={(e) => onChange(setting.label, e.target.value)}
-            className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+            className="w-full px-3 md:px-4 py-2 md:py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
             placeholder={`Enter ${setting.label.toLowerCase()}`}
           />
         );
@@ -616,8 +616,8 @@ export default function ManagerSettings() {
           <textarea
             value={value || ''}
             onChange={(e) => onChange(setting.label, e.target.value)}
-            className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none bg-white"
-            rows={3}
+            className="w-full px-3 md:px-4 py-2 md:py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none bg-white"
+            rows={2}
             placeholder={`Enter ${setting.label.toLowerCase()}`}
           />
         );
@@ -628,17 +628,17 @@ export default function ManagerSettings() {
             onChange={(val) => onChange(setting.label, val)}
             options={setting.options?.map(opt => ({ label: opt, value: opt }))}
             placeholder={`Select ${setting.label.toLowerCase()}`}
-            className="min-w-45 captilaize"
+            className="min-w-[120px] md:min-w-40 capitalize"
           />
         );
       case 'toggle':
         return (
           <button
             onClick={() => onChange(setting.label, !value)}
-            className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${value ? 'bg-primary' : 'bg-slate-200'}`}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-primary' : 'bg-slate-200'}`}
           >
             <span
-              className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm ${value ? 'translate-x-6' : 'translate-x-1'}`}
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${value ? 'translate-x-5' : 'translate-x-1'}`}
             />
           </button>
         );
@@ -648,7 +648,7 @@ export default function ManagerSettings() {
             type="number"
             value={value || 0}
             onChange={(e) => onChange(setting.label, parseInt(e.target.value))}
-            className="w-28 px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+            className="w-20 md:w-28 px-3 md:px-4 py-2 md:py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
           />
         );
       default:
@@ -661,49 +661,49 @@ export default function ManagerSettings() {
     
     if (activeLandingCategory.title === 'Services Page') {
       return (
-        <div className="mt-6 bg-white rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
-          <div className="bg-slate-50 px-6 py-3 border-b border-outline-variant/30 flex items-center justify-between">
+        <div className="mt-6 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="bg-slate-50 px-4 md:px-6 py-2 md:py-3 border-b border-slate-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="flex gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
                 <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
                 <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
               </div>
-              <span className="text-xs text-slate-500 font-mono ml-2">skoolnet.ai/services</span>
+              <span className="text-xs text-slate-500 font-mono ml-2 hidden sm:block">skoolnet.ai/services</span>
             </div>
             <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-              {activeHomeSection.title} Preview
+              Preview
             </span>
           </div>
-          <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 min-h-[280px]">
+          <div className="p-4 md:p-6 bg-gradient-to-br from-slate-50 to-slate-100 min-h-[280px]">
             {activeHomeSection.id === 'hero' && (
-              <div className="text-center max-w-2xl mx-auto py-8">
-                <h2 className="text-4xl font-black text-slate-900 mb-4">
+              <div className="text-center max-w-2xl mx-auto py-4 md:py-8">
+                <h2 className="text-2xl md:text-4xl font-black text-slate-900 mb-3 md:mb-4">
                   {landingSettings['Page Title'] || 'Educational Intelligence Redefined.'}
                 </h2>
-                <p className="text-slate-600 text-lg mb-8 max-w-lg mx-auto">
+                <p className="text-slate-600 text-base md:text-lg mb-6 md:mb-8 max-w-lg mx-auto">
                   {landingSettings['Page Description'] || 'Deploy a comprehensive ecosystem...'}
                 </p>
-                <div className="flex justify-center gap-4">
-                  <span className="px-6 py-3 bg-primary text-white font-semibold rounded-xl">
+                <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+                  <span className="px-4 md:px-6 py-2 md:py-3 bg-primary text-white font-semibold rounded-xl text-sm">
                     {landingSettings['Primary CTA Button'] || 'Get Started Free'}
                   </span>
-                  <span className="px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl">
+                  <span className="px-4 md:px-6 py-2 md:py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl text-sm">
                     {landingSettings['Secondary CTA Button'] || 'View Pricing'}
                   </span>
                 </div>
               </div>
             )}
             {activeHomeSection.id === 'featured' && (
-              <div className="bg-primary rounded-xl p-8 text-white flex flex-col md:flex-row items-center gap-8">
+              <div className="bg-primary rounded-xl p-4 md:p-8 text-white flex flex-col md:flex-row items-center gap-4 md:gap-8">
                 <div className="flex-1">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/15 border border-white/20 mb-4 w-fit">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/15 border border-white/20 mb-3 md:mb-4 w-fit">
                     <AppIcon name="star" size={13} className="text-white" />
                     <span className="text-xs font-semibold text-white uppercase">Featured Service</span>
                   </div>
-                  <h3 className="text-2xl font-black mb-3">{landingSettings['Featured Title'] || 'Fee Management'}</h3>
-                  <p className="text-white/80 mb-4 max-w-md">{landingSettings['Featured Description'] || 'A secure financial gateway...'}</p>
-                  <ul className="grid grid-cols-2 gap-2 mb-4">
+                  <h3 className="text-xl md:text-2xl font-black mb-2 md:mb-3">{landingSettings['Featured Title'] || 'Fee Management'}</h3>
+                  <p className="text-white/80 mb-3 md:mb-4 max-w-md">{landingSettings['Featured Description'] || 'A secure financial gateway...'}</p>
+                  <ul className="grid grid-cols-2 gap-2 mb-3 md:mb-4">
                     {[landingSettings['Feature 1'], landingSettings['Feature 2'], landingSettings['Feature 3'], landingSettings['Feature 4']].filter(Boolean).map((f, i) => (
                       <li key={i} className="flex items-center gap-2 text-white/85 text-sm">
                         <AppIcon name="check_circle" size={14} className="text-white" />
@@ -711,34 +711,34 @@ export default function ManagerSettings() {
                       </li>
                     ))}
                   </ul>
-                  <span className="px-6 py-2.5 bg-white text-primary rounded-lg font-semibold text-sm">
+                  <span className="px-4 md:px-6 py-2 md:py-2.5 bg-white text-primary rounded-lg font-semibold text-sm">
                     {landingSettings['Button Text'] || 'Explore Fee Management'}
                   </span>
                 </div>
-                <div className="w-full md:w-64 h-40 bg-white/10 rounded-xl flex items-center justify-center">
-                  <AppIcon name="payments" size={48} className="text-white/50" />
+                <div className="w-full md:w-48 lg:w-64 h-24 md:h-40 bg-white/10 rounded-xl flex items-center justify-center">
+                  <AppIcon name="payments" size={32} className="text-white/50" />
                 </div>
               </div>
             )}
             {activeHomeSection.id === 'services' && (
               <div>
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-black text-slate-900">{landingSettings['Section Title'] || 'Everything Your School Needs'}</h3>
+                <div className="text-center mb-4 md:mb-6">
+                  <h3 className="text-xl md:text-2xl font-black text-slate-900">{landingSettings['Section Title'] || 'Everything Your School Needs'}</h3>
                 </div>
-                <div className="flex flex-wrap gap-2 justify-center mb-4">
+                <div className="flex flex-wrap gap-2 justify-center mb-3 md:mb-4">
                   {['All', 'Administration', 'Academics', 'Finance', 'Communication'].map((cat, i) => (
-                    <span key={cat} className={`px-4 py-2 rounded-lg text-sm font-medium ${i === 0 ? 'bg-primary text-white' : 'bg-white border border-slate-200 text-slate-600'}`}>
+                    <span key={cat} className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-medium ${i === 0 ? 'bg-primary text-white' : 'bg-white border border-slate-200 text-slate-600'}`}>
                       {cat}
                     </span>
                   ))}
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                   {['School Management', 'Coaching Management', 'Attendance', 'Student Dashboard', 'Performance Analytics', 'Communication Hub'].map((s, i) => (
-                    <div key={i} className="bg-white rounded-xl p-4 border border-slate-200">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
-                        <AppIcon name="school" size={20} className="text-primary" />
+                    <div key={i} className="bg-white rounded-xl p-3 md:p-4 border border-slate-200">
+                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2 md:mb-3">
+                        <AppIcon name="school" size={16} className="text-primary" />
                       </div>
-                      <h4 className="font-bold text-slate-900 mb-1">{s}</h4>
+                      <h4 className="font-bold text-slate-900 mb-1 text-sm md:text-base">{s}</h4>
                       <p className="text-xs text-slate-500 line-clamp-2">Centralise every administrative operation...</p>
                     </div>
                   ))}
@@ -747,12 +747,12 @@ export default function ManagerSettings() {
             )}
             {activeHomeSection.id === 'capabilities' && (
               <div>
-                <h3 className="text-2xl font-black text-slate-900 mb-6 text-center">
+                <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-4 md:mb-6 text-center">
                   {landingSettings['Section Title'] || 'Built for scale, designed for simplicity.'}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[1,2,3,4,5,6,7,8].map((i) => (
-                    <div key={i} className="flex items-center gap-3 bg-white rounded-xl p-4 border border-slate-200">
+                    <div key={i} className="flex items-center gap-3 bg-white rounded-xl p-3 md:p-4 border border-slate-200">
                       <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                         <AppIcon name="check" size={16} className="text-primary" />
                       </div>
@@ -765,18 +765,18 @@ export default function ManagerSettings() {
               </div>
             )}
             {activeHomeSection.id === 'cta' && (
-              <div className="bg-white rounded-xl p-8 border border-slate-200 text-center">
-                <h3 className="text-2xl font-black text-slate-900 mb-3">
+              <div className="bg-white rounded-xl p-4 md:p-8 border border-slate-200 text-center">
+                <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-2 md:mb-3">
                   {landingSettings['CTA Title'] || 'Not sure which plan fits your school?'}
                 </h3>
-                <p className="text-slate-600 mb-6 max-w-md mx-auto">
+                <p className="text-slate-600 mb-4 md:mb-6 max-w-md mx-auto text-sm md:text-base">
                   {landingSettings['CTA Description'] || 'Our team will walk you through every module.'}
                 </p>
-                <div className="flex justify-center gap-4">
-                  <span className="px-6 py-3 bg-primary text-white font-semibold rounded-xl">
+                <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+                  <span className="px-4 md:px-6 py-2 md:py-3 bg-primary text-white font-semibold rounded-xl text-sm">
                     {landingSettings['Primary Button'] || 'Book a Free Demo'}
                   </span>
-                  <span className="px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl">
+                  <span className="px-4 md:px-6 py-2 md:py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl text-sm">
                     {landingSettings['Secondary Button'] || 'Contact Sales'}
                   </span>
                 </div>
@@ -1180,23 +1180,23 @@ export default function ManagerSettings() {
 
     // Home Page preview (existing code)
     return (
-      <div className="mt-6 bg-white rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
-        <div className="bg-slate-50 px-6 py-3 border-b border-outline-variant/30 flex items-center justify-between">
+      <div className="mt-6 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-slate-50 px-4 md:px-6 py-2 md:py-3 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="flex gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
               <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
               <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
             </div>
-            <span className="text-xs text-slate-500 font-mono ml-2">skoolnet.ai</span>
+            <span className="text-xs text-slate-500 font-mono ml-2 hidden sm:block">skoolnet.ai</span>
           </div>
           <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-            {activeHomeSection.title} Preview
+            Preview
           </span>
         </div>
-        <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 min-h-[280px]">
+        <div className="p-4 md:p-6 bg-gradient-to-br from-slate-50 to-slate-100 min-h-[280px]">
           {activeHomeSection.id === 'hero' && (
-            <div className="bg-white rounded-xl shadow-md p-8 border border-slate-200 max-w-2xl mx-auto">
+            <div className="bg-white rounded-xl shadow-md p-4 md:p-8 border border-slate-200 max-w-2xl mx-auto">
               <div className="text-center mb-6">
                 <h2 className="text-3xl font-black text-slate-900 mb-3">
                   {landingSettings['Hero Title'] || 'Hero Title'}
@@ -1275,21 +1275,21 @@ export default function ManagerSettings() {
   return (
     <DashboardPage
       eyebrow="System configuration"
-      title="Manager settings"
+      title="Settings"
       actions={
         <>
-          <button type="button" className="btn-primary">
-            <AppIcon name="save" size={16} className="mr-2" />
+          <button type="button" className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+            <AppIcon name="save" size={16} />
             Save changes
           </button>
-          <button type="button" className="btn-secondary">
-            <AppIcon name="history" size={16} className="mr-2" />
+          <button type="button" className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+            <AppIcon name="history" size={16} />
             View audit log
           </button>
         </>
       }
     >
-      <MetricGrid>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
         {systemStats.map((stat, index) => (
           <MetricCard
             key={index}
@@ -1301,7 +1301,7 @@ export default function ManagerSettings() {
             tone={stat.tone}
           />
         ))}
-      </MetricGrid>
+      </div>
 
       <SettingsNavigation
         categories={settingsCategories}
@@ -1312,8 +1312,8 @@ export default function ManagerSettings() {
       <div className="w-full">
         <div className="w-full">
           {activeCategory.title === 'Landing Website' && (
-            <div className="space-y-6">
-              <div className="flex gap-2 overflow-x-auto border-b border-slate-200">
+            <div className="space-y-4 md:space-y-6">
+              <div className="flex gap-1 md:gap-2 overflow-x-auto border-b border-slate-200 pb-1 md:pb-0">
                 {landingSettingsCategories.map((category) => (
                   <button
                     key={category.title}
@@ -1321,59 +1321,59 @@ export default function ManagerSettings() {
                       setActiveLandingCategory(category);
                       setActiveHomeSection(category.sections?.[0] || null);
                     }}
-                    className={`px-4 py-2 text-sm font-medium whitespace-nowrap border-b-2 transition-all flex items-center gap-2 ${
+                    className={`px-3 md:px-4 py-2 text-xs md:text-sm font-medium whitespace-nowrap border-b-2 transition-all flex items-center gap-1.5 md:gap-2 ${
                       activeLandingCategory.title === category.title
                         ? 'border-primary text-primary'
                         : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                     }`}
                   >
-                    <AppIcon name={category.icon} size={16} />
-                    {category.title}
+                    <AppIcon name={category.icon} size={14} />
+                    <span className="hidden sm:inline">{category.title}</span>
                   </button>
                 ))}
               </div>
 
               {(activeLandingCategory.title === 'Home Page' || activeLandingCategory.title === 'Services Page' || activeLandingCategory.title === 'About Page' || activeLandingCategory.title === 'Contact Page' || activeLandingCategory.title === 'SEO') && activeLandingCategory.sections && (
                 <>
-                  <div className="flex gap-2 overflow-x-auto border-b border-slate-200">
+                  <div className="flex gap-1 md:gap-2 overflow-x-auto border-b border-slate-200 pb-1 md:pb-0">
                     {activeLandingCategory.sections.map((section) => (
                       <button
                         key={section.id}
                         onClick={() => setActiveHomeSection(section)}
-                        className={`px-3 py-1.5 text-sm font-medium whitespace-nowrap border-b-2 transition-all flex items-center gap-2 ${
+                        className={`px-2.5 md:px-3 py-1.5 text-xs md:text-sm font-medium whitespace-nowrap border-b-2 transition-all flex items-center gap-1.5 md:gap-2 ${
                           activeHomeSection?.id === section.id
                             ? 'border-primary text-primary'
                             : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                         }`}
                       >
-                        <AppIcon name={section.icon} size={14} />
-                        {section.title}
+                        <AppIcon name={section.icon} size={12} />
+                        <span className="hidden md:inline">{section.title}</span>
                       </button>
                     ))}
                   </div>
 
-                  <div className="bg-white rounded-2xl border border-outline-variant/40 shadow-sm overflow-hidden">
-                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 px-6 py-4 border-b border-outline-variant/30">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                          <AppIcon name={activeHomeSection?.icon || 'article'} size={20} className="text-primary" />
+                  <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 px-4 md:px-6 py-3 md:py-4 border-b border-slate-200">
+                      <div className="flex items-center gap-2 md:gap-3">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
+                          <AppIcon name={activeHomeSection?.icon || 'article'} size={16} className="text-primary" />
                         </div>
-                        <div>
-                          <h3 className="text-lg font-bold text-on-surface">{activeHomeSection?.title}</h3>
-                          <p className="text-sm text-on-surface-variant">{activeHomeSection?.description}</p>
+                        <div className="min-w-0">
+                          <h3 className="text-md md:text-lg font-bold text-slate-900">{activeHomeSection?.title}</h3>
+                          <p className="text-xs md:text-sm text-slate-500 truncate">{activeHomeSection?.description}</p>
                         </div>
                       </div>
                     </div>
-                    <div className="p-6">
-                      <div className="space-y-5">
+                    <div className="p-4 md:p-6">
+                      <div className="space-y-4 md:space-y-5">
                         {activeHomeSection?.settings?.map((setting, index) => (
                           <div key={index}>
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl hover:bg-surface-container transition-colors border border-transparent hover:border-outline-variant/30">
-                              <div className="flex-1 min-w-0">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 md:p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                              <div className="flex-1 min-w-0 w-full md:w-auto">
                                 <label className="font-medium text-slate-900 block mb-1">{setting.label}</label>
                                 <p className="text-sm text-slate-500">{setting.description}</p>
                               </div>
-                              <div className="shrink-0 w-full sm:w-72">
+                              <div className="shrink-0 w-full md:w-56 lg:w-72">
                                 {renderSettingInput(setting, landingSettings[setting.label], handleLandingSettingChange)}
                               </div>
                             </div>
@@ -1395,12 +1395,12 @@ export default function ManagerSettings() {
                   <div className="space-y-6">
                     {activeLandingCategory.settings?.map((setting, index) => (
                       <div key={index}>
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4">
+                          <div className="flex-1 min-w-0 w-full sm:w-auto">
                             <h4 className="font-medium text-slate-900 mb-1">{setting.label}</h4>
                             <p className="text-sm text-slate-500">{setting.description}</p>
                           </div>
-                          <div className="shrink-0 w-64">
+                          <div className="w-full sm:w-56 lg:w-64 shrink-0">
                             {renderSettingInput(setting, landingSettings[setting.label], handleLandingSettingChange)}
                           </div>
                         </div>
@@ -1417,15 +1417,15 @@ export default function ManagerSettings() {
               title={activeCategory.title}
               description={activeCategory.description}
             >
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {activeCategory.settings?.map((setting, index) => (
                   <div key={index}>
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4 p-3 sm:p-0 rounded-xl sm:rounded-none">
+                      <div className="flex-1 min-w-0 w-full sm:w-auto">
                         <h4 className="font-medium text-slate-900 mb-1">{setting.label}</h4>
                         <p className="text-sm text-slate-500">{setting.description}</p>
                       </div>
-                      <div className="shrink-0">
+                      <div className="w-full sm:w-44 lg:w-56 shrink-0">
                         {renderSettingInput(setting, settings[setting.label], handleSettingChange)}
                       </div>
                     </div>
