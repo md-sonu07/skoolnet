@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
-import DashboardShell from '../components/layout/DashboardShell';
-import CoachingStudentSidebar from '../components/layout/CoachingStudentSidebar';
-import CoachingStudentTopbar from '../components/layout/CoachingStudentTopbar';
+import DashboardShell from '../components/layout/common/DashboardShell';
+import CoachingStudentSidebar from '../components/layout/coaching/student/CoachingStudentSidebar';
+import CoachingStudentTopbar from '../components/layout/coaching/student/CoachingStudentTopbar';
 import {
   coachingStudentNavItems,
   coachingStudentSidebarContent,
@@ -37,6 +37,7 @@ export default function CoachingStudentLayout() {
     <DashboardShell
       topbar={<CoachingStudentTopbar {...studentHeader} />}
       sidebar={<CoachingStudentSidebar {...coachingStudentSidebarContent} navItems={coachingStudentNavItems} studentId={studentId} />}
+      showBottomNav={true}
     />
   );
 }

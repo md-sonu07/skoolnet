@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
-import DashboardShell from '../components/layout/DashboardShell';
-import TeacherSidebar from '../components/layout/TeacherSidebar';
-import TeacherTopbar from '../components/layout/TeacherTopbar';
+import DashboardShell from '../components/layout/common/DashboardShell';
+import TeacherSidebar from '../components/layout/school/teacher/SchoolTeacherSidebar';
+import TeacherTopbar from '../components/layout/school/teacher/SchoolTeacherTopbar';
 import {
   teacherNavItems,
   teacherSidebarContent,

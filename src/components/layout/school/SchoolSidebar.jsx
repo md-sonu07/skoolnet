@@ -1,7 +1,7 @@
-import { NavLink, Link } from 'react-router-dom';
-import AppIcon from '../common/AppIcon';
+import { NavLink } from 'react-router-dom';
+import AppIcon from '../../common/AppIcon';
 
-export default function CoachingStudentSidebar({ badge, title, navItems, studentId }) {
+export default function SchoolSidebar({ badge, title, navItems }) {
   return (
     <aside className="h-screen w-64 fixed left-0 top-0 glass-sidebar flex flex-col py-6 z-[60] font-['Inter'] text-sm font-medium">
       <div className="px-6 mb-6 flex items-center gap-3 shrink-0">
@@ -17,22 +17,12 @@ export default function CoachingStudentSidebar({ badge, title, navItems, student
           </p>
         </div>
       </div>
-
-      <div className="px-4 mb-4">
-        <Link 
-          to={`/dashboard/coaching`}
-          className="flex items-center gap-2 px-3 py-2 text-xs text-slate-500 hover:text-primary transition-colors"
-        >
-          <AppIcon name="arrow_back" size={14} />
-          Back to Coaching Panel
-        </Link>
-      </div>
       
       <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto custom-scrollbar">
         {navItems.map(item => (
           <NavLink
             key={item.to}
-            to={`/dashboard/coaching/student/${studentId}/${item.to}`}
+            to={`/dashboard/school/${item.to}`}
             className={({ isActive }) =>
               [
                 'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-150 ease-out border',
@@ -43,7 +33,9 @@ export default function CoachingStudentSidebar({ badge, title, navItems, student
             }
           >
             <AppIcon name={item.icon} size={20} />
-            <span>{item.label}</span>
+            <span>
+              {item.label}
+            </span>
           </NavLink>
         ))}
       </nav>

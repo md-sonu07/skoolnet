@@ -1,12 +1,17 @@
-import { NavLink } from 'react-router-dom';
-import AppIcon from '../common/AppIcon';
+import { NavLink, Link } from 'react-router-dom';
+import AppIcon from '../../../common/AppIcon';
 
-export default function ManagerSidebar({ badge, title, navItems }) {
+export default function CoachingStudentSidebar({ badge, title, navItems, studentId, onClose }) {
   return (
-    <aside className="h-screen w-64 fixed left-0 top-0 glass-sidebar flex flex-col py-6 z-[60] font-['Inter'] text-sm font-medium">
-      <div className="px-6 mb-6 flex items-center gap-3 shrink-0">
+    <aside className="h-screen w-64 glass-sidebar flex flex-col py-6 font-['Inter'] text-sm font-medium">
+      <div className="px-6 mb-4 flex items-center gap-3 shrink-0">
+        {onClose && (
+          <button onClick={onClose} className="md:hidden p-1 -ml-2">
+            <AppIcon name="close" size={20} className="text-slate-500" />
+          </button>
+        )}
         <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-          <AppIcon name="dashboard" size={20} className="text-white" />
+          <AppIcon name="school" size={20} className="text-white" />
         </div>
         <div>
           <h1 className="font-['Manrope'] font-extrabold text-on-surface text-xl tracking-tight">
@@ -17,12 +22,23 @@ export default function ManagerSidebar({ badge, title, navItems }) {
           </p>
         </div>
       </div>
+
+      <div className="px-4 mb-4">
+        <Link 
+          to={`/dashboard/coaching`}
+          className="flex items-center gap-2 px-3 py-2 text-xs text-slate-500 hover:text-primary transition-colors"
+        >
+          <AppIcon name="arrow_back" size={14} />
+          Back to Coaching Panel
+        </Link>
+      </div>
       
       <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto custom-scrollbar">
         {navItems.map(item => (
           <NavLink
             key={item.to}
-            to={`/dashboard/manager/${item.to}`}
+            to={`/dashboard/coaching/student/${studentId}/${item.to}`}
+            onClick={onClose}
             className={({ isActive }) =>
               [
                 'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-150 ease-out border',
@@ -33,9 +49,7 @@ export default function ManagerSidebar({ badge, title, navItems }) {
             }
           >
             <AppIcon name={item.icon} size={20} />
-            <span className={item.label === 'Dashboard' ? 'font-semibold' : ''}>
-              {item.label}
-            </span>
+            <span>{item.label}</span>
           </NavLink>
         ))}
       </nav>

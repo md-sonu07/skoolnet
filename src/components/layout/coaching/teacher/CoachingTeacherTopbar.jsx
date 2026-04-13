@@ -1,9 +1,9 @@
-import AppIcon from '../common/AppIcon';
+import AppIcon from '../../../common/AppIcon';
 
-export default function CoachingTopbar({ 
-  userName = 'User', 
-  userRole = 'Admin', 
-  userAvatar = 'https://ui-avatars.com/api/?name=User&background=6366f1&color=fff&size=128', 
+export default function CoachingTeacherTopbar({ 
+  userName = 'Teacher', 
+  userRole = 'Teacher', 
+  userAvatar = '', 
   searchPlaceholder = 'Search...', 
   quickActions = [] 
 }) {
@@ -36,11 +36,9 @@ export default function CoachingTopbar({
             <p className="text-xs font-bold text-on-surface">{userName}</p>
             <p className="text-[10px] text-on-surface-variant font-medium">{userRole}</p>
           </div>
-          <img
-            alt="User profile avatar"
-            className="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover"
-            src={userAvatar}
-          />
+          <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
+            <AppIcon name="person" size={20} className="text-slate-500" />
+          </div>
         </div>
       </div>
     </header>

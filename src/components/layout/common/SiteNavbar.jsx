@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import AppIcon from '../common/AppIcon';
+import AppIcon from '../../common/AppIcon';
 
 const navItems = [
   { label: 'Services', href: '/services' },

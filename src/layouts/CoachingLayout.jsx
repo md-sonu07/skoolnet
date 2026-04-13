@@ -1,6 +1,6 @@
-import DashboardShell from '../components/layout/DashboardShell';
-import CoachingSidebar from '../components/layout/CoachingSidebar';
-import CoachingTopbar from '../components/layout/CoachingTopbar';
+import DashboardShell from '../components/layout/common/DashboardShell';
+import CoachingSidebar from '../components/layout/coaching/CoachingSidebar';
+import CoachingTopbar from '../components/layout/coaching/CoachingTopbar';
 import {
   coachingHeader,
   coachingNavItems,

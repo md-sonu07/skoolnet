@@ -1,6 +1,6 @@
-import DashboardShell from '../components/layout/DashboardShell';
-import ManagerSidebar from '../components/layout/ManagerSidebar';
-import ManagerTopbar from '../components/layout/ManagerTopbar';
+import DashboardShell from '../components/layout/common/DashboardShell';
+import ManagerSidebar from '../components/layout/manager/ManagerSidebar';
+import ManagerTopbar from '../components/layout/manager/ManagerTopbar';
 import {
   managerHeader,
   managerNavItems,

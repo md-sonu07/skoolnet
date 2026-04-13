@@ -1,8 +1,8 @@
-import AppIcon from '../common/AppIcon';
+import AppIcon from '../../../common/AppIcon';
 
-export default function SchoolTopbar({ 
+export default function TeacherTopbar({ 
   userName = 'User', 
-  userRole = 'Admin', 
+  userRole = 'Teacher', 
   userAvatar = 'https://ui-avatars.com/api/?name=User&background=6366f1&color=fff&size=128', 
   searchPlaceholder = 'Search...', 
   quickActions = [] 

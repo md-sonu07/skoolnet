@@ -1,6 +1,6 @@
-import DashboardShell from '../components/layout/DashboardShell';
-import SchoolSidebar from '../components/layout/SchoolSidebar';
-import SchoolTopbar from '../components/layout/SchoolTopbar';
+import DashboardShell from '../components/layout/common/DashboardShell';
+import SchoolSidebar from '../components/layout/school/SchoolSidebar';
+import SchoolTopbar from '../components/layout/school/SchoolTopbar';
 import {
   schoolHeader,
   schoolNavItems,

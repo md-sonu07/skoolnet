@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import AppIcon from '../common/AppIcon';
+import AppIcon from '../../common/AppIcon';
 
 const footerGroups = [
   {

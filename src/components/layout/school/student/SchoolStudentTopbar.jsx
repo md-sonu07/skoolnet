@@ -1,4 +1,4 @@
-import AppIcon from '../common/AppIcon';
+import AppIcon from '../../../common/AppIcon';
 
 export default function StudentTopbar({ 
   userName = 'Student', 
