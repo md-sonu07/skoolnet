@@ -1,5 +1,6 @@
 import { Routes } from 'react-router-dom';
 import appRoutes from './routes/AppRoute';
+import authRoutes from './routes/AuthRoute';
 import coachingRoutes from './routes/CoachingRoute';
 import coachingTeacherRoutes from './routes/CoachingTeacherRoute';
 import coachingStudentRoutes from './routes/CoachingStudentRoute';
@@ -12,6 +13,7 @@ function App() {
   return (
     <Routes>
       {appRoutes}
+      {authRoutes}
       {managerRoutes}
       {schoolRoutes}
       {schoolTeacherRoutes}
