@@ -36,7 +36,7 @@ export default function CoachingStudentLayout() {
   return (
     <DashboardShell
       topbar={<CoachingStudentTopbar {...studentHeader} />}
-      sidebar={<CoachingStudentSidebar {...coachingStudentSidebarContent} navItems={coachingStudentNavItems} studentId={studentId} />}
+      sidebar={<CoachingStudentSidebar {...coachingStudentSidebarContent} navItems={coachingStudentNavItems} studentId={studentId} userRole={student.role} />}
       showBottomNav={true}
     />
   );

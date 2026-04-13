@@ -14,6 +14,7 @@ export const managerNavItems = [
 
 export const managerHeader = {
   userName: 'Alexander Pierce',
+  title: 'Skoolnet',
   userRole: 'Platform Manager',
   userAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBRKIGUGFXKTmbmp0epeDC-YJvG3VlT6NFOzbEmey9ua5GE_7locUazze5tBIOXEYJcvrgCva-TZd5RvYxvaZeM0m5RvNsTiN69P-JveNwpySSiz5SIGxP5hbVDW2r3rrkl0g5zG8fy1oufDYI5OzLwbTp4QsowZTn7YfqAVpmUTAhaIWWpExxyxXdjlpf9obF301W3SToNPS7eX7gkccJ9uDeh9unR-ozQwvNr8uOxYJeBnEuMzhhAGHxi96dfdpgWM-9t-2WzxAk',
   searchPlaceholder: 'Search records, schools, or partners...',

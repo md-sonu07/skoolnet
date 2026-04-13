@@ -17,7 +17,8 @@ export const coachingNavItems = [
 
 export const coachingHeader = {
   userName: 'Center Admin',
-  userRole: 'Coaching Manager',
+  title: 'Skoolnet',
+  userRole: 'Apex Coaching Center',
   userAvatar: 'https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff&size=128',
   searchPlaceholder: 'Search students, courses, or payments...',
   quickActions: [

@@ -10,11 +10,14 @@ export default function CoachingStudentDashboard() {
   return (
     <DashboardPage
       eyebrow="Student dashboard"
-      title="Dashboard"
+      title="NEET Foundation - Dashboard"
     >
+      <div className="mb-4">
+        <MetricCard icon="school" label="My Course" value="NEET Foundation" change="Active" helper="Current course" className="bg-primary/5 border-primary/20" />
+      </div>
+      
       <MetricGrid>
-        <MetricCard icon="school" label="My Course" value="NEET Foundation" change="Active" helper="Current course" />
-        <MetricCard icon="monitoring" label="Attendance" value="96%" change="+2%" helper="This month" tone="emerald" />
+        <MetricCard icon="monitoring" label="Attendance" value="96%" change="+2%" helper="This month" tone="emerald" className="sm:hidden block" />
         <MetricCard icon="folder_open" label="Pending" value="3" change="Assignments" helper="Due this week" tone="amber" />
         <MetricCard icon="payments" label="Fee Status" value="Paid" change="Jan 2024" helper="Up to date" tone="emerald" />
       </MetricGrid>
