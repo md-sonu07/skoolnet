@@ -81,15 +81,15 @@ export default function CoachingTeachers() {
     <DashboardPage
       eyebrow="Faculty management"
       title="Teachers"
-      actions={
+actions={
         <>
-          <button className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-1 md:gap-2">
             <AppIcon name="add" size={16} />
-            Add Teacher
+            <span className="hidden md:inline">Add Teacher</span>
           </button>
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-1 md:gap-2 shadow-sm">
             <AppIcon name="upload" size={16} />
-            Import
+            <span className="hidden md:inline">Import CSV</span>
           </button>
         </>
       }
@@ -129,16 +129,16 @@ export default function CoachingTeachers() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[800px]">
             <thead>
               <tr className="border-b border-slate-200">
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Teacher</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Subject</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Qualification</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Experience</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Courses</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Students</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Rating</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Subject</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Qualification</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Experience</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">Courses</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">Students</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">Rating</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Status</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Actions</th>
               </tr>
@@ -155,14 +155,14 @@ export default function CoachingTeachers() {
                   <tr key={teacher.id} className="hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-3">
                       <p className="font-semibold text-sm text-slate-900">{teacher.name}</p>
-                      <p className="text-xs text-slate-500">{teacher.email}</p>
+                      <p className="text-xs text-slate-500 md:hidden">{teacher.email}</p>
                     </td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{teacher.subject}</td>
-                    <td className="py-3 px-3 text-sm text-slate-600">{teacher.qualification}</td>
-                    <td className="py-3 px-3 text-sm text-slate-600">{teacher.experience}</td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{teacher.courses}</td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{teacher.students}</td>
-                    <td className="py-3 px-3">
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden md:table-cell">{teacher.subject}</td>
+                    <td className="py-3 px-3 text-sm text-slate-600 hidden lg:table-cell">{teacher.qualification}</td>
+                    <td className="py-3 px-3 text-sm text-slate-600 hidden md:table-cell">{teacher.experience}</td>
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden sm:table-cell">{teacher.courses}</td>
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden sm:table-cell">{teacher.students}</td>
+                    <td className="py-3 px-3 hidden sm:table-cell">
                       <div className="flex items-center gap-1">
                         <AppIcon name="star" size={14} className="text-amber-500" />
                         <span className="text-sm font-medium text-slate-700">{teacher.rating}</span>

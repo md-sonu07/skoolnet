@@ -87,13 +87,13 @@ export default function StudentManagement() {
       title="Student Management"
       actions={
         <>
-          <button className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-1 md:gap-2">
             <AppIcon name="add" size={16} />
-            Add Student
+            <span className="hidden md:inline">Add Student</span>
           </button>
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-1 md:gap-2 shadow-sm">
             <AppIcon name="upload" size={16} />
-            Import CSV
+            <span className="hidden md:inline">Import CSV</span>
           </button>
         </>
       }
@@ -134,13 +134,13 @@ export default function StudentManagement() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[750px]">
             <thead>
               <tr className="border-b border-slate-200">
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Roll No</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Student Name</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Class</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Parent / Contact</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Class</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Parent / Contact</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Fee Status</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Status</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Actions</th>
@@ -159,10 +159,10 @@ export default function StudentManagement() {
                     <td className="py-3 px-3 text-sm font-medium text-slate-600">{student.rollNo}</td>
                     <td className="py-3 px-3">
                       <p className="font-semibold text-sm text-slate-900">{student.name}</p>
-                      <p className="text-xs text-slate-500">{student.email}</p>
+                      <p className="text-xs text-slate-500 md:hidden">{student.email}</p>
                     </td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{student.class}</td>
-                    <td className="py-3 px-3">
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden md:table-cell">{student.class}</td>
+                    <td className="py-3 px-3 hidden lg:table-cell">
                       <p className="text-sm text-slate-900">{student.father}</p>
                       <p className="text-xs text-slate-500">{student.phone}</p>
                     </td>
@@ -187,7 +187,7 @@ export default function StudentManagement() {
                           <AppIcon name="open_in_new" size={14} />
                         </Link>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="visibility" size={14} className="text-slate-600" /></button>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
+                        <button className="p-2 rounded hover:bg-slate-100 transition-colors hidden sm:block"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="more_vert" size={14} className="text-slate-600" /></button>
                       </div>
                     </td>

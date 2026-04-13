@@ -60,13 +60,13 @@ export default function ClassManagement() {
       title="Class Management"
       actions={
         <>
-          <button className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-1 md:gap-2">
             <AppIcon name="add" size={16} />
-            Add Class
+            <span className="hidden md:inline">Add Class</span>
           </button>
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-1 md:gap-2 shadow-sm">
             <AppIcon name="upload" size={16} />
-            Import CSV
+            <span className="hidden md:inline">Import CSV</span>
           </button>
         </>
       }
@@ -105,15 +105,15 @@ export default function ClassManagement() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[650px]">
             <thead>
               <tr className="border-b border-slate-200">
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Class</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Section</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">Section</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Class Teacher</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Students</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Subjects</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Room</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Students</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">Subjects</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Room</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Status</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Actions</th>
               </tr>
@@ -129,15 +129,15 @@ export default function ClassManagement() {
                 paginatedClasses.map((cls) => (
                   <tr key={cls.id} className="hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-3 text-sm font-semibold text-slate-900">{cls.name}</td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{cls.section}</td>
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden sm:table-cell">{cls.section}</td>
                     <td className="py-3 px-3 text-sm">
                       <span className={cls.classTeacher === 'Unassigned' ? 'text-amber-600' : 'text-slate-900'}>
                         {cls.classTeacher}
                       </span>
                     </td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{cls.students}</td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{cls.subjects}</td>
-                    <td className="py-3 px-3 text-sm text-slate-600">{cls.room}</td>
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden md:table-cell">{cls.students}</td>
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden sm:table-cell">{cls.subjects}</td>
+                    <td className="py-3 px-3 text-sm text-slate-600 hidden md:table-cell">{cls.room}</td>
                     <td className="py-3 px-3">
                       <StatusBadge tone={cls.status === 'active' ? 'emerald' : 'slate'}>
                         {cls.status.charAt(0).toUpperCase() + cls.status.slice(1)}
@@ -146,7 +146,7 @@ export default function ClassManagement() {
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="visibility" size={14} className="text-slate-600" /></button>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
+                        <button className="p-2 rounded hover:bg-slate-100 transition-colors hidden sm:block"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="more_vert" size={14} className="text-slate-600" /></button>
                       </div>
                     </td>

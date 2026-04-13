@@ -78,13 +78,13 @@ export default function AttendanceOverview() {
       title="Attendance Management"
       actions={
         <>
-          <button className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-1 md:gap-2">
             <AppIcon name="check_circle" size={16} />
-            Mark Attendance
+            <span className="hidden md:inline">Mark Attendance</span>
           </button>
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-1 md:gap-2 shadow-sm">
             <AppIcon name="download" size={16} />
-            Export Report
+            <span className="hidden md:inline">Export Report</span>
           </button>
         </>
       }
@@ -120,31 +120,31 @@ export default function AttendanceOverview() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="bg-emerald-50 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-emerald-600">{presentCount}</div>
-            <div className="text-sm text-emerald-700">Present</div>
+        <div className="grid grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6">
+          <div className="bg-emerald-50 rounded-xl p-3 md:p-4 text-center">
+            <div className="text-xl md:text-2xl font-bold text-emerald-600">{presentCount}</div>
+            <div className="text-xs md:text-sm text-emerald-700">Present</div>
           </div>
-          <div className="bg-rose-50 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-rose-600">{absentCount}</div>
-            <div className="text-sm text-rose-700">Absent</div>
+          <div className="bg-rose-50 rounded-xl p-3 md:p-4 text-center">
+            <div className="text-xl md:text-2xl font-bold text-rose-600">{absentCount}</div>
+            <div className="text-xs md:text-sm text-rose-700">Absent</div>
           </div>
-          <div className="bg-amber-50 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-amber-600">{lateCount}</div>
-            <div className="text-sm text-amber-700">Late</div>
+          <div className="bg-amber-50 rounded-xl p-3 md:p-4 text-center">
+            <div className="text-xl md:text-2xl font-bold text-amber-600">{lateCount}</div>
+            <div className="text-xs md:text-sm text-amber-700">Late</div>
           </div>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[600px]">
             <thead>
               <tr className="border-b border-slate-200">
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Roll No</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Student Name</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Class</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Class</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Status</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Time</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Remarks</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">Time</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Remarks</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Actions</th>
               </tr>
             </thead>
@@ -160,14 +160,14 @@ export default function AttendanceOverview() {
                   <tr key={student.id} className="hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-3 text-sm font-medium text-slate-600">{student.rollNo}</td>
                     <td className="py-3 px-3 text-sm font-semibold text-slate-900">{student.name}</td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{student.class}</td>
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden md:table-cell">{student.class}</td>
                     <td className="py-3 px-3">
                       <StatusBadge tone={student.status === 'present' ? 'emerald' : student.status === 'absent' ? 'rose' : 'amber'}>
                         {student.status.charAt(0).toUpperCase() + student.status.slice(1)}
                       </StatusBadge>
                     </td>
-                    <td className="py-3 px-3 text-sm text-slate-600">{student.time}</td>
-                    <td className="py-3 px-3 text-sm text-slate-500">{student.remarks || '-'}</td>
+                    <td className="py-3 px-3 text-sm text-slate-600 hidden sm:table-cell">{student.time}</td>
+                    <td className="py-3 px-3 text-sm text-slate-500 hidden lg:table-cell">{student.remarks || '-'}</td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
                         <button className="p-2 rounded hover:bg-emerald-100 text-emerald-600 transition-colors" title="Mark Present"><AppIcon name="check_circle" size={14} /></button>

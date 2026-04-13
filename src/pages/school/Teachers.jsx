@@ -79,13 +79,13 @@ export default function TeacherManagement() {
       title="Teacher Management"
       actions={
         <>
-          <button className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-1 md:gap-2">
             <AppIcon name="add" size={16} />
-            Add Teacher
+            <span className="hidden md:inline">Add Teacher</span>
           </button>
-          <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-1 md:gap-2 shadow-sm">
             <AppIcon name="upload" size={16} />
-            Import CSV
+            <span className="hidden md:inline">Import CSV</span>
           </button>
         </>
       }
@@ -125,14 +125,14 @@ export default function TeacherManagement() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[700px]">
             <thead>
               <tr className="border-b border-slate-200">
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Emp No</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Teacher Name</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Subject</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Qualification</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Classes</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Subject</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Qualification</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Classes</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Status</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Actions</th>
               </tr>
@@ -150,11 +150,11 @@ export default function TeacherManagement() {
                     <td className="py-3 px-3 text-sm font-medium text-slate-600">{teacher.empNo}</td>
                     <td className="py-3 px-3">
                       <p className="font-semibold text-sm text-slate-900">{teacher.name}</p>
-                      <p className="text-xs text-slate-500">{teacher.email}</p>
+                      <p className="text-xs text-slate-500 md:hidden">{teacher.email}</p>
                     </td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{teacher.subject}</td>
-                    <td className="py-3 px-3 text-sm text-slate-600">{teacher.qualification}</td>
-                    <td className="py-3 px-3 text-sm text-slate-700">{teacher.classes}</td>
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden md:table-cell">{teacher.subject}</td>
+                    <td className="py-3 px-3 text-sm text-slate-600 hidden lg:table-cell">{teacher.qualification}</td>
+                    <td className="py-3 px-3 text-sm text-slate-700 hidden md:table-cell">{teacher.classes}</td>
                     <td className="py-3 px-3">
                       <StatusBadge tone={teacher.status === 'active' ? 'emerald' : teacher.status === 'on_leave' ? 'amber' : 'slate'}>
                         {teacher.status === 'on_leave' ? 'On Leave' : teacher.status.charAt(0).toUpperCase() + teacher.status.slice(1)}
@@ -171,7 +171,7 @@ export default function TeacherManagement() {
                           <AppIcon name="open_in_new" size={14} />
                         </Link>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="visibility" size={14} className="text-slate-600" /></button>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
+                        <button className="p-2 rounded hover:bg-slate-100 transition-colors hidden sm:block"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="more_vert" size={14} className="text-slate-600" /></button>
                       </div>
                     </td>
