@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
@@ -276,13 +277,21 @@ export default function Coaching() {
                     </td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
+                        <Link 
+                          to={`/dashboard/coaching`}
+                          target="_blank"
+                          className="p-2 rounded hover:bg-slate-100 transition-colors text-blue-600 hover:text-blue-700"
+                          title="Open Coaching Dashboard"
+                        >
+                          <AppIcon name="open_in_new" size={14} />
+                        </Link>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors">
                           <AppIcon name="visibility" size={14} className="text-slate-600" />
                         </button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors">
                           <AppIcon name="edit" size={14} className="text-slate-600" />
                         </button>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors">
+                        <button className="p-2 rounded hover:bg-slate-100 transition-colors hidden sm:block">
                           <AppIcon name="more_vert" size={14} className="text-slate-600" />
                         </button>
                       </div>
