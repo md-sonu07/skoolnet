@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
@@ -20,16 +21,16 @@ const studentStats = [
 ];
 
 const students = [
-  { id: 1, name: 'Aarav Sharma', phone: '+91 98765 43210', email: 'aarav@email.com', course: 'NEET Foundation', batch: 'Morning', status: 'active', payment: 'paid', joinedDate: '2024-01-15' },
-  { id: 2, name: 'Priya Singh', phone: '+91 98765 43211', email: 'priya@email.com', course: 'JEE Advanced', batch: 'Evening', status: 'active', payment: 'paid', joinedDate: '2024-01-16' },
-  { id: 3, name: 'Rahul Verma', phone: '+91 98765 43212', email: 'rahul@email.com', course: 'Coding Bootcamp', batch: 'Weekend', status: 'active', payment: 'pending', joinedDate: '2024-01-10' },
-  { id: 4, name: 'Sneha Gupta', phone: '+91 98765 43213', email: 'sneha@email.com', course: 'NEET Foundation', batch: 'Morning', status: 'active', payment: 'paid', joinedDate: '2024-01-12' },
-  { id: 5, name: 'Kunal Patel', phone: '+91 98765 43214', email: 'kunal@email.com', course: 'JEE Mains', batch: 'Evening', status: 'inactive', payment: 'failed', joinedDate: '2023-12-15' },
-  { id: 6, name: 'Ananya Reddy', phone: '+91 98765 43215', email: 'ananya@email.com', course: 'NEET Foundation', batch: 'Morning', status: 'active', payment: 'paid', joinedDate: '2024-01-18' },
-  { id: 7, name: 'Vikram Joshi', phone: '+91 98765 43216', email: 'vikram@email.com', course: 'JEE Advanced', batch: 'Evening', status: 'active', payment: 'paid', joinedDate: '2024-01-20' },
-  { id: 8, name: 'Meera Nair', phone: '+91 98765 43217', email: 'meera@email.com', course: 'Coding Bootcamp', batch: 'Weekend', status: 'active', payment: 'free', joinedDate: '2024-01-22' },
-  { id: 9, name: 'Dev Sharma', phone: '+91 98765 43218', email: 'dev@email.com', course: 'NEET Foundation', batch: 'Morning', status: 'active', payment: 'paid', joinedDate: '2024-01-25' },
-  { id: 10, name: 'Neha Kapoor', phone: '+91 98765 43219', email: 'neha@email.com', course: 'JEE Mains', batch: 'Evening', status: 'inactive', payment: 'pending', joinedDate: '2023-11-08' },
+  { id: 1, name: 'Aarav Sharma', phone: '+91 98765 43210', email: 'aarav@email.com', course: 'NEET Foundation', batch: 'Morning', status: 'active', payment: 'paid', joinedDate: '2024-01-15', slug: 'aarav-sharma' },
+  { id: 2, name: 'Priya Singh', phone: '+91 98765 43211', email: 'priya@email.com', course: 'JEE Advanced', batch: 'Evening', status: 'active', payment: 'paid', joinedDate: '2024-01-16', slug: 'priya-singh' },
+  { id: 3, name: 'Rahul Verma', phone: '+91 98765 43212', email: 'rahul@email.com', course: 'Coding Bootcamp', batch: 'Weekend', status: 'active', payment: 'pending', joinedDate: '2024-01-10', slug: 'rahul-verma' },
+  { id: 4, name: 'Sneha Gupta', phone: '+91 98765 43213', email: 'sneha@email.com', course: 'NEET Foundation', batch: 'Morning', status: 'active', payment: 'paid', joinedDate: '2024-01-12', slug: 'sneha-gupta' },
+  { id: 5, name: 'Kunal Patel', phone: '+91 98765 43214', email: 'kunal@email.com', course: 'JEE Mains', batch: 'Evening', status: 'inactive', payment: 'failed', joinedDate: '2023-12-15', slug: 'kunal-patel' },
+  { id: 6, name: 'Ananya Reddy', phone: '+91 98765 43215', email: 'ananya@email.com', course: 'NEET Foundation', batch: 'Morning', status: 'active', payment: 'paid', joinedDate: '2024-01-18', slug: 'ananya-reddy' },
+  { id: 7, name: 'Vikram Joshi', phone: '+91 98765 43216', email: 'vikram@email.com', course: 'JEE Advanced', batch: 'Evening', status: 'active', payment: 'paid', joinedDate: '2024-01-20', slug: 'vikram-joshi' },
+  { id: 8, name: 'Meera Nair', phone: '+91 98765 43217', email: 'meera@email.com', course: 'Coding Bootcamp', batch: 'Weekend', status: 'active', payment: 'free', joinedDate: '2024-01-22', slug: 'meera-nair' },
+  { id: 9, name: 'Dev Sharma', phone: '+91 98765 43218', email: 'dev@email.com', course: 'NEET Foundation', batch: 'Morning', status: 'active', payment: 'paid', joinedDate: '2024-01-25', slug: 'dev-sharma' },
+  { id: 10, name: 'Neha Kapoor', phone: '+91 98765 43219', email: 'neha@email.com', course: 'JEE Mains', batch: 'Evening', status: 'inactive', payment: 'pending', joinedDate: '2023-11-08', slug: 'neha-kapoor' },
 ];
 
 export default function CoachingStudents() {
@@ -195,6 +196,14 @@ export default function CoachingStudents() {
                     <td className="py-3 px-3 text-sm text-slate-600">{student.joinedDate}</td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
+                        <Link 
+                          to={`/dashboard/coaching/student/${student.slug}/dashboard`}
+                          target="_blank"
+                          className="p-2 rounded hover:bg-slate-100 transition-colors text-blue-600 hover:text-blue-700"
+                          title="View Dashboard (New Tab)"
+                        >
+                          <AppIcon name="open_in_new" size={14} />
+                        </Link>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="visibility" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="more_vert" size={14} className="text-slate-600" /></button>

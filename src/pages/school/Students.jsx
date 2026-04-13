@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
@@ -20,16 +21,16 @@ const studentStats = [
 ];
 
 const students = [
-  { id: 1, name: 'Aarav Sharma', rollNo: '001', class: 'Class 10-A', father: 'Rajesh Sharma', phone: '+91 98765 43210', email: 'aarav@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-15' },
-  { id: 2, name: 'Priya Singh', rollNo: '002', class: 'Class 10-A', father: 'Ajay Singh', phone: '+91 98765 43211', email: 'priya@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-16' },
-  { id: 3, name: 'Rahul Verma', rollNo: '003', class: 'Class 9-B', father: 'Sunil Verma', phone: '+91 98765 43212', email: 'rahul@email.com', feeStatus: 'pending', status: 'active', admissionDate: '2024-01-10' },
-  { id: 4, name: 'Sneha Gupta', rollNo: '004', class: 'Class 10-B', father: 'Raj Gupta', phone: '+91 98765 43213', email: 'sneha@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-12' },
-  { id: 5, name: 'Kunal Patel', rollNo: '005', class: 'Class 11-A', father: 'Anil Patel', phone: '+91 98765 43214', email: 'kunal@email.com', feeStatus: 'overdue', status: 'active', admissionDate: '2023-06-15' },
-  { id: 6, name: 'Ananya Reddy', rollNo: '006', class: 'Class 9-A', father: 'Kiran Reddy', phone: '+91 98765 43215', email: 'ananya@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-18' },
-  { id: 7, name: 'Vikram Joshi', rollNo: '007', class: 'Class 12-A', father: 'Mohan Joshi', phone: '+91 98765 43216', email: 'vikram@email.com', feeStatus: 'paid', status: 'inactive', admissionDate: '2023-05-10' },
-  { id: 8, name: 'Meera Nair', rollNo: '008', class: 'Class 10-A', father: 'Gopal Nair', phone: '+91 98765 43217', email: 'meera@email.com', feeStatus: 'pending', status: 'active', admissionDate: '2024-01-20' },
-  { id: 9, name: 'Dev Sharma', rollNo: '009', class: 'Class 9-A', father: 'Kapil Sharma', phone: '+91 98765 43218', email: 'dev@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-22' },
-  { id: 10, name: 'Neha Kapoor', rollNo: '010', class: 'Class 10-B', father: 'Raj Kapoor', phone: '+91 98765 43219', email: 'neha@email.com', feeStatus: 'overdue', status: 'active', admissionDate: '2024-01-08' },
+  { id: 1, name: 'Aarav Sharma', rollNo: '001', class: 'Class 10-A', father: 'Rajesh Sharma', phone: '+91 98765 43210', email: 'aarav@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-15', slug: 'aarav-sharma' },
+  { id: 2, name: 'Priya Singh', rollNo: '002', class: 'Class 10-A', father: 'Ajay Singh', phone: '+91 98765 43211', email: 'priya@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-16', slug: 'priya-singh' },
+  { id: 3, name: 'Rahul Verma', rollNo: '003', class: 'Class 9-B', father: 'Sunil Verma', phone: '+91 98765 43212', email: 'rahul@email.com', feeStatus: 'pending', status: 'active', admissionDate: '2024-01-10', slug: 'rahul-verma' },
+  { id: 4, name: 'Sneha Gupta', rollNo: '004', class: 'Class 10-B', father: 'Raj Gupta', phone: '+91 98765 43213', email: 'sneha@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-12', slug: 'sneha-gupta' },
+  { id: 5, name: 'Kunal Patel', rollNo: '005', class: 'Class 11-A', father: 'Anil Patel', phone: '+91 98765 43214', email: 'kunal@email.com', feeStatus: 'overdue', status: 'active', admissionDate: '2023-06-15', slug: 'kunal-patel' },
+  { id: 6, name: 'Ananya Reddy', rollNo: '006', class: 'Class 9-A', father: 'Kiran Reddy', phone: '+91 98765 43215', email: 'ananya@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-18', slug: 'ananya-reddy' },
+  { id: 7, name: 'Vikram Joshi', rollNo: '007', class: 'Class 12-A', father: 'Mohan Joshi', phone: '+91 98765 43216', email: 'vikram@email.com', feeStatus: 'paid', status: 'inactive', admissionDate: '2023-05-10', slug: 'vikram-joshi' },
+  { id: 8, name: 'Meera Nair', rollNo: '008', class: 'Class 10-A', father: 'Gopal Nair', phone: '+91 98765 43217', email: 'meera@email.com', feeStatus: 'pending', status: 'active', admissionDate: '2024-01-20', slug: 'meera-nair' },
+  { id: 9, name: 'Dev Sharma', rollNo: '009', class: 'Class 9-A', father: 'Kapil Sharma', phone: '+91 98765 43218', email: 'dev@email.com', feeStatus: 'paid', status: 'active', admissionDate: '2024-01-22', slug: 'dev-sharma' },
+  { id: 10, name: 'Neha Kapoor', rollNo: '010', class: 'Class 10-B', father: 'Raj Kapoor', phone: '+91 98765 43219', email: 'neha@email.com', feeStatus: 'overdue', status: 'active', admissionDate: '2024-01-08', slug: 'neha-kapoor' },
 ];
 
 export default function StudentManagement() {
@@ -177,6 +178,14 @@ export default function StudentManagement() {
                     </td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
+                        <Link 
+                          to={`/dashboard/school/student/${student.slug}/dashboard`}
+                          target="_blank"
+                          className="p-2 rounded hover:bg-slate-100 transition-colors text-blue-600 hover:text-blue-700"
+                          title="View Dashboard (New Tab)"
+                        >
+                          <AppIcon name="open_in_new" size={14} />
+                        </Link>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="visibility" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="more_vert" size={14} className="text-slate-600" /></button>

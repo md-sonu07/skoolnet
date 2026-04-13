@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
@@ -20,14 +21,14 @@ const teacherStats = [
 ];
 
 const teachers = [
-  { id: 1, name: 'Dr. Amit Kumar', subject: 'Physics', phone: '+91 98765 43210', email: 'amit@email.com', qualification: 'M.Sc Physics, B.Ed', experience: '8 years', courses: 2, status: 'active', rating: 4.8, students: 280 },
-  { id: 2, name: 'Ms. Priya Sharma', subject: 'Chemistry', phone: '+91 98765 43211', email: 'priya@email.com', qualification: 'M.Sc Chemistry, B.Ed', experience: '5 years', courses: 2, status: 'active', rating: 4.6, students: 245 },
-  { id: 3, name: 'Mr. Rahul Verma', subject: 'Mathematics', phone: '+91 98765 43212', email: 'rahul@email.com', qualification: 'M.Sc Maths, B.Ed', experience: '6 years', courses: 3, status: 'active', rating: 4.5, students: 320 },
-  { id: 4, name: 'Ms. Sneha Gupta', subject: 'Biology', phone: '+91 98765 43213', email: 'sneha@email.com', qualification: 'M.Sc Botany, B.Ed', experience: '4 years', courses: 2, status: 'active', rating: 4.7, students: 180 },
-  { id: 5, name: 'Mr. Kunal Patel', subject: 'English', phone: '+91 98765 43214', email: 'kunal@email.com', qualification: 'MA English, B.Ed', experience: '7 years', courses: 1, status: 'active', rating: 4.4, students: 150 },
-  { id: 6, name: 'Ms. Ananya Reddy', subject: 'Computer', phone: '+91 98765 43215', email: 'ananya@email.com', qualification: 'M.Tech CS, B.Ed', experience: '3 years', courses: 2, status: 'inactive', rating: 4.3, students: 0 },
-  { id: 7, name: 'Mr. Vikram Joshi', subject: 'Physics', phone: '+91 98765 43216', email: 'vikram@email.com', qualification: 'M.Sc Physics, B.Ed', experience: '10 years', courses: 2, status: 'active', rating: 4.9, students: 350 },
-  { id: 8, name: 'Ms. Meera Nair', subject: 'Chemistry', phone: '+91 98765 43217', email: 'meera@email.com', qualification: 'M.Sc Chemistry, B.Ed', experience: '5 years', courses: 1, status: 'active', rating: 4.5, students: 200 },
+  { id: 1, name: 'Dr. Amit Kumar', subject: 'Physics', phone: '+91 98765 43210', email: 'amit@email.com', qualification: 'M.Sc Physics, B.Ed', experience: '8 years', courses: 2, status: 'active', rating: 4.8, students: 280, slug: 'amit-kumar' },
+  { id: 2, name: 'Ms. Priya Sharma', subject: 'Chemistry', phone: '+91 98765 43211', email: 'priya@email.com', qualification: 'M.Sc Chemistry, B.Ed', experience: '5 years', courses: 2, status: 'active', rating: 4.6, students: 245, slug: 'priya-sharma' },
+  { id: 3, name: 'Mr. Rahul Verma', subject: 'Mathematics', phone: '+91 98765 43212', email: 'rahul@email.com', qualification: 'M.Sc Maths, B.Ed', experience: '6 years', courses: 3, status: 'active', rating: 4.5, students: 320, slug: 'rahul-verma' },
+  { id: 4, name: 'Ms. Sneha Gupta', subject: 'Biology', phone: '+91 98765 43213', email: 'sneha@email.com', qualification: 'M.Sc Botany, B.Ed', experience: '4 years', courses: 2, status: 'active', rating: 4.7, students: 180, slug: 'sneha-gupta' },
+  { id: 5, name: 'Mr. Kunal Patel', subject: 'English', phone: '+91 98765 43214', email: 'kunal@email.com', qualification: 'MA English, B.Ed', experience: '7 years', courses: 1, status: 'active', rating: 4.4, students: 150, slug: 'kunal-patel' },
+  { id: 6, name: 'Ms. Ananya Reddy', subject: 'Computer', phone: '+91 98765 43215', email: 'ananya@email.com', qualification: 'M.Tech CS, B.Ed', experience: '3 years', courses: 2, status: 'inactive', rating: 4.3, students: 0, slug: 'ananya-reddy' },
+  { id: 7, name: 'Mr. Vikram Joshi', subject: 'Physics', phone: '+91 98765 43216', email: 'vikram@email.com', qualification: 'M.Sc Physics, B.Ed', experience: '10 years', courses: 2, status: 'active', rating: 4.9, students: 350, slug: 'vikram-joshi' },
+  { id: 8, name: 'Ms. Meera Nair', subject: 'Chemistry', phone: '+91 98765 43217', email: 'meera@email.com', qualification: 'M.Sc Chemistry, B.Ed', experience: '5 years', courses: 1, status: 'active', rating: 4.5, students: 200, slug: 'meera-nair' },
 ];
 
 export default function CoachingTeachers() {
@@ -174,6 +175,14 @@ export default function CoachingTeachers() {
                     </td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
+                        <Link 
+                          to={`/dashboard/coaching/teacher/${teacher.slug}/dashboard`}
+                          target="_blank"
+                          className="p-2 rounded hover:bg-slate-100 transition-colors text-blue-600 hover:text-blue-700"
+                          title="View Dashboard (New Tab)"
+                        >
+                          <AppIcon name="open_in_new" size={14} />
+                        </Link>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="visibility" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="more_vert" size={14} className="text-slate-600" /></button>

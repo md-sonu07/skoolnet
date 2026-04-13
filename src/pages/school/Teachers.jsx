@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
@@ -20,14 +21,14 @@ const teacherStats = [
 ];
 
 const teachers = [
-  { id: 1, name: 'Dr. Rajesh Kumar', empNo: 'EMP001', subject: 'Mathematics', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43201', email: 'rajesh@school.com', classes: 'Class 10-A, 10-B', status: 'active', joinDate: '2020-06-15' },
-  { id: 2, name: 'Ms. Priya Sharma', empNo: 'EMP002', subject: 'Physics', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43202', email: 'priya@school.com', classes: 'Class 11-A, 12-A', status: 'active', joinDate: '2019-08-20' },
-  { id: 3, name: 'Mr. Amit Singh', empNo: 'EMP003', subject: 'Chemistry', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43203', email: 'amit@school.com', classes: 'Class 11-B, 12-B', status: 'active', joinDate: '2021-01-10' },
-  { id: 4, name: 'Ms. Sneha Gupta', empNo: 'EMP004', subject: 'English', qualification: 'M.A, B.Ed', phone: '+91 98765 43204', email: 'sneha@school.com', classes: 'Class 9-A, 10-A', status: 'active', joinDate: '2020-03-22' },
-  { id: 5, name: 'Mr. Vikram Patel', empNo: 'EMP005', subject: 'Biology', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43205', email: 'vikram@school.com', classes: 'Class 10-B, 11-A', status: 'active', joinDate: '2022-07-05' },
-  { id: 6, name: 'Ms. Ananya Reddy', empNo: 'EMP006', subject: 'History', qualification: 'M.A, B.Ed', phone: '+91 98765 43206', email: 'ananya@school.com', classes: 'Class 9-A, 9-B', status: 'active', joinDate: '2021-09-15' },
-  { id: 7, name: 'Mr. Rahul Verma', empNo: 'EMP007', subject: 'Geography', qualification: 'M.A, B.Ed', phone: '+91 98765 43207', email: 'rahul@school.com', classes: 'Class 10-A, 12-A', status: 'on_leave', joinDate: '2020-11-08' },
-  { id: 8, name: 'Ms. Meera Nair', empNo: 'EMP008', subject: 'Computer Science', qualification: 'M.Tech, B.Ed', phone: '+91 98765 43208', email: 'meera@school.com', classes: 'Class 11-A, 12-A', status: 'active', joinDate: '2023-01-20' },
+  { id: 1, name: 'Dr. Rajesh Kumar', empNo: 'EMP001', subject: 'Mathematics', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43201', email: 'rajesh@school.com', classes: 'Class 10-A, 10-B', status: 'active', joinDate: '2020-06-15', slug: 'rajesh-kumar' },
+  { id: 2, name: 'Ms. Priya Sharma', empNo: 'EMP002', subject: 'Physics', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43202', email: 'priya@school.com', classes: 'Class 11-A, 12-A', status: 'active', joinDate: '2019-08-20', slug: 'priya-sharma' },
+  { id: 3, name: 'Mr. Amit Singh', empNo: 'EMP003', subject: 'Chemistry', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43203', email: 'amit@school.com', classes: 'Class 11-B, 12-B', status: 'active', joinDate: '2021-01-10', slug: 'amit-singh' },
+  { id: 4, name: 'Ms. Sneha Gupta', empNo: 'EMP004', subject: 'English', qualification: 'M.A, B.Ed', phone: '+91 98765 43204', email: 'sneha@school.com', classes: 'Class 9-A, 10-A', status: 'active', joinDate: '2020-03-22', slug: 'sneha-gupta' },
+  { id: 5, name: 'Mr. Vikram Patel', empNo: 'EMP005', subject: 'Biology', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43205', email: 'vikram@school.com', classes: 'Class 10-B, 11-A', status: 'active', joinDate: '2022-07-05', slug: 'vikram-patel' },
+  { id: 6, name: 'Ms. Ananya Reddy', empNo: 'EMP006', subject: 'History', qualification: 'M.A, B.Ed', phone: '+91 98765 43206', email: 'ananya@school.com', classes: 'Class 9-A, 9-B', status: 'active', joinDate: '2021-09-15', slug: 'ananya-reddy' },
+  { id: 7, name: 'Mr. Rahul Verma', empNo: 'EMP007', subject: 'Geography', qualification: 'M.A, B.Ed', phone: '+91 98765 43207', email: 'rahul@school.com', classes: 'Class 10-A, 12-A', status: 'on_leave', joinDate: '2020-11-08', slug: 'rahul-verma' },
+  { id: 8, name: 'Ms. Meera Nair', empNo: 'EMP008', subject: 'Computer Science', qualification: 'M.Tech, B.Ed', phone: '+91 98765 43208', email: 'meera@school.com', classes: 'Class 11-A, 12-A', status: 'active', joinDate: '2023-01-20', slug: 'meera-nair' },
 ];
 
 export default function TeacherManagement() {
@@ -161,6 +162,14 @@ export default function TeacherManagement() {
                     </td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
+                        <Link 
+                          to={`/dashboard/school/teacher/${teacher.slug}/dashboard`}
+                          target="_blank"
+                          className="p-2 rounded hover:bg-slate-100 transition-colors text-blue-600 hover:text-blue-700"
+                          title="View Dashboard (New Tab)"
+                        >
+                          <AppIcon name="open_in_new" size={14} />
+                        </Link>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="visibility" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="edit" size={14} className="text-slate-600" /></button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors"><AppIcon name="more_vert" size={14} className="text-slate-600" /></button>
