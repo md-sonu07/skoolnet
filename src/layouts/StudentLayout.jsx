@@ -30,8 +30,8 @@ export default function StudentLayout() {
     userAvatar: student.avatar,
     searchPlaceholder: 'Search assignments, notes, results...',
     quickActions: [
-      { icon: 'notifications' },
-      { icon: 'mail' },
+      { icon: 'notifications', to: 'notices' },
+      { icon: 'mail', to: 'messages' },
     ],
   };
 
@@ -45,7 +45,7 @@ export default function StudentLayout() {
   return (
     <DashboardShell
       topbar={<StudentTopbar {...studentHeader} />}
-      sidebar={<StudentSidebar {...studentSidebarContent} navItems={studentNavItems} studentId={studentId} />}
+      sidebar={<StudentSidebar {...studentSidebarContent} navItems={studentNavItems} studentId={studentId} userRole={student.role} />}
       showBottomNav={true}
       context={{ user: student }}
       bottomNavItems={studentNavItems}

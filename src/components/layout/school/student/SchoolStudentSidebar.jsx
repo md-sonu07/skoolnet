@@ -1,7 +1,7 @@
 import { NavLink, Link } from 'react-router-dom';
 import AppIcon from '../../../common/AppIcon';
 
-export default function StudentSidebar({ badge, title, navItems, studentId }) {
+export default function StudentSidebar({ badge, title, navItems, studentId, userRole }) {
   return (
     <aside className="hidden md:flex fixed left-0 top-0 h-screen w-64 glass-sidebar flex flex-col py-6 z-[60] font-['Inter'] text-sm font-medium">
       <div className="px-6 mb-6 flex items-center gap-3 shrink-0">
@@ -13,7 +13,7 @@ export default function StudentSidebar({ badge, title, navItems, studentId }) {
             {title}
           </h1>
           <p className="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">
-            {badge}
+            {userRole || badge}
           </p>
         </div>
       </div>
