@@ -1,3 +1,4 @@
+import { useOutletContext } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import {
   DashboardPage,
@@ -20,10 +21,12 @@ const systemHealth = [
 ];
 
 export default function ManagerOverview() {
+  const { platformName, adminName } = useOutletContext();
+  
   return (
     <DashboardPage
-      eyebrow="Daily command view"
-      title="Platform overview"
+      eyebrow="Platform dashboard"
+      title={`${platformName || 'Overview'}`}
       actions={
         <>
           <button type="button" className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">

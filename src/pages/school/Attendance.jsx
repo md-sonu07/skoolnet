@@ -78,13 +78,13 @@ export default function AttendanceOverview() {
       title="Attendance Management"
       actions={
         <>
-          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-1 md:gap-2">
-            <AppIcon name="check_circle" size={16} />
-            <span className="hidden md:inline">Mark Attendance</span>
+          <button className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+             <AppIcon name="check_circle" size={16} />
+            Mark Attendance
           </button>
-          <button className="px-3 md:px-5 py-2 md:py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-1 md:gap-2 shadow-sm">
-            <AppIcon name="download" size={16} />
-            <span className="hidden md:inline">Export Report</span>
+         <button className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+             <AppIcon name="download" size={16} />
+            Export Report
           </button>
         </>
       }

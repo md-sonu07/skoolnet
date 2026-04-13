@@ -5,9 +5,10 @@ import Coaching from '../pages/manager/Coaching';
 import Contact from '../pages/manager/Contact';
 import Dashboard from '../pages/manager/Dashboard';
 import GlobalPricing from '../pages/manager/GlobalPricing';
-import Notifications from '../pages/manager/Notifications';
+import Notices from '../pages/manager/Notices';
 import Partners from '../pages/manager/Partners';
 import Pricing from '../pages/manager/Pricing';
+import Profile from '../pages/manager/Profile';
 import Settings from '../pages/manager/Settings';
 import Schools from '../pages/manager/Schools';
 import Users from '../pages/manager/Users';
@@ -22,10 +23,11 @@ const managerRoutes = (
     <Route path="pricing" element={<Pricing />} />
     <Route path="global-pricing" element={<GlobalPricing />} />
     <Route path="activity" element={<Activity />} />
-    <Route path="notifications" element={<Notifications />} />
-    <Route path="contact" element={<Contact />} />
+    <Route path="notices" element={<Notices />} />
+    <Route path="messages" element={<Contact />} />
     <Route path="users" element={<Users />} />
     <Route path="settings" element={<Settings />} />
+    <Route path="profile" element={<Profile />} />
   </Route>
 );
 

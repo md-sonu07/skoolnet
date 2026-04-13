@@ -6,22 +6,23 @@ export const managerNavItems = [
   { label: 'Pricing', icon: 'payments', to: 'pricing' },
   { label: 'Global Pricing', icon: 'edit', to: 'global-pricing' },
   { label: 'Activity', icon: 'activity', to: 'activity' },
-  { label: 'Notifications', icon: 'notifications', to: 'notifications' },
-  { label: 'Messages', icon: 'mail', to: 'contact' },
+  { label: 'Notices', icon: 'campaign', to: 'notices' },
+  { label: 'Messages', icon: 'mail', to: 'messages' },
   { label: 'Users', icon: 'group', to: 'users' },
   { label: 'Settings', icon: 'settings', to: 'settings' },
+  { label: 'Profile', icon: 'person', to: 'profile' },
 ];
 
 export const managerHeader = {
   userName: 'Alexander Pierce',
   title: 'Skoolnet',
   userRole: 'Platform Manager',
-  userAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBRKIGUGFXKTmbmp0epeDC-YJvG3VlT6NFOzbEmey9ua5GE_7locUazze5tBIOXEYJcvrgCva-TZd5RvYxvaZeM0m5RvNsTiN69P-JveNwpySSiz5SIGxP5hbVDW2r3rrkl0g5zG8fy1oufDYI5OzLwbTp4QsowZTn7YfqAVpmUTAhaIWWpExxyxXdjlpf9obF301W3SToNPS7eX7gkccJ9uDeh9unR-ozQwvNr8uOxYJeBnEuMzhhAGHxi96dfdpgWM-9t-2WzxAk',
+  userAvatar: '',
   searchPlaceholder: 'Search records, schools, or partners...',
   quickActions: [
-    { icon: 'notifications' },
-    { icon: 'contrast' },
-    { icon: 'settings' },
+    { icon: 'campaign', to: 'notices' },
+    { icon: 'mail', to: 'messages' },
+    { icon: 'settings', to: 'settings' },
   ],
 };
 

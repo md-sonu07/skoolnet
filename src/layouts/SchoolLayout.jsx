@@ -8,6 +8,9 @@ import {
 } from './navigation/schoolNavigation';
 
 export default function SchoolLayout() {
+  const schoolName = schoolHeader.userRole || 'School';
+  const adminName = schoolHeader.userName || 'Admin';
+
   const adminMainNavItems = [
     { label: 'Overview', icon: 'dashboard', to: 'overview' },
     { label: 'Students', icon: 'group', to: 'students' },
@@ -20,6 +23,7 @@ export default function SchoolLayout() {
       topbar={<SchoolTopbar {...schoolHeader} />}
       sidebar={<SchoolSidebar {...schoolSidebarContent} navItems={schoolNavItems} />}
       showBottomNav={true}
+      context={{ schoolName, adminName }}
       bottomNavItems={schoolNavItems}
       mainNavItems={adminMainNavItems}
     />

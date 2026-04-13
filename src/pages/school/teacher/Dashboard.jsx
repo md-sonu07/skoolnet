@@ -1,3 +1,4 @@
+import { useOutletContext } from 'react-router-dom';
 import {
   DashboardPage,
   MetricCard,
@@ -7,10 +8,13 @@ import {
 } from '../../../components/common/DashboardPrimitives';
 
 export default function TeacherDashboard() {
+  const { user } = useOutletContext();
+  const userName = user?.name?.split(' ').slice(0, 2).join(' ') || 'Teacher';
+  
   return (
     <DashboardPage
       eyebrow="Teacher dashboard"
-      title="Dashboard"
+      title={`Hi ${userName}`}
     >
       <MetricGrid>
         <MetricCard icon="school" label="My Classes" value="4" change="2 Sections" helper="Assigned by admin" />

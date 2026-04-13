@@ -1,3 +1,4 @@
+import { useOutletContext } from 'react-router-dom';
 import {
   DashboardPage,
   MetricCard,
@@ -6,11 +7,12 @@ import {
 } from '../../components/common/DashboardPrimitives';
 
 export default function SchoolOverview() {
+  const { schoolName, adminName } = useOutletContext();
+  
   return (
     <DashboardPage
-      eyebrow="School snapshot"
-      title="Overview"
-      // description="A quick summary of admissions, classes, faculty coordination, and daily school activity."
+      eyebrow="School dashboard"
+      title={`${schoolName || 'Overview'}`}
     >
       <MetricGrid>
         <MetricCard icon="group" label="Enrolled students" value="1,284" change="+72 this session" helper="All classes combined" />

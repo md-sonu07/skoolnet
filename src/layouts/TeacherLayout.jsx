@@ -28,24 +28,24 @@ export default function TeacherLayout() {
     userAvatar: teacher.avatar,
     searchPlaceholder: 'Search students, classes, or subjects...',
     quickActions: [
-      { icon: 'notifications' },
-      { icon: 'mail' },
+      { icon: 'notifications', to: 'notices' },
+      { icon: 'mail', to: 'messages' },
     ],
   };
 
   const teacherMainNavItems = [
     { label: 'Dashboard', icon: 'dashboard', to: 'dashboard' },
-    { label: 'Courses', icon: 'school', to: 'courses' },
-    { label: 'Students', icon: 'group', to: 'students' },
+    { label: 'My Classes', icon: 'school', to: 'my-classes' },
+    { label: 'Students', icon: 'group', to: 'my-students' },
     { label: 'Attendance', icon: 'monitoring', to: 'attendance' },
   ];
 
   return (
     <DashboardShell
       topbar={<TeacherTopbar {...teacherHeader} />}
-      sidebar={<TeacherSidebar {...teacherSidebarContent} navItems={teacherNavItems} teacherId={teacherId} />}
+      sidebar={<TeacherSidebar {...teacherSidebarContent} navItems={teacherNavItems} teacherId={teacherId} userRole={teacher.role} />}
       showBottomNav={true}
-      context={{ user: teacher }}
+      context={{ user: teacher, teacherName: teacher.name }}
       bottomNavItems={teacherNavItems}
       mainNavItems={teacherMainNavItems}
     />
