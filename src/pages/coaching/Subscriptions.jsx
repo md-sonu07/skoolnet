@@ -23,7 +23,7 @@ const plans = [
   { id: 2, name: 'NEET Yearly', duration: '12 months', price: 25000, students: 320, features: ['All video lectures', 'Study materials', 'Mock tests', 'Live classes'], status: 'active' },
   { id: 3, name: 'JEE Complete', duration: '12 months', price: 35000, students: 280, features: ['All video lectures', 'Study materials', 'Mock tests', 'Live classes', 'Doubt solving'], status: 'active' },
   { id: 4, name: 'Coding Pro', duration: '3 months', price: 15000, students: 106, features: ['Video courses', 'Projects', 'Certificate'], status: 'active' },
-  { id: 5, name: 'Trial', duration: '7 days', price: 0, students: 54,Features: ['Limited videos', 'Sample tests'], status: 'active' },
+  { id: 5, name: 'Trial', duration: '7 days', price: 0, students: 54, features: ['Limited videos', 'Sample tests'], status: 'active' },
 ];
 
 export default function Subscriptions() {
