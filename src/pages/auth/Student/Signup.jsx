@@ -101,7 +101,7 @@ export default function StudentSignup() {
           </div>
 
           {/* Parent Name & Phone (Optional) - Side by side */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">Parent Name <span className="text-slate-400">(Optional)</span></label>
               <div className="relative">
