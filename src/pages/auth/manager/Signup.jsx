@@ -10,63 +10,65 @@ export default function Signup() {
   const [agreeTerms, setAgreeTerms] = useState(false);
 
   return (
-    <div className="space-y-6">
-      <div className="text-center mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-primary mx-auto mb-4 flex items-center justify-center shadow-lg shadow-primary/20">
-          <AppIcon name="dashboard" size={24} className="text-white" />
-        </div>
+    <div className="space-y-5 md:space-y-6">
+      {/* Header */}
+      <div className="text-center mb-6 md:mb-8">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400 mb-2">Manager Portal</p>
-        <h1 className="text-2xl md:text-3xl font-bold text-slate-950">Create account</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Create account</h1>
         <p className="text-sm text-slate-500 mt-2">
           Start managing your platform today
         </p>
       </div>
 
+      {/* Form */}
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         <div className="space-y-4">
+          {/* Full Name */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
             <div className="relative">
-              <AppIcon name="person" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <AppIcon name="person" size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+                className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white/80"
                 placeholder="Enter your full name"
               />
             </div>
           </div>
 
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
             <div className="relative">
-              <AppIcon name="mail" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <AppIcon name="mail" size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+                className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white/80"
                 placeholder="Enter your email"
               />
             </div>
           </div>
 
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
             <div className="relative">
-              <AppIcon name="lock" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <AppIcon name="lock" size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-10 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+                className="w-full pl-11 pr-11 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white/80"
                 placeholder="Create a password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
               >
                 <AppIcon name={showPassword ? 'visibility_off' : 'visibility'} size={18} />
               </button>
@@ -77,6 +79,7 @@ export default function Signup() {
           </div>
         </div>
 
+        {/* Terms Checkbox */}
         <div className="flex items-start gap-2">
           <button
             type="button"
@@ -95,15 +98,18 @@ export default function Signup() {
           </span>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={!agreeTerms}
-          className="w-full py-3 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
+          <AppIcon name="person_add" size={18} />
           Create account
         </button>
       </form>
 
+      {/* Divider */}
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-slate-200"></div>
@@ -113,6 +119,7 @@ export default function Signup() {
         </div>
       </div>
 
+      {/* Social Signup */}
       <div className="grid grid-cols-2 gap-3">
         <button className="py-3 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
           <AppIcon name="public" size={18} />
@@ -124,6 +131,7 @@ export default function Signup() {
         </button>
       </div>
 
+      {/* Sign In Link */}
       <p className="text-center text-sm text-slate-500">
         Already have an account?{' '}
         <Link to="/auth/manager/login" className="text-primary font-medium hover:underline">
