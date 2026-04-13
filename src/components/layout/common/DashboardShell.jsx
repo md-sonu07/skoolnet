@@ -18,17 +18,17 @@ export default function DashboardShell({ topbar: Topbar, sidebar: Sidebar, showB
         />
       )}
       
-      {/* Sidebar - hidden on mobile by default */}
+      {/* Sidebar - fixed position to stay in place when scrolling */}
       <div className={`
-        fixed md:relative md:block
-        left-0 top-0 z-50 md:z-auto
+        fixed left-0 top-0 z-50
         transition-transform duration-300 ease-in-out
-        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        h-screen
+        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:block'}
       `}>
         {Sidebar}
       </div>
       
-      <main className="md:ml-64 min-h-screen">
+      <main className="ml-0 md:ml-64 min-h-screen">
         {/* Topbar with hamburger */}
         <div className="fixed top-0 right-0 left-0 md:left-64 z-40">
           <div className="md:hidden p-2">
