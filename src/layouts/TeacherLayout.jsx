@@ -33,10 +33,21 @@ export default function TeacherLayout() {
     ],
   };
 
+  const teacherMainNavItems = [
+    { label: 'Dashboard', icon: 'dashboard', to: 'dashboard' },
+    { label: 'Courses', icon: 'school', to: 'courses' },
+    { label: 'Students', icon: 'group', to: 'students' },
+    { label: 'Attendance', icon: 'monitoring', to: 'attendance' },
+  ];
+
   return (
     <DashboardShell
       topbar={<TeacherTopbar {...teacherHeader} />}
       sidebar={<TeacherSidebar {...teacherSidebarContent} navItems={teacherNavItems} teacherId={teacherId} />}
+      showBottomNav={true}
+      context={{ user: teacher }}
+      bottomNavItems={teacherNavItems}
+      mainNavItems={teacherMainNavItems}
     />
   );
 }

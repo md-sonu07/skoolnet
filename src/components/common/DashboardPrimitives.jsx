@@ -18,13 +18,13 @@ const badgeTones = {
 export function DashboardPage({ eyebrow, title, description, actions, children }) {
   return (
     <section className="space-y-8">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
           <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">{eyebrow}</p>
-          <h2 className="text-3xl font-['Manrope'] font-extrabold text-on-surface tracking-tight">{title}</h2>
-          <p className="text-on-surface-variant mt-1 font-medium">{description}</p>
+          <h2 className="text-2xl sm:text-3xl font-['Manrope'] font-extrabold text-on-surface tracking-tight">{title}</h2>
+          <p className="text-on-surface-variant mt-1 font-medium text-sm">{description}</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-2 justify-center">
           {actions}
         </div>
       </div>

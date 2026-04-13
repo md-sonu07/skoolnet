@@ -33,6 +33,13 @@ export default function CoachingTeacherLayout() {
     ],
   };
 
+  const teacherMainNavItems = [
+    { label: 'Dashboard', icon: 'dashboard', to: 'dashboard' },
+    { label: 'Courses', icon: 'school', to: 'courses' },
+    { label: 'Students', icon: 'group', to: 'students' },
+    { label: 'Marks', icon: 'grade', to: 'marks' },
+  ];
+
   return (
     <DashboardShell
       topbar={<CoachingTeacherTopbar {...teacherHeader} />}
@@ -40,6 +47,7 @@ export default function CoachingTeacherLayout() {
       showBottomNav={true}
       context={{ user: teacher }}
       bottomNavItems={coachingTeacherNavItems}
+      mainNavItems={teacherMainNavItems}
     />
   );
 }

@@ -1,5 +1,7 @@
 export const coachingNavItems = [
   { label: 'Overview', icon: 'dashboard', to: 'overview' },
+  { label: 'Profile', icon: 'person', to: 'profile' },
+  { label: 'Notices', icon: 'campaign', to: 'notices' },
   { label: 'Students', icon: 'group', to: 'students' },
   { label: 'Teachers', icon: 'school', to: 'teachers' },
   { label: 'Courses', icon: 'menu_book', to: 'courses' },
@@ -22,9 +24,9 @@ export const coachingHeader = {
   userAvatar: 'https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff&size=128',
   searchPlaceholder: 'Search students, courses, or payments...',
   quickActions: [
-    { icon: 'notifications' },
-    { icon: 'add' },
-    { icon: 'settings' },
+    { icon: 'notifications', to: 'notices' },
+    { icon: 'add', to: 'students' },
+    { icon: 'settings', to: 'settings' },
   ],
 };
 

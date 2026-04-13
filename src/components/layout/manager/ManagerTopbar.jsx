@@ -9,17 +9,17 @@ export default function ManagerTopbar({
   quickActions = [] 
 }) {
   return (
-    <header className="h-14 md:h-16 bg-white/70 backdrop-blur-xl flex items-center justify-between px-3 md:px-8 border-b border-slate-100 font-['Manrope'] tracking-tight">
+    <header className="h-12 md:h-16 bg-white/70 backdrop-blur-xl flex items-center justify-between px-2 md:px-8 border-b border-slate-100 font-['Manrope'] tracking-tight">
       <div className="flex items-center flex-1 max-w-xl">
-        <div className="md:hidden flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-            <AppIcon name="dashboard" size={18} className="text-white" />
+        <div className="md:hidden flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+            <AppIcon name="dashboard" size={16} className="text-white" />
           </div>
           <div>
-            <h1 className="font-['Manrope'] font-extrabold text-on-surface text-md tracking-tight">
+            <h1 className="font-['Manrope'] font-extrabold text-on-surface text-sm tracking-tight">
               {title}
             </h1>
-            <p className="text-[9px] text-on-surface-variant uppercase tracking-widest font-bold">
+            <p className="text-[8px] text-on-surface-variant uppercase tracking-widest font-bold">
               {userRole}
             </p>
           </div>
@@ -34,11 +34,11 @@ export default function ManagerTopbar({
         </div>
       </div>
       
-      <div className="flex items-center gap-2 md:gap-6">
-        <div className="flex items-center gap-1 md:gap-4 text-on-surface-variant">
+      <div className="flex items-center gap-1 md:gap-6">
+        <div className="hidden md:flex items-center gap-1 md:gap-4 text-on-surface-variant">
           {quickActions.map((action, index) => (
             <button key={index} className="p-1.5 md:p-2 rounded-full transition-all hover:bg-slate-100">
-              <AppIcon name={action.icon} size={16} />
+              <AppIcon name={action.icon} size={18} />
             </button>
           ))}
         </div>

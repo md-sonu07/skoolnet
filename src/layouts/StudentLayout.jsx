@@ -35,10 +35,21 @@ export default function StudentLayout() {
     ],
   };
 
+  const studentMainNavItems = [
+    { label: 'Home', icon: 'dashboard', to: 'dashboard' },
+    { label: 'Profile', icon: 'person', to: 'profile' },
+    { label: 'Attendance', icon: 'monitoring', to: 'attendance' },
+    { label: 'Results', icon: 'grade', to: 'results' },
+  ];
+
   return (
     <DashboardShell
       topbar={<StudentTopbar {...studentHeader} />}
       sidebar={<StudentSidebar {...studentSidebarContent} navItems={studentNavItems} studentId={studentId} />}
+      showBottomNav={true}
+      context={{ user: student }}
+      bottomNavItems={studentNavItems}
+      mainNavItems={studentMainNavItems}
     />
   );
 }

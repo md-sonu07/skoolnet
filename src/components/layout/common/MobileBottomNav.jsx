@@ -2,17 +2,22 @@ import { useState } from 'react';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import AppIcon from '../../common/AppIcon';
 
-export default function MobileBottomNav({ onOpenSidebar, navItems = [] }) {
+export default function MobileBottomNav({ onOpenSidebar, navItems = [], mainNavItems = [] }) {
   const location = useLocation();
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   
-  const bottomNavItems = [
+  // Default main nav items - can be overridden by mainNavItems prop
+  const defaultMainNavItems = [
     { label: 'Home', icon: 'home', to: 'dashboard' },
     { label: 'Courses', icon: 'school', to: 'courses' },
     { label: 'Assignment', icon: 'folder_open', to: 'assignments' },
     { label: 'Results', icon: 'grade', to: 'results' },
-    { label: 'More', icon: showMoreMenu ? 'close' : 'menu', action: 'toggleMenu' },
   ];
+  
+  // Use prop if provided, otherwise use defaults
+  const bottomNavItems = mainNavItems.length > 0 
+    ? [...mainNavItems, { label: 'Menu', icon: showMoreMenu ? 'close' : 'menu', action: 'toggleMenu' }]
+    : [...defaultMainNavItems, { label: 'Menu', icon: showMoreMenu ? 'close' : 'menu', action: 'toggleMenu' }];
 
   const handleClick = (item) => {
     if (item.action === 'toggleMenu') {
@@ -125,18 +130,6 @@ export default function MobileBottomNav({ onOpenSidebar, navItems = [] }) {
                 );
               })}
             </div>
-            {/* <div className="p-3 border-t border-slate-100 bg-slate-50">
-              <button
-                onClick={() => {
-                  setShowMoreMenu(false);
-                  if (onOpenSidebar) onOpenSidebar();
-                }}
-                className="flex items-center justify-center gap-2 w-full py-2 text-sm text-slate-600 hover:text-primary"
-              >
-                <AppIcon name="menu" size={18} />
-                <span>Open Full Menu</span>
-              </button>
-            </div> */}
           </div>
         </div>
       )}

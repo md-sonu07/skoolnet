@@ -3,7 +3,7 @@ import AppIcon from '../../common/AppIcon';
 
 export default function SchoolSidebar({ badge, title, navItems }) {
   return (
-    <aside className="h-screen w-64 fixed left-0 top-0 glass-sidebar flex flex-col py-6 z-[60] font-['Inter'] text-sm font-medium">
+    <aside className="hidden md:flex fixed left-0 top-0 h-screen w-64 glass-sidebar flex flex-col py-6 z-[60] font-['Inter'] text-sm font-medium">
       <div className="px-6 mb-6 flex items-center gap-3 shrink-0">
         <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
           <AppIcon name="school" size={20} className="text-white" />

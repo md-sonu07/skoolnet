@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
@@ -28,6 +29,7 @@ const recentEnrollments = [
 ];
 
 export default function CoachingDashboard() {
+  const { coachingName } = useOutletContext();
   const [filter, setFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -64,15 +66,9 @@ export default function CoachingDashboard() {
   return (
     <DashboardPage
       eyebrow="Coaching dashboard"
-      title="Overview"
-      actions={
-        <button className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
-          <AppIcon name="add" size={16} />
-          Add Student
-        </button>
-      }
+      title={coachingName || 'Overview'}
     >
-      <MetricGrid>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
         {dashboardStats.map((stat, index) => (
           <MetricCard
             key={index}
@@ -84,7 +80,7 @@ export default function CoachingDashboard() {
             tone={stat.tone}
           />
         ))}
-      </MetricGrid>
+      </div>
 
       <SectionCard title="Recent Enrollments" description="Latest student enrollments and payments">
         <div className="mb-6 flex flex-col sm:flex-row gap-4">

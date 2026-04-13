@@ -33,6 +33,13 @@ export default function CoachingStudentLayout() {
     ],
   };
 
+  const studentMainNavItems = [
+    { label: 'Home', icon: 'dashboard', to: 'dashboard' },
+    { label: 'Courses', icon: 'school', to: 'courses' },
+    { label: 'Assignments', icon: 'folder_open', to: 'assignments' },
+    { label: 'Results', icon: 'grade', to: 'results' },
+  ];
+
   return (
     <DashboardShell
       topbar={<CoachingStudentTopbar {...studentHeader} />}
@@ -40,6 +47,7 @@ export default function CoachingStudentLayout() {
       showBottomNav={true}
       context={{ user: student }}
       bottomNavItems={coachingStudentNavItems}
+      mainNavItems={studentMainNavItems}
     />
   );
 }

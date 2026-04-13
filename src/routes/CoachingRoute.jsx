@@ -5,7 +5,9 @@ import Attendance from '../pages/coaching/Attendance';
 import Content from '../pages/coaching/Content';
 import Courses from '../pages/coaching/Courses';
 import Dashboard from '../pages/coaching/Dashboard';
+import Notices from '../pages/coaching/Notices';
 import Payments from '../pages/coaching/Payments';
+import Profile from '../pages/coaching/Profile';
 import Results from '../pages/coaching/Results';
 import Schedule from '../pages/coaching/Schedule';
 import Settings from '../pages/coaching/Settings';
@@ -19,6 +21,8 @@ const coachingRoutes = (
   <Route path="/dashboard/coaching" element={<CoachingLayout />}>
     <Route index element={<Navigate to="overview" replace />} />
     <Route path="overview" element={<Dashboard />} />
+    <Route path="profile" element={<Profile />} />
+    <Route path="notices" element={<Notices />} />
     <Route path="students" element={<Students />} />
     <Route path="teachers" element={<Teachers />} />
     <Route path="courses" element={<Courses />} />
