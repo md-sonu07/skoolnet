@@ -28,15 +28,18 @@ export default function CoachingTeacherLayout() {
     userAvatar: teacher.avatar,
     searchPlaceholder: 'Search students, courses, assignments...',
     quickActions: [
-      { icon: 'notifications' },
-      { icon: 'mail' },
+      { icon: 'notifications', to: 'notices' },
+      { icon: 'mail', to: 'messages' },
     ],
   };
 
   return (
     <DashboardShell
       topbar={<CoachingTeacherTopbar {...teacherHeader} />}
-      sidebar={<CoachingTeacherSidebar {...coachingTeacherSidebarContent} navItems={coachingTeacherNavItems} teacherId={teacherId} />}
+      sidebar={<CoachingTeacherSidebar {...coachingTeacherSidebarContent} navItems={coachingTeacherNavItems} teacherId={teacherId} userRole={teacher.role} />}
+      showBottomNav={true}
+      context={{ user: teacher }}
+      bottomNavItems={coachingTeacherNavItems}
     />
   );
 }

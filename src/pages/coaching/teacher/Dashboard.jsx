@@ -1,3 +1,4 @@
+import { useOutletContext } from 'react-router-dom';
 import {
   DashboardPage,
   MetricCard,
@@ -5,20 +6,29 @@ import {
   SectionCard,
   StatusBadge,
 } from '../../../components/common/DashboardPrimitives';
-import AppIcon from '../../../components/common/AppIcon';
 
 export default function CoachingTeacherDashboard() {
+  const { user } = useOutletContext();
+  const userName = user?.name?.split(' ').slice(1).join(' ') || user?.name || 'Teacher';
+  
   return (
     <DashboardPage
       eyebrow="Teacher dashboard"
-      title="Dashboard"
+      title={`Hi, ${userName}`}
     >
-      <MetricGrid>
-        <MetricCard icon="school" label="My Courses" value="3" change="Active" helper="This semester" />
-        <MetricCard icon="group" label="Total Students" value="280" change="+20" helper="Across all courses" tone="emerald" />
-        <MetricCard icon="monitoring" label="Attendance" value="94%" change="+2%" helper="Today's average" tone="amber" />
-        <MetricCard icon="folder_open" label="Pending" value="5" change="Assignments" helper="Due this week" tone="rose" />
-      </MetricGrid>
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="w-full lg:w-1/3">
+          <MetricCard icon="school" label="My Courses" value="3" change="Active" helper="This semester" className="bg-primary/5 border-primary/20" />
+        </div>
+        
+        <div className="flex-1">
+          <MetricGrid>
+            <MetricCard icon="group" label="Total Students" value="280" change="+20" helper="Across all courses" tone="emerald" />
+            <MetricCard icon="monitoring" label="Attendance" value="94%" change="+2%" helper="Today's average" tone="amber" />
+            <MetricCard icon="folder_open" label="Pending" value="5" change="Assignments" helper="Due this week" tone="rose" />
+          </MetricGrid>
+        </div>
+      </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
         <SectionCard title="Today's Schedule" description="Your classes for today">

@@ -18,12 +18,15 @@ export default function DashboardShell({ topbar: Topbar, sidebar: Sidebar, showB
         />
       )}
       
-      {/* Sidebar - fixed position to stay in place when scrolling */}
+      {/* Sidebar - fixed position, hidden on mobile when showBottomNav */}
       <div className={`
         fixed left-0 top-0 z-50
         transition-transform duration-300 ease-in-out
         h-screen
-        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:block'}
+        ${showBottomNav 
+          ? '-translate-x-full md:translate-x-0 md:block' 
+          : mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:block'
+        }
       `}>
         {Sidebar}
       </div>

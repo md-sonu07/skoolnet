@@ -6,6 +6,7 @@ export const coachingTeacherNavItems = [
   { label: 'Assignments', icon: 'folder_open', to: 'assignments' },
   { label: 'Notes', icon: 'description', to: 'notes' },
   { label: 'Marks', icon: 'grade', to: 'marks' },
+  { label: 'Results', icon: 'assignment', to: 'results' },
   { label: 'Schedule', icon: 'schedule', to: 'schedule' },
   { label: 'Notices', icon: 'campaign', to: 'notices' },
   { label: 'Messages', icon: 'chat', to: 'messages' },

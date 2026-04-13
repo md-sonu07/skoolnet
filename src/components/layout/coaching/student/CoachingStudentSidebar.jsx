@@ -3,7 +3,7 @@ import AppIcon from '../../../common/AppIcon';
 
 export default function CoachingStudentSidebar({ badge, title, navItems, studentId, onClose, userRole }) {
   return (
-    <aside className="h-screen w-64 glass-sidebar flex flex-col py-6 font-['Inter'] text-sm font-medium">
+    <aside className="hidden md:block h-screen w-64 glass-sidebar flex flex-col py-6 font-['Inter'] text-sm font-medium">
       <div className="px-6 mb-4 flex items-center gap-3 shrink-0">
         {onClose && (
           <button onClick={onClose} className="md:hidden p-1 -ml-2">

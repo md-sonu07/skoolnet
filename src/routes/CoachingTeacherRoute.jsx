@@ -21,8 +21,10 @@ const coachingTeacherRoutes = (
     <Route path="assignments" element={<CoachingTeacherAssignments />} />
     <Route path="notes" element={<CoachingTeacherNotes />} />
     <Route path="marks" element={<CoachingTeacherMarks />} />
+    <Route path="results" element={<CoachingTeacherMarks />} />
     <Route path="schedule" element={<CoachingTeacherSchedule />} />
     <Route path="notices" element={<CoachingTeacherNotices />} />
+    <Route path="messages" element={<CoachingTeacherNotices />} />
     <Route path="profile" element={<CoachingTeacherProfile />} />
   </Route>
 );
