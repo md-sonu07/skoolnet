@@ -34,7 +34,7 @@ export default function DashboardShell({ topbar: Topbar, sidebar: Sidebar, showB
           {Topbar}
         </div>
         
-        <div className={`pt-14 md:pt-24 pb-20 md:pb-12 px-4 md:px-8 max-w-[1600px] mx-auto bg-background/30 ${showBottomNav ? 'min-h-screen' : ''}`}>
+        <div className={`pt-20 md:pt-24 pb-28 md:pb-12 px-4 md:px-8 max-w-400 mx-auto bg-background/30 ${showBottomNav ? 'min-h-screen' : ''}`}>
           <Outlet context={context} />
         </div>
         {showBottomNav && <MobileBottomNav onOpenSidebar={openSidebar} />}
