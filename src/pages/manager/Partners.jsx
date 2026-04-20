@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { NavLink } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
@@ -21,7 +22,7 @@ const partnerStats = [
 const partners = [
   {
     id: 1,
-    name: 'Tech Solutions Inc',
+    name: 'Partner 1 - Tech Solutions',
     contact: 'David Kumar',
     email: 'david@techsolutions.com',
     phone: '+91 98765 43210',
@@ -30,11 +31,13 @@ const partners = [
     joinDate: '2023-01-15',
     revenue: '₹3.2L',
     rating: 4.8,
-    lastActive: '2024-03-15'
+    lastActive: '2024-03-15',
+    schools: 5,
+    students: 1250
   },
   {
     id: 2,
-    name: 'Education First',
+    name: 'Partner 2 - Education First',
     contact: 'Sarah Williams',
     email: 'sarah@educationfirst.com',
     phone: '+91 98765 43211',
@@ -43,20 +46,54 @@ const partners = [
     joinDate: '2023-03-22',
     revenue: '₹2.8L',
     rating: 4.5,
-    lastActive: '2024-03-14'
+    lastActive: '2024-03-14',
+    schools: 3,
+    students: 820
   },
   {
     id: 3,
-    name: 'Global Education Hub',
+    name: 'Partner 3 - Global Education Hub',
     contact: 'Michael Chen',
     email: 'michael@gehub.com',
     phone: '+91 98765 43212',
     type: 'Strategic Partner',
-    status: 'offline',
+    status: 'online',
     joinDate: '2024-01-05',
     revenue: '₹1.5L',
     rating: 4.2,
-    lastActive: '2024-03-10'
+    lastActive: '2024-03-10',
+    schools: 2,
+    students: 450
+  },
+  {
+    id: 4,
+    name: 'Partner 4 - Apex Learning',
+    contact: 'John Smith',
+    email: 'john@apexlearning.com',
+    phone: '+91 98765 43213',
+    type: 'Education',
+    status: 'offline',
+    joinDate: '2023-08-12',
+    revenue: '₹1.2L',
+    rating: 4.0,
+    lastActive: '2024-03-08',
+    schools: 2,
+    students: 380
+  },
+  {
+    id: 5,
+    name: 'Partner 5 - Smart Classes',
+    contact: 'Emily Davis',
+    email: 'emily@smartclasses.com',
+    phone: '+91 98765 43214',
+    type: 'Education',
+    status: 'online',
+    joinDate: '2024-02-20',
+    revenue: '₹85K',
+    rating: 4.7,
+    lastActive: '2024-03-14',
+    schools: 1,
+    students: 180
   },
 ];
 
@@ -146,6 +183,46 @@ export default function Partners() {
         })}
       </MetricGrid>
 
+      <SectionCard title="Quick Access" description="Click on a partner to access their dashboard">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          {partners.map((partner) => (
+            <NavLink
+              key={partner.id}
+              to={`/dashboard/partner/overview?partner=${partner.id}`}
+              className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:shadow-lg transition-all group"
+            >
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
+                <AppIcon name="partners" size={24} className="text-primary" />
+              </div>
+              <h3 className="font-semibold text-sm text-slate-900 mb-1 truncate">{partner.name}</h3>
+              <div className="flex items-center gap-3 text-xs text-slate-500 mb-2">
+                <span className="flex items-center gap-1">
+                  <AppIcon name="school" size={12} />
+                  {partner.schools} schools
+                </span>
+                <span className="flex items-center gap-1">
+                  <AppIcon name="group" size={12} />
+                  {partner.students}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-medium ${
+                  partner.status === 'online' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-700'
+                }`}>
+                  <div className={`w-1.5 h-1.5 rounded-full ${
+                    partner.status === 'online' ? 'bg-emerald-500' : 'bg-gray-500'
+                  }`} />
+                  {partner.status}
+                </span>
+                <span className="text-xs text-primary font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Open <AppIcon name="arrow_forward" size={12} />
+                </span>
+              </div>
+            </NavLink>
+          ))}
+        </div>
+      </SectionCard>
+
       <SectionCard title="All Partners" description="Complete list of business partners with their details">
         <div className="mb-6 flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
@@ -180,17 +257,18 @@ export default function Partners() {
             <thead>
               <tr className="border-b border-slate-200">
                 <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Partner</th>
-                <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Contact</th>
+                <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Schools</th>
+                <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Students</th>
                 <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Revenue</th>
-                <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Last Active</th>
                 <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+                <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Contact</th>
                 <th className="text-left py-2 pl-7 pr-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredPartners.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="py-8 text-center text-slate-500">
+                  <td colSpan="7" className="py-8 text-center text-slate-500">
                     No partners found matching your criteria.
                   </td>
                 </tr>
@@ -204,16 +282,19 @@ export default function Partners() {
                       </div>
                     </td>
                     <td className="py-3 px-3">
-                      <div>
-                        <p className="font-medium text-sm text-slate-900">{partner.contact}</p>
-                        <p className="text-xs text-slate-500 truncate max-w-[150px]">{partner.email}</p>
+                      <div className="flex items-center gap-1.5">
+                        <AppIcon name="school" size={14} className="text-blue-500" />
+                        <p className="font-medium text-sm text-slate-900">{partner.schools}</p>
+                      </div>
+                    </td>
+                    <td className="py-3 px-3">
+                      <div className="flex items-center gap-1.5">
+                        <AppIcon name="group" size={14} className="text-purple-500" />
+                        <p className="font-medium text-sm text-slate-900">{partner.students}</p>
                       </div>
                     </td>
                     <td className="py-3 px-3">
                       <p className="font-semibold text-sm text-slate-900">{partner.revenue}</p>
-                    </td>
-                    <td className="py-3 px-3">
-                      <p className="text-sm text-slate-600">{partner.lastActive}</p>
                     </td>
                     <td className="py-3 px-3">
                       <div className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${
@@ -225,16 +306,26 @@ export default function Partners() {
                         <span className="capitalize">{partner.status}</span>
                       </div>
                     </td>
-                    <td className="py-3 px-3 ">
+                    <td className="py-3 px-3">
+                      <div>
+                        <p className="font-medium text-sm text-slate-900">{partner.contact}</p>
+                        <p className="text-xs text-slate-500 truncate max-w-[150px]">{partner.email}</p>
+                      </div>
+                    </td>
+                    <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
+                        <NavLink
+                          to={`/dashboard/partner/overview?partner=${partner.id}`}
+                          className="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-medium hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-1"
+                        >
+                          <AppIcon name="dashboard" size={12} />
+                          Dashboard
+                        </NavLink>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors">
                           <AppIcon name="visibility" size={14} className="text-slate-600" />
                         </button>
                         <button className="p-2 rounded hover:bg-slate-100 transition-colors">
                           <AppIcon name="edit" size={14} className="text-slate-600" />
-                        </button>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors">
-                          <AppIcon name="more_vert" size={14} className="text-slate-600" />
                         </button>
                       </div>
                     </td>

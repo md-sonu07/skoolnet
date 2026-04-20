@@ -128,6 +128,7 @@ import {
   UserPlus,
   Building,
   Badge,
+  Handshake,
 } from 'lucide-react';
 
 const iconMap = {
@@ -284,6 +285,9 @@ const iconMap = {
   phone: Phone,
   business: Building,
   badge: Badge,
+  partner: Handshake,
+  partners: Handshake,
+  pending: Clock,
 };
 
 export default function AppIcon({ name, className, strokeWidth = 2, ...props }) {

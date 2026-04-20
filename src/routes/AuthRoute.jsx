@@ -8,6 +8,8 @@ import TeacherLogin from '../pages/auth/Teacher/Login';
 import TeacherSignup from '../pages/auth/Teacher/Signup';
 import StudentLogin from '../pages/auth/Student/Login';
 import StudentSignup from '../pages/auth/Student/Signup';
+import PartnerLogin from '../pages/auth/Partner/Login';
+import PartnerRegister from '../pages/auth/Partner/Register';
 
 const authRoutes = (
   <Route path="/auth" element={<AuthLayout />}>
@@ -19,6 +21,8 @@ const authRoutes = (
     <Route path="teacher/signup" element={<TeacherSignup />} />
     <Route path="student/login" element={<StudentLogin />} />
     <Route path="student/signup" element={<StudentSignup />} />
+    <Route path="partner/login" element={<PartnerLogin />} />
+    <Route path="partner/register" element={<PartnerRegister />} />
   </Route>
 );
 
