@@ -52,7 +52,7 @@ export default function CoachingTeacherTopbar({
         
         <NavLink 
           to="profile" 
-          className="flex items-center gap-2 md:gap-3 hover:bg-slate-100 rounded-full p-1 transition-all"
+          className="flex items-center gap-2 md:gap-3 hover:bg-slate-100 rounded-xl py-1 px-1.5 transition-all"
         >
           <div className="text-right hidden md:block">
             <p className="text-xs font-bold text-on-surface">{userName}</p>

@@ -26,22 +26,22 @@ export default function SiteNavbar() {
           </Link>
         </div>
 
-          <div className="hidden gap-8 md:flex">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.href}
-                className={({ isActive }) =>
-                  isActive
-                    ? 'border-b-2 border-primary font-headline text-sm font-bold text-primary transition-all'
-                    : 'font-headline text-sm text-on-surface-variant transition-all hover:text-primary'
-                }
-                end={item.href === '/'}
-                to={item.href}
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
+        <div className="hidden gap-8 md:flex">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.href}
+              className={({ isActive }) =>
+                isActive
+                  ? 'border-b-2 border-primary font-headline text-sm font-bold text-primary transition-all'
+                  : 'font-headline text-sm text-on-surface-variant transition-all hover:text-primary'
+              }
+              end={item.href === '/'}
+              to={item.href}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
 
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -51,12 +51,11 @@ export default function SiteNavbar() {
             >
               <AppIcon name="notifications" size={20} />
             </button>
-            <Link to="/dashboard/manager/overview" className="h-10 w-10 overflow-hidden rounded-full border-2 border-primary/10">
-              <img
-                alt="User profile"
-                className="h-full w-full object-cover"
-                src={profileImage}
-              />
+            <Link 
+              to="/dashboard/manager/overview" 
+              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary/10 bg-slate-100 transition-all hover:bg-slate-200 active:scale-95"
+            >
+              <AppIcon name="person" size={20} className="text-slate-500" />
             </Link>
           </div>
         </div>

@@ -288,6 +288,9 @@ const iconMap = {
 
 export default function AppIcon({ name, className, strokeWidth = 2, ...props }) {
   const Icon = iconMap[name] ?? CircleHelp;
+  if (Icon === CircleHelp) {
+    console.warn(`Icon not found fix it: ${name}`);
+  }
 
   return <Icon aria-hidden="true" className={className} strokeWidth={strokeWidth} {...props} />;
 }
