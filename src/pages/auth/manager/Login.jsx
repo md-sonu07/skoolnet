@@ -1,12 +1,48 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { managerLogin, clearError } from '../../../redux/thunk/managerAuthThunk';
+import { selectManagerAuth } from '../../../redux/slice/managerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error, isAuthenticated } = useSelector(selectManagerAuth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard/manager');
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await dispatch(managerLogin(formData));
+    if (result.success) {
+      navigate('/dashboard/manager');
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -18,20 +54,28 @@ export default function Login() {
         <p className="text-sm text-slate-500 mt-1">Sign in to continue to Skoolnet</p>
       </div>
 
-      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-xs text-red-600">{error}</p>
+        </div>
+      )}
+
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Email</label>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Username</label>
             <div className="relative">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                <AppIcon name="mail" size={16} />
+                <AppIcon name="person" size={16} />
               </div>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
                 className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="Enter your email"
+                placeholder="Enter your username"
+                required
               />
             </div>
           </div>
@@ -49,10 +93,12 @@ export default function Login() {
               </div>
               <input
                 type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 placeholder="Enter password"
+                required
               />
               <button
                 type="button"
@@ -76,9 +122,17 @@ export default function Login() {
           </div>
         </div>
 
-        <button type="submit" className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2">
-          <AppIcon name="login" size={16} />
-          Sign in to Dashboard
+        <button 
+          type="submit" 
+          disabled={isLoading}
+          className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+        >
+          {isLoading ? (
+            <AppIcon name="sync" size={16} className="animate-spin" />
+          ) : (
+            <AppIcon name="login" size={16} />
+          )}
+          {isLoading ? 'Signing in...' : 'Sign in to Dashboard'}
         </button>
       </form>
 

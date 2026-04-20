@@ -1,13 +1,72 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { managerRegister, clearError } from '../../../redux/thunk/managerAuthThunk';
+import { selectManagerAuth } from '../../../redux/slice/managerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 
 export default function Signup() {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    password_confirm: '',
+    first_name: '',
+    last_name: '',
+    phone: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [validationError, setValidationError] = useState('');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error, isAuthenticated } = useSelector(selectManagerAuth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard/manager');
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setValidationError('');
+
+    if (formData.password !== formData.password_confirm) {
+      setValidationError('Passwords do not match');
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setValidationError('Password must be at least 8 characters');
+      return;
+    }
+
+    if (!agreeTerms) {
+      setValidationError('Please agree to the terms and conditions');
+      return;
+    }
+
+    const { password_confirm, ...registerData } = formData;
+    const result = await dispatch(managerRegister(registerData));
+    if (result.success) {
+      navigate('/dashboard/manager');
+    }
+  };
 
   return (
     <div className="space-y-5">
@@ -19,20 +78,55 @@ export default function Signup() {
         <p className="text-sm text-slate-500 mt-1">Start managing your school today</p>
       </div>
 
-      <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+      {(error || validationError) && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-xs text-red-600">{error || validationError}</p>
+        </div>
+      )}
+
+      <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="space-y-2.5">
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">First Name</label>
+              <input
+                type="text"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleChange}
+                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                placeholder="First name"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Last Name</label>
+              <input
+                type="text"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                placeholder="Last name"
+                required
+              />
+            </div>
+          </div>
+
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Full Name</label>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Username</label>
             <div className="relative">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                 <AppIcon name="person" size={16} />
               </div>
               <input
                 type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
                 className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="Your full name"
+                placeholder="Choose a username"
+                required
               />
             </div>
           </div>
@@ -45,10 +139,29 @@ export default function Signup() {
               </div>
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 placeholder="email@example.com"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Phone (Optional)</label>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <AppIcon name="phone" size={16} />
+              </div>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                placeholder="Enter phone number"
               />
             </div>
           </div>
@@ -61,10 +174,12 @@ export default function Signup() {
               </div>
               <input
                 type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 placeholder="Min 8 characters"
+                required
               />
               <button
                 type="button"
@@ -73,6 +188,24 @@ export default function Signup() {
               >
                 <AppIcon name={showPassword ? 'visibility_off' : 'visibility'} size={16} />
               </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Confirm Password</label>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <AppIcon name="lock" size={16} />
+              </div>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password_confirm"
+                value={formData.password_confirm}
+                onChange={handleChange}
+                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                placeholder="Confirm password"
+                required
+              />
             </div>
           </div>
         </div>
@@ -90,9 +223,13 @@ export default function Signup() {
           </span>
         </div>
 
-        <button type="submit" disabled={!agreeTerms} className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
-          <AppIcon name="person_add" size={16} />
-          Create account
+        <button type="submit" disabled={isLoading} className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
+          {isLoading ? (
+            <AppIcon name="sync" size={16} className="animate-spin" />
+          ) : (
+            <AppIcon name="person_add" size={16} />
+          )}
+          {isLoading ? 'Creating account...' : 'Create account'}
         </button>
       </form>
 
