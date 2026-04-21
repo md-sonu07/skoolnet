@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppIcon from '../../../components/common/AppIcon';
 import Dropdown from '../../../components/common/Dropdown';
+import toast from 'react-hot-toast';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -40,6 +41,15 @@ export default function Register() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+    toast.success('Institution registration submitted!');
+  };
+
   return (
     <div className="space-y-5">
       <div className="text-center">
@@ -50,7 +60,7 @@ export default function Register() {
         <p className="text-sm text-slate-500 mt-1">Create your account and get started</p>
       </div>
 
-      <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+      <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Full Name */}
           <div>

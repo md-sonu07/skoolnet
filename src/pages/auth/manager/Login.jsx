@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { managerLogin, clearError } from '../../../redux/thunk/managerAuthThunk';
 import { selectManagerAuth } from '../../../redux/slice/managerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
+import toast from 'react-hot-toast';
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +41,10 @@ export default function Login() {
     e.preventDefault();
     const result = await dispatch(managerLogin(formData));
     if (result.success) {
+      toast.success('Logged in successfully!');
       navigate('/dashboard/manager');
+    } else {
+      toast.error(result.error || 'Login failed');
     }
   };
 
@@ -54,27 +58,22 @@ export default function Login() {
         <p className="text-sm text-slate-500 mt-1">Sign in to continue to Skoolnet</p>
       </div>
 
-      {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-xs text-red-600">{error}</p>
-        </div>
-      )}
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Username</label>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Email Address</label>
             <div className="relative">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                <AppIcon name="person" size={16} />
+                <AppIcon name="mail" size={16} />
               </div>
               <input
-                type="text"
-                name="username"
-                value={formData.username}
+                type="email"
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 required
               />
             </div>

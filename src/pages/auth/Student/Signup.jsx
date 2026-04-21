@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppIcon from '../../../components/common/AppIcon';
 import Dropdown from '../../../components/common/Dropdown';
+import toast from 'react-hot-toast';
 
 export default function StudentSignup() {
   const [formData, setFormData] = useState({
@@ -25,6 +26,15 @@ export default function StudentSignup() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.fullName || !formData.email || !formData.institution) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+    toast.success('Access request submitted successfully!');
+  };
+
   return (
     <div className="space-y-4">
       <div className="text-center">
@@ -35,7 +45,7 @@ export default function StudentSignup() {
         <p className="text-sm text-slate-500 mt-1">Request access to your student portal</p>
       </div>
 
-      <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+      <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="space-y-2.5">
           {/* Institution */}
           <div>

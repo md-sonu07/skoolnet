@@ -8,6 +8,7 @@ import {
   MetricGrid,
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
+import toast from 'react-hot-toast';
 
 const pricingStats = [
   { label: 'Total Plans', value: '12', change: '+2', helper: 'Active pricing plans', tone: 'blue' },
@@ -153,7 +154,10 @@ export default function Pricing() {
           <button 
             type="button" 
             className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2"
-            onClick={() => setShowAddModal(true)}
+            onClick={() => {
+              setShowAddModal(true);
+              toast.success('Custom Plan modal opened');
+            }}
           >
             <AppIcon name="add" size={16} />
             Add Custom Plan
@@ -334,11 +338,23 @@ export default function Pricing() {
                       
                       {activeDropdown === plan.id && (
                         <div className="absolute right-0 bottom-full mb-1 w-48 bg-white rounded-lg border border-slate-200 shadow-lg z-10">
-                          <button className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2">
+                          <button 
+                            onClick={() => {
+                              setActiveDropdown(null);
+                              toast.success(`Editing ${plan.name}...`);
+                            }}
+                            className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2"
+                          >
                             <AppIcon name="edit" size={14} />
                             Edit Plan
                           </button>
-                          <button className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2">
+                          <button 
+                            onClick={() => {
+                              setActiveDropdown(null);
+                              toast.error(`${plan.name} deletion pending confirmation`);
+                            }}
+                            className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+                          >
                             <AppIcon name="delete" size={14} />
                             Delete Plan
                           </button>

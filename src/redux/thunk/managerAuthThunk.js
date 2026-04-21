@@ -20,8 +20,9 @@ export const managerRegister = (userData) => async (dispatch) => {
   dispatch(setLoading(true));
   try {
     const response = await managerAuthAPI.register(userData);
-    dispatch(setCredentials(response.data));
-    return { success: true };
+    const { user, message } = response.data;
+    dispatch(setUser(user));
+    return { success: true, message };
   } catch (error) {
     const message = error.response?.data?.message || 'Registration failed. Please try again.';
     dispatch(setError(message));

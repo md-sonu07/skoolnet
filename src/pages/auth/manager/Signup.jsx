@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { managerRegister, clearError } from '../../../redux/thunk/managerAuthThunk';
 import { selectManagerAuth } from '../../../redux/slice/managerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
+import toast from 'react-hot-toast';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -47,24 +48,27 @@ export default function Signup() {
     setValidationError('');
 
     if (formData.password !== formData.password_confirm) {
-      setValidationError('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
 
     if (formData.password.length < 8) {
-      setValidationError('Password must be at least 8 characters');
+      toast.error('Password must be at least 8 characters');
       return;
-    }
+    }e
 
     if (!agreeTerms) {
-      setValidationError('Please agree to the terms and conditions');
+      toast.error('Please agree to the terms and conditions');
       return;
     }
 
     const { password_confirm, ...registerData } = formData;
     const result = await dispatch(managerRegister(registerData));
     if (result.success) {
-      navigate('/dashboard/manager');
+      toast.success('Account created! Please check your email to verify.');
+      navigate('/auth/manager/login');
+    } else {
+      toast.error(result.error || 'Registration failed');
     }
   };
 
@@ -78,11 +82,6 @@ export default function Signup() {
         <p className="text-sm text-slate-500 mt-1">Start managing your school today</p>
       </div>
 
-      {(error || validationError) && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-xs text-red-600">{error || validationError}</p>
-        </div>
-      )}
 
       <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="space-y-2.5">

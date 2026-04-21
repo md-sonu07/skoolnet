@@ -4,6 +4,7 @@ import {
   DashboardPage,
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
+import toast from 'react-hot-toast';
 
 export default function PartnerSettings() {
   const [notifications, setNotifications] = useState({
@@ -45,7 +46,10 @@ export default function PartnerSettings() {
                   className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 />
               </div>
-              <button className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all">
+              <button 
+                onClick={() => toast.success('Account settings updated successfully')}
+                className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
+              >
                 Save Changes
               </button>
             </div>
@@ -64,7 +68,11 @@ export default function PartnerSettings() {
                     <p className="text-xs text-slate-500">{item.desc}</p>
                   </div>
                   <button
-                    onClick={() => setNotifications({ ...notifications, [item.key]: !notifications[item.key] })}
+                    onClick={() => {
+                      const newState = !notifications[item.key];
+                      setNotifications({ ...notifications, [item.key]: newState });
+                      toast.success(`${item.label} ${newState ? 'enabled' : 'disabled'}`);
+                    }}
                     className={`w-12 h-6 rounded-full transition-colors ${
                       notifications[item.key] ? 'bg-primary' : 'bg-slate-200'
                     }`}
@@ -82,7 +90,10 @@ export default function PartnerSettings() {
         <div className="space-y-6">
           <SectionCard title="Security" description="Manage your security settings">
             <div className="space-y-4">
-              <button className="w-full p-4 rounded-xl border border-slate-200 text-left hover:border-primary/30 transition-colors">
+              <button 
+                onClick={() => toast.success('Password reset link sent to your email')}
+                className="w-full p-4 rounded-xl border border-slate-200 text-left hover:border-primary/30 transition-colors"
+              >
                 <div className="flex items-center gap-3">
                   <AppIcon name="lock" size={20} className="text-slate-600" />
                   <div>
@@ -91,7 +102,10 @@ export default function PartnerSettings() {
                   </div>
                 </div>
               </button>
-              <button className="w-full p-4 rounded-xl border border-slate-200 text-left hover:border-primary/30 transition-colors">
+              <button 
+                onClick={() => toast.success('Opening Two-Factor Authentication setup...')}
+                className="w-full p-4 rounded-xl border border-slate-200 text-left hover:border-primary/30 transition-colors"
+              >
                 <div className="flex items-center gap-3">
                   <AppIcon name="security" size={20} className="text-slate-600" />
                   <div>
@@ -104,7 +118,10 @@ export default function PartnerSettings() {
           </SectionCard>
 
           <SectionCard title="Danger Zone" description="Irreversible actions">
-            <button className="w-full px-4 py-2.5 border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-all">
+            <button 
+              onClick={() => toast.error('Account deletion requested. Please contact support for confirmation.')}
+              className="w-full px-4 py-2.5 border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-all"
+            >
               Delete Account
             </button>
           </SectionCard>

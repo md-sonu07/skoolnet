@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { partnerRegister } from '../../../redux/thunk/partnerAuthThunk';
 import { selectPartnerAuth, clearError } from '../../../redux/slice/partnerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
+import toast from 'react-hot-toast';
 
 export default function PartnerRegister() {
   const [formData, setFormData] = useState({
@@ -46,19 +47,22 @@ export default function PartnerRegister() {
     setPasswordError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setPasswordError('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
 
     if (formData.password.length < 6) {
-      setPasswordError('Password must be at least 6 characters');
+      toast.error('Password must be at least 6 characters');
       return;
     }
 
     const { confirmPassword, agreeTerms, ...registerData } = formData;
     const result = await dispatch(partnerRegister(registerData));
     if (result.success) {
+      toast.success('Partner registered successfully!');
       navigate('/dashboard/partner');
+    } else {
+      toast.error(result.error || 'Registration failed');
     }
   };
 
@@ -72,11 +76,6 @@ export default function PartnerRegister() {
         <p className="text-sm text-slate-500 mt-1">Register to manage schools and coaching centers</p>
       </div>
 
-      {(error || passwordError) && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-xs text-red-600">{error || passwordError}</p>
-        </div>
-      )}
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-3">

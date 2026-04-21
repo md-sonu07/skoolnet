@@ -8,16 +8,16 @@ export const operationsAPI = {
     if (studentId) url += `&student=${studentId}`;
     return api.get(url);
   },
-  markAttendance: (data) => api.post('/operations/attendances/', data),
-  updateAttendance: (id, data) => api.patch(`/operations/attendances/${id}/`, data),
+  markAttendance: (data) => api.post('/operations/attendances', data),
+  updateAttendance: (id, data) => api.patch(`/operations/attendances/${id}`, data),
   
   // Fee Structure
   getFeeStructures: (institutionId) => 
     api.get(`/operations/fee-structures/?institution=${institutionId}`),
-  getFeeStructure: (id) => api.get(`/operations/fee-structures/${id}/`),
-  createFeeStructure: (data) => api.post('/operations/fee-structures/', data),
-  updateFeeStructure: (id, data) => api.patch(`/operations/fee-structures/${id}/`, data),
-  deleteFeeStructure: (id) => api.delete(`/operations/fee-structures/${id}/`),
+  getFeeStructure: (id) => api.get(`/operations/fee-structures/${id}`),
+  createFeeStructure: (data) => api.post('/operations/fee-structures', data),
+  updateFeeStructure: (id, data) => api.patch(`/operations/fee-structures/${id}`, data),
+  deleteFeeStructure: (id) => api.delete(`/operations/fee-structures/${id}`),
   
   // Fee Payment
   getFeePayments: (institutionId, membershipId) => {
@@ -25,8 +25,8 @@ export const operationsAPI = {
     if (membershipId) url += `&membership=${membershipId}`;
     return api.get(url);
   },
-  getFeePayment: (id) => api.get(`/operations/fee-payments/${id}/`),
-  createFeePayment: (data) => api.post('/operations/fee-payments/', data),
+  getFeePayment: (id) => api.get(`/operations/fee-payments/${id}`),
+  createFeePayment: (data) => api.post('/operations/fee-payments', data),
   
   // Notice
   getNotices: (institutionId, batchId) => {
@@ -34,10 +34,10 @@ export const operationsAPI = {
     if (batchId) url += `&for_batch=${batchId}`;
     return api.get(url);
   },
-  getNotice: (id) => api.get(`/operations/notices/${id}/`),
-  createNotice: (data) => api.post('/operations/notices/', data),
-  updateNotice: (id, data) => api.patch(`/operations/notices/${id}/`, data),
-  deleteNotice: (id) => api.delete(`/operations/notices/${id}/`),
+  getNotice: (id) => api.get(`/operations/notices/${id}`),
+  createNotice: (data) => api.post('/operations/notices', data),
+  updateNotice: (id, data) => api.patch(`/operations/notices/${id}`, data),
+  deleteNotice: (id) => api.delete(`/operations/notices/${id}`),
   
   // Application (Student Registrations)
   getApplications: (institutionId, status) => {
@@ -45,8 +45,8 @@ export const operationsAPI = {
     if (status) url += `&status=${status}`;
     return api.get(url);
   },
-  getApplication: (id) => api.get(`/operations/applications/${id}/`),
-  updateApplication: (id, data) => api.patch(`/operations/applications/${id}/`, data),
+  getApplication: (id) => api.get(`/operations/applications/${id}`),
+  updateApplication: (id, data) => api.patch(`/operations/applications/${id}`, data),
 };
 
 export default operationsAPI;

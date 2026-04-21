@@ -5,6 +5,7 @@ import {
   SectionCard,
   StatusBadge,
 } from '../../components/common/DashboardPrimitives';
+import toast from 'react-hot-toast';
 
 const managerInfo = {
   name: 'Alexander Pierce',
@@ -111,15 +112,24 @@ export default function ManagerProfile() {
 
       <SectionCard title="Quick Actions">
         <div className="flex flex-wrap gap-3">
-          <button className="px-4 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+          <button 
+            onClick={() => toast.success('Profile edit mode enabled')}
+            className="px-4 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2"
+          >
             <AppIcon name="edit" size={16} />
             Edit Profile
           </button>
-          <button className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+          <button 
+            onClick={() => toast.success('Password reset link sent to your email')}
+            className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm"
+          >
             <AppIcon name="lock" size={16} />
             Change Password
           </button>
-          <button className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+          <button 
+            onClick={() => toast.success('Redirecting to notification settings...')}
+            className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm"
+          >
             <AppIcon name="notifications" size={16} />
             Notification Settings
           </button>

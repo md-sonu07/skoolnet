@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { partnerLogin } from '../../../redux/thunk/partnerAuthThunk';
 import { selectPartnerAuth, clearError } from '../../../redux/slice/partnerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
+import toast from 'react-hot-toast';
 
 export default function PartnerLogin() {
   const [formData, setFormData] = useState({
@@ -40,7 +41,10 @@ export default function PartnerLogin() {
     e.preventDefault();
     const result = await dispatch(partnerLogin(formData));
     if (result.success) {
+      toast.success('Joined Partner Portal!');
       navigate('/dashboard/partner');
+    } else {
+      toast.error(result.error || 'Login failed');
     }
   };
 
@@ -54,11 +58,6 @@ export default function PartnerLogin() {
         <p className="text-sm text-slate-500 mt-1">Sign in to manage your schools and coaching</p>
       </div>
 
-      {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-xs text-red-600">{error}</p>
-        </div>
-      )}
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-3">

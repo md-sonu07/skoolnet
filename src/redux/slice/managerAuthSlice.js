@@ -12,8 +12,13 @@ const managerAuthSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      state.user = action.payload.user;
-      state.isAuthenticated = true;
+      const payload = action.payload;
+      if (payload.user) {
+        state.user = payload.user;
+        state.isAuthenticated = true;
+      } else if (payload.access) {
+        state.isAuthenticated = true;
+      }
       state.error = null;
     },
     setUser: (state, action) => {

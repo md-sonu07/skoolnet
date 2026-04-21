@@ -1,4 +1,5 @@
 import { Routes } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import appRoutes from './routes/AppRoute';
 import authRoutes from './routes/AuthRoute';
 import coachingRoutes from './routes/CoachingRoute';
@@ -12,18 +13,21 @@ import schoolStudentRoutes from './routes/SchoolStudentRoute';
 
 function App() {
   return (
-    <Routes>
-      {appRoutes}
-      {authRoutes}
-      {managerRoutes}
-      {partnerRoutes}
-      {schoolRoutes}
-      {schoolTeacherRoutes}
-      {schoolStudentRoutes}
-      {coachingRoutes}
-      {coachingTeacherRoutes}
-      {coachingStudentRoutes}
-    </Routes>
+    <>
+      <Toaster position="top-right" reverseOrder={false} />
+      <Routes>
+        {appRoutes}
+        {authRoutes}
+        {managerRoutes}
+        {partnerRoutes}
+        {schoolRoutes}
+        {schoolTeacherRoutes}
+        {schoolStudentRoutes}
+        {coachingRoutes}
+        {coachingTeacherRoutes}
+        {coachingStudentRoutes}
+      </Routes>
+    </>
   );
 }
 

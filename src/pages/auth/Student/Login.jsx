@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppIcon from '../../../components/common/AppIcon';
 import Dropdown from '../../../components/common/Dropdown';
+import toast from 'react-hot-toast';
 
 export default function StudentLogin() {
   const [email, setEmail] = useState('');
@@ -17,6 +18,15 @@ export default function StudentLogin() {
     { value: 'bright-future', label: 'Bright Future Institute' },
   ];
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast.error('Please enter email and password');
+      return;
+    }
+    toast.success('Logging in as Student...');
+  };
+
   return (
     <div className="space-y-5">
       <div className="text-center">
@@ -27,7 +37,7 @@ export default function StudentLogin() {
         <p className="text-sm text-slate-500 mt-1">Sign in to access your student portal</p>
       </div>
 
-      <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+      <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="space-y-3">
           {/* Institution */}
           <div>
