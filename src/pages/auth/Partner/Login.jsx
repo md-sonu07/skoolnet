@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { partnerLogin } from '../../../redux/thunk/partnerAuthThunk';
-import { selectPartnerAuth, clearError } from '../../../redux/slice/partnerAuthSlice';
+import { useSelector } from 'react-redux';
+import { usePartnerAuth } from '../../../hooks/api/usePartnerAuth';
+import { selectPartnerAuth } from '../../../redux/slice/partnerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 import toast from 'react-hot-toast';
 
@@ -14,21 +14,15 @@ export default function PartnerLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, isAuthenticated } = useSelector(selectPartnerAuth);
+  const { isAuthenticated } = useSelector(selectPartnerAuth);
+  const { login, isLoggingIn } = usePartnerAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard/partner');
     }
   }, [isAuthenticated, navigate]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearError());
-    };
-  }, [dispatch]);
 
   const handleChange = (e) => {
     setFormData({
@@ -39,12 +33,12 @@ export default function PartnerLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await dispatch(partnerLogin(formData));
-    if (result.success) {
+    try {
+      await login(formData);
       toast.success('Joined Partner Portal!');
       navigate('/dashboard/partner');
-    } else {
-      toast.error(result.error || 'Login failed');
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Login failed');
     }
   };
 
@@ -123,15 +117,15 @@ export default function PartnerLogin() {
 
         <button 
           type="submit" 
-          disabled={isLoading}
+          disabled={isLoggingIn}
           className="w-full py-2.5 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
         >
-          {isLoading ? (
+          {isLoggingIn ? (
             <AppIcon name="sync" size={16} className="animate-spin" />
           ) : (
             <AppIcon name="login" size={16} />
           )}
-          {isLoading ? 'Signing in...' : 'Sign in to Partner Portal'}
+          {isLoggingIn ? 'Signing in...' : 'Sign in to Partner Portal'}
         </button>
       </form>
 

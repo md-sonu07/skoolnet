@@ -3,24 +3,32 @@ import AppIcon from '../../components/common/AppIcon';
 import {
   DashboardPage,
   SectionCard,
-  StatusBadge,
 } from '../../components/common/DashboardPrimitives';
 import toast from 'react-hot-toast';
-
-const managerInfo = {
-  name: 'Alexander Pierce',
-  email: 'alexander@skoolnet.com',
-  phone: '+91 98765 43210',
-  role: 'Platform Manager',
-  department: 'Operations',
-  joinDate: '2022-01-15',
-  lastLogin: '2026-04-13',
-  permissions: 'Full Access',
-};
+import { useManagerAuth } from '../../hooks/api/useManagerAuth';
 
 export default function ManagerProfile() {
-  const { adminName } = useOutletContext();
+  const { user, isLoadingProfile } = useManagerAuth();
   
+  if (isLoadingProfile) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <AppIcon name="sync" size={32} className="animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  const managerInfo = {
+    name: user?.name || user?.username || 'Alexander Pierce',
+    email: user?.email || 'alexander@skoolnet.com',
+    phone: user?.phone || '+91 98765 43210',
+    role: user?.is_superuser ? 'Platform Admin' : 'Platform Manager',
+    department: 'Operations',
+    joinDate: user?.date_joined?.split('T')[0] || '2022-01-15',
+    lastLogin: user?.last_login?.split('T')[0] || '2026-04-13',
+    permissions: user?.is_superuser ? 'Full Access' : 'Limited Access',
+  };
+
   return (
     <DashboardPage
       eyebrow="Admin profile"

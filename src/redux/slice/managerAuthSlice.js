@@ -2,9 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   user: null,
-  isAuthenticated: false,
-  isLoading: false,
-  error: null,
+  token: localStorage.getItem('access_token') || null,
+  isAuthenticated: !!localStorage.getItem('access_token'),
 };
 
 const managerAuthSlice = createSlice({
@@ -12,32 +11,26 @@ const managerAuthSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const payload = action.payload;
-      if (payload.user) {
-        state.user = payload.user;
+      const { user, access, refresh } = action.payload;
+      if (user) state.user = user;
+      if (access) {
+        state.token = access;
         state.isAuthenticated = true;
-      } else if (payload.access) {
-        state.isAuthenticated = true;
+        localStorage.setItem('access_token', access);
       }
-      state.error = null;
+      if (refresh) {
+        localStorage.setItem('refresh_token', refresh);
+      }
     },
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    setLoading: (state, action) => {
-      state.isLoading = action.payload;
-    },
-    setError: (state, action) => {
-      state.error = action.payload;
-      state.isLoading = false;
-    },
     logout: (state) => {
       state.user = null;
+      state.token = null;
       state.isAuthenticated = false;
-      state.error = null;
-    },
-    clearError: (state) => {
-      state.error = null;
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
     },
   },
 });
@@ -45,10 +38,7 @@ const managerAuthSlice = createSlice({
 export const {
   setCredentials,
   setUser,
-  setLoading,
-  setError,
   logout,
-  clearError,
 } = managerAuthSlice.actions;
 
 export default managerAuthSlice.reducer;

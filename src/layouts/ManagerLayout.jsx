@@ -6,10 +6,14 @@ import {
   managerNavItems,
   managerSidebarContent,
 } from './navigation/managerNavigation';
+import { useManagerAuth } from '../hooks/api/useManagerAuth';
 
 export default function ManagerLayout() {
+  const { user } = useManagerAuth();
+  
   const platformName = managerHeader.userRole || 'Platform';
-  const adminName = managerHeader.userName || 'Admin';
+  const adminName = user?.name || user?.username || 'Admin';
+  const adminRole = user?.is_superuser ? 'Platform Admin' : 'Manager';
 
   const adminMainNavItems = [
     { label: 'Dashboard', icon: 'dashboard', to: 'overview' },
@@ -20,8 +24,8 @@ export default function ManagerLayout() {
 
   return (
     <DashboardShell
-      topbar={<ManagerTopbar {...managerHeader} />}
-      sidebar={<ManagerSidebar {...managerSidebarContent} navItems={managerNavItems} upgradePlan={managerSidebarContent.upgradePlan} />}
+      topbar={<ManagerTopbar {...managerHeader} userName={adminName} userRole={adminRole} />}
+      sidebar={<ManagerSidebar {...managerSidebarContent} userName={adminName} userRole={adminRole} navItems={managerNavItems} upgradePlan={managerSidebarContent.upgradePlan} />}
       showBottomNav={true}
       context={{ platformName, adminName }}
       bottomNavItems={managerNavItems}

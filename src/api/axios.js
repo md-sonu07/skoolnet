@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '../redux/store/store';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const API_VERSION = 'v1';
@@ -13,7 +14,10 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
+    // Attempt to get token from Redux store first, then localStorage
+    const state = store.getState();
+    const token = state.managerAuth?.token || state.partnerAuth?.token || localStorage.getItem('access_token');
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -6,10 +6,14 @@ import {
   partnerNavItems,
   partnerSidebarContent,
 } from './navigation/partnerNavigation';
+import { usePartnerAuth } from '../hooks/api/usePartnerAuth';
 
 export default function PartnerLayout() {
-  const platformName = partnerHeader.userRole || 'Platform';
-  const partnerName = partnerHeader.userName || 'Partner';
+  const { user } = usePartnerAuth();
+  
+  const platformName = partnerHeader.userRole || 'Partner';
+  const partnerName = user?.name || user?.username || 'Partner';
+  const partnerRole = 'Organization Partner';
 
   const partnerMainNavItems = [
     { label: 'Dashboard', icon: 'dashboard', to: 'overview' },
@@ -20,8 +24,8 @@ export default function PartnerLayout() {
 
   return (
     <DashboardShell
-      topbar={<PartnerTopbar {...partnerHeader} />}
-      sidebar={<PartnerSidebar {...partnerSidebarContent} navItems={partnerNavItems} />}
+      topbar={<PartnerTopbar {...partnerHeader} userName={partnerName} userRole={partnerRole} />}
+      sidebar={<PartnerSidebar {...partnerSidebarContent} userName={partnerName} userRole={partnerRole} navItems={partnerNavItems} />}
       showBottomNav={true}
       context={{ platformName, partnerName }}
       bottomNavItems={partnerNavItems}

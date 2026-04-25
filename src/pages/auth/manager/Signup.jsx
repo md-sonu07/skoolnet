@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { managerRegister, clearError } from '../../../redux/thunk/managerAuthThunk';
+import { useSelector } from 'react-redux';
+import { useManagerAuth } from '../../../hooks/api/useManagerAuth';
 import { selectManagerAuth } from '../../../redux/slice/managerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 import toast from 'react-hot-toast';
@@ -18,23 +18,16 @@ export default function Signup() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const [validationError, setValidationError] = useState('');
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, isAuthenticated } = useSelector(selectManagerAuth);
+  const { isAuthenticated } = useSelector(selectManagerAuth);
+  const { register, isRegistering } = useManagerAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard/manager');
     }
   }, [isAuthenticated, navigate]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearError());
-    };
-  }, [dispatch]);
 
   const handleChange = (e) => {
     setFormData({
@@ -45,7 +38,6 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setValidationError('');
 
     if (formData.password !== formData.password_confirm) {
       toast.error('Passwords do not match');
@@ -55,7 +47,7 @@ export default function Signup() {
     if (formData.password.length < 8) {
       toast.error('Password must be at least 8 characters');
       return;
-    }e
+    }
 
     if (!agreeTerms) {
       toast.error('Please agree to the terms and conditions');
@@ -63,12 +55,12 @@ export default function Signup() {
     }
 
     const { password_confirm, ...registerData } = formData;
-    const result = await dispatch(managerRegister(registerData));
-    if (result.success) {
+    try {
+      await register(registerData);
       toast.success('Account created! Please check your email to verify.');
       navigate('/auth/manager/login');
-    } else {
-      toast.error(result.error || 'Registration failed');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -222,13 +214,13 @@ export default function Signup() {
           </span>
         </div>
 
-        <button type="submit" disabled={isLoading} className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
-          {isLoading ? (
+        <button type="submit" disabled={isRegistering} className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
+          {isRegistering ? (
             <AppIcon name="sync" size={16} className="animate-spin" />
           ) : (
             <AppIcon name="person_add" size={16} />
           )}
-          {isLoading ? 'Creating account...' : 'Create account'}
+          {isRegistering ? 'Creating account...' : 'Create account'}
         </button>
       </form>
 

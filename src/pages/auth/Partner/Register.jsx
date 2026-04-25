@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { partnerRegister } from '../../../redux/thunk/partnerAuthThunk';
-import { selectPartnerAuth, clearError } from '../../../redux/slice/partnerAuthSlice';
+import { useSelector } from 'react-redux';
+import { usePartnerAuth } from '../../../hooks/api/usePartnerAuth';
+import { selectPartnerAuth } from '../../../redux/slice/partnerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 import toast from 'react-hot-toast';
 
@@ -17,23 +17,16 @@ export default function PartnerRegister() {
     agreeTerms: false,
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, isAuthenticated } = useSelector(selectPartnerAuth);
+  const { isAuthenticated } = useSelector(selectPartnerAuth);
+  const { register, isRegistering } = usePartnerAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard/partner');
     }
   }, [isAuthenticated, navigate]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearError());
-    };
-  }, [dispatch]);
 
   const handleChange = (e) => {
     setFormData({
@@ -44,7 +37,6 @@ export default function PartnerRegister() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setPasswordError('');
 
     if (formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match');
@@ -57,12 +49,12 @@ export default function PartnerRegister() {
     }
 
     const { confirmPassword, agreeTerms, ...registerData } = formData;
-    const result = await dispatch(partnerRegister(registerData));
-    if (result.success) {
+    try {
+      await register(registerData);
       toast.success('Partner registered successfully!');
       navigate('/dashboard/partner');
-    } else {
-      toast.error(result.error || 'Registration failed');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -217,15 +209,15 @@ export default function PartnerRegister() {
 
         <button 
           type="submit" 
-          disabled={isLoading || !formData.agreeTerms}
+          disabled={isRegistering || !formData.agreeTerms}
           className="w-full py-2.5 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? (
+          {isRegistering ? (
             <AppIcon name="sync" size={16} className="animate-spin" />
           ) : (
             <AppIcon name="person_add" size={16} />
           )}
-          {isLoading ? 'Creating account...' : 'Register as Partner'}
+          {isRegistering ? 'Creating account...' : 'Register as Partner'}
         </button>
       </form>
 
