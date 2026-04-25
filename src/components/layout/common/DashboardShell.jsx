@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import { DashboardSkeleton } from '../../common/Skeleton';
 import MobileBottomNav from './MobileBottomNav';
 
 export default function DashboardShell({ topbar: Topbar, sidebar: Sidebar, showBottomNav = false, context = {}, bottomNavItems = [], mainNavItems = [] }) {
@@ -38,7 +39,9 @@ export default function DashboardShell({ topbar: Topbar, sidebar: Sidebar, showB
         </div>
         
         <div className={`pt-20 md:pt-24 pb-28 md:pb-12 px-4 md:px-8 max-w-400 mx-auto bg-background/30 ${showBottomNav ? 'min-h-screen' : ''}`}>
-          <Outlet context={context} />
+          <Suspense fallback={<DashboardSkeleton />}>
+            <Outlet context={context} />
+          </Suspense>
         </div>
         {showBottomNav && <MobileBottomNav onOpenSidebar={openSidebar} navItems={bottomNavItems} mainNavItems={mainNavItems} />}
       </main>

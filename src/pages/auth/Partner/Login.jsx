@@ -5,6 +5,7 @@ import { usePartnerAuth } from '../../../hooks/api/usePartnerAuth';
 import { selectPartnerAuth } from '../../../redux/slice/partnerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 import toast from 'react-hot-toast';
+import { getErrorMessage } from '../../../utils/errorHelpers';
 
 export default function PartnerLogin() {
   const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ export default function PartnerLogin() {
       toast.success('Joined Partner Portal!');
       navigate('/dashboard/partner');
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Login failed');
+      toast.error(getErrorMessage(error, 'Login failed'));
     }
   };
 

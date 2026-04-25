@@ -1,32 +1,100 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppIcon from '../../components/common/AppIcon';
 import {
   DashboardPage,
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
 import { usePartnerAuth } from '../../hooks/api/usePartnerAuth';
+import { updateProfile } from '../../api/auth/profile';
+import { ProfileSkeleton } from '../../components/common/Skeleton';
+import toast from 'react-hot-toast';
 
 export default function PartnerProfile() {
   const [editing, setEditing] = useState(false);
   const { user, isLoadingProfile } = usePartnerAuth();
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    email: '',
+    phone: '',
+    address: '',
+    id: '',
+    since: '',
+    status: '',
+    tier: '',
+    isVerified: false
+  });
 
-  if (isLoadingProfile) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <AppIcon name="sync" size={32} className="animate-spin text-primary" />
-      </div>
-    );
-  }
+  // Sync with user data when it arrives
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.full_name || user.username || '',
+        company: user.partner?.company_name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        address: user.address || '',
+        id: user.partner?.id ? `PRT-${user.partner.id.substring(0, 8).toUpperCase()}` : '',
+        since: user.created_at?.split('T')[0] || '',
+        status: user.is_active ? 'Active' : 'Inactive',
+        tier: user.partner?.tier || 'Silver',
+        isVerified: user.partner?.is_verified || false,
+      });
+    }
+  }, [user]);
 
   const partnerInfo = {
-    name: user?.name || user?.username || 'Partner Admin',
-    company: user?.organization?.name || 'Partner Organization',
-    email: user?.email || 'partner@example.com',
-    phone: user?.phone || '+91 98765 43210',
-    address: user?.address || '123 Business Park, Delhi, India',
-    id: user?.id ? `PRT-2024-${user.id.toString().padStart(3, '0')}` : 'PRT-2024-001',
-    since: user?.date_joined?.split('T')[0] || 'June 2023',
-    status: user?.is_active ? 'Active' : 'Inactive',
+    name: formData.name || 'Not Set',
+    company: formData.company || 'Not Set',
+    email: formData.email || '',
+    phone: formData.phone || 'Not Set',
+    address: formData.address || 'Not Set',
+    id: formData.id || 'Not Generated',
+    since: formData.since || 'Not Set',
+    status: formData.status || 'Inactive',
+    tier: formData.tier || 'Silver',
+    isVerified: formData.isVerified
+  };
+
+  if (isLoadingProfile && !user) {
+    return <ProfileSkeleton />;
+  }
+
+  const handleInputChange = (e, field) => {
+    setFormData(prev => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleSave = async () => {
+    try {
+      const nameParts = formData.name.trim().split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
+      const updateData = {
+        first_name: firstName,
+        last_name: lastName,
+        phone: formData.phone,
+        address: formData.address,
+        company_name: formData.company
+      };
+
+      const response = await updateProfile(updateData);
+      
+      if (response.data) {
+        setFormData(prev => ({
+          ...prev,
+          name: response.data.full_name || response.data.username || '',
+          company: response.data.partner?.company_name || '',
+          phone: response.data.phone || '',
+          address: response.data.address || '',
+        }));
+        setEditing(false);
+        toast.success('Profile updated successfully!');
+      }
+    } catch (error) {
+      console.error('Update failed:', error);
+      toast.error('Failed to update profile. Please try again.');
+    }
   };
 
   return (
@@ -35,12 +103,37 @@ export default function PartnerProfile() {
       title="Profile"
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <SectionCard title="Profile Picture" description="Your partner profile">
-          <div className="text-center">
-            <div className="w-32 h-32 mx-auto rounded-full bg-slate-200 flex items-center justify-center mb-4">
-              <AppIcon name="person" size={48} className="text-slate-500" />
+        <SectionCard title="Profile Overview" description="Your core identity">
+          <div className="text-left">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-sm shrink-0">
+                <AppIcon name="person" size={32} className="text-primary" />
+              </div>
+              <div>
+                <p className="text-lg font-bold text-slate-900 capitalize leading-tight">{partnerInfo.name}</p>
+                <p className="text-sm text-primary font-bold capitalize mt-1">{partnerInfo.company}</p>
+              </div>
             </div>
-            <button className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 transition-all">
+
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <AppIcon name="mail" size={18} className="text-slate-400" />
+                <div className="overflow-hidden">
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Email Address</p>
+                  <p className="text-sm font-medium text-slate-700 truncate">{partnerInfo.email || 'Not Set'}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <AppIcon name="phone" size={18} className="text-slate-400" />
+                <div>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Phone Number</p>
+                  <p className="text-sm font-medium text-slate-700">{partnerInfo.phone}</p>
+                </div>
+              </div>
+            </div>
+
+            <button className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+              <AppIcon name="photo_camera" size={16} />
               Change Photo
             </button>
           </div>
@@ -54,18 +147,22 @@ export default function PartnerProfile() {
                   <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
                   <input
                     type="text"
-                    defaultValue={partnerInfo.name}
+                    value={formData.name}
+                    onChange={(e) => handleInputChange(e, 'name')}
                     disabled={!editing}
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
+                    placeholder="Enter full name"
+                    className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50 capitalize"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Company Name</label>
                   <input
                     type="text"
-                    defaultValue={partnerInfo.company}
+                    value={formData.company}
+                    onChange={(e) => handleInputChange(e, 'company')}
                     disabled={!editing}
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
+                    placeholder="Enter company name"
+                    className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50 capitalize"
                   />
                 </div>
               </div>
@@ -74,8 +171,10 @@ export default function PartnerProfile() {
                   <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
                   <input
                     type="email"
-                    defaultValue={partnerInfo.email}
-                    disabled={!editing}
+                    value={formData.email}
+                    onChange={(e) => handleInputChange(e, 'email')}
+                    disabled={true} // Email should usually be read-only in profile
+                    placeholder="Enter email address"
                     className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
                   />
                 </div>
@@ -83,8 +182,10 @@ export default function PartnerProfile() {
                   <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
                   <input
                     type="tel"
-                    defaultValue={partnerInfo.phone}
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange(e, 'phone')}
                     disabled={!editing}
+                    placeholder="Enter phone number"
                     className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
                   />
                 </div>
@@ -92,59 +193,82 @@ export default function PartnerProfile() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
                 <textarea
-                  defaultValue={partnerInfo.address}
+                  value={formData.address}
+                  onChange={(e) => handleInputChange(e, 'address')}
                   disabled={!editing}
                   rows={2}
+                  placeholder="Enter shop/office address"
                   className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
                 />
               </div>
               {editing && (
                 <button
-                  onClick={() => setEditing(false)}
-                  className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
+                  onClick={handleSave}
+                  className="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2"
                 >
+                  <AppIcon name="save" size={16} />
                   Save Changes
                 </button>
               )}
               {!editing && (
                 <button
                   onClick={() => setEditing(true)}
-                  className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm"
+                  className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm flex items-center gap-2"
                 >
+                  <AppIcon name="edit" size={16} />
                   Edit Profile
                 </button>
               )}
             </div>
           </SectionCard>
-
-          <SectionCard title="Partnership Details" description="Your partnership information">
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">Partner ID</p>
-                  <p className="font-semibold text-slate-900">{partnerInfo.id}</p>
-                </div>
-                <div className="p-4 rounded-xl bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">Partner Since</p>
-                  <p className="font-semibold text-slate-900">{partnerInfo.since}</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">Partner Type</p>
-                  <p className="font-semibold text-slate-900">Education Partner</p>
-                </div>
-                <div className="p-4 rounded-xl bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">Status</p>
-                  <span className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${partnerInfo.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
-                    {partnerInfo.status}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </SectionCard>
         </div>
       </div>
+      <SectionCard title="Partnership Details" description="Your partnership information">
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="p-4 rounded-xl bg-slate-50">
+              <p className="text-xs text-slate-500 mb-1">Partner ID</p>
+              <p className="font-semibold text-slate-900">{partnerInfo.id}</p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50">
+              <p className="text-xs text-slate-500 mb-1">Partner Since</p>
+              <p className="font-semibold text-slate-900">{partnerInfo.since}</p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50">
+              <p className="text-xs text-slate-500 mb-1">Partner Type</p>
+              <p className="font-semibold text-slate-900">Education Partner</p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50">
+              <p className="text-xs text-slate-500 mb-1">Status</p>
+              <span className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${partnerInfo.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                {partnerInfo.status}
+              </span>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50">
+              <p className="text-xs text-slate-500 mb-1">Partner Tier</p>
+              <span className="inline-flex items-center gap-1 rounded-md bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700 uppercase tracking-wider">
+                {partnerInfo.tier}
+              </span>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50">
+              <p className="text-xs text-slate-500 mb-1">Verification</p>
+              <div className="flex items-center gap-1.5">
+                {partnerInfo.isVerified ? (
+                  <div className="flex items-center gap-1 text-emerald-600">
+                    <AppIcon name="verified" size={14} />
+                    <span className="text-xs font-bold">Verified Partner</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1 text-amber-600">
+                    <AppIcon name="info" size={14} />
+                    <span className="text-xs font-bold">Pending Review</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </SectionCard>
     </DashboardPage>
   );
 }

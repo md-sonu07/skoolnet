@@ -5,25 +5,31 @@ import {
   StatusBadge,
 } from '../../../components/common/DashboardPrimitives';
 import AppIcon from '../../../components/common/AppIcon';
-
-const teacherData = {
-  name: 'Rajesh Kumar',
-  email: 'rajesh.kumar@skoolnet.com',
-  phone: '+91 98765 43210',
-  employeeId: 'EMP-2023-0142',
-  department: 'Mathematics',
-  qualification: 'M.Sc. Mathematics, B.Ed.',
-  experience: '8 Years',
-  joinDate: '2016-07-15',
-  address: '123, Teacher Colony, Near School, City - 123456',
-};
+import { useAuth } from '../../../hooks/api/useAuth';
 
 export default function TeacherProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(teacherData);
+  const { user, isLoadingProfile } = useAuth();
 
-  const handleSave = () => {
-    setIsEditing(false);
+  if (isLoadingProfile) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <AppIcon name="sync" size={32} className="animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  const teacherData = {
+    name: user?.name || user?.username || 'Rajesh Kumar',
+    email: user?.email || 'rajesh.kumar@skoolnet.com',
+    phone: user?.phone || '+91 98765 43210',
+    employeeId: user?.employee_id || 'EMP-2023-0142',
+    department: user?.department || 'Mathematics',
+    qualification: user?.qualification || 'M.Sc. Mathematics, B.Ed.',
+    experience: user?.experience || '8 Years',
+    joinDate: user?.date_joined?.split('T')[0] || '2016-07-15',
+    address: user?.address || '123, Teacher Colony, Near School, City - 123456',
+    status: user?.is_active ? 'Active' : 'Inactive',
   };
 
   return (
@@ -38,9 +44,9 @@ export default function TeacherProfile() {
             <div className="w-32 h-32 mx-auto rounded-2xl bg-slate-200 flex items-center justify-center mb-4">
               <AppIcon name="person" size={64} className="text-slate-400" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-1">{teacherData.name}</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-1 capitalize">{teacherData.name}</h3>
             <p className="text-sm text-slate-600 mb-3">{teacherData.department} Teacher</p>
-            <StatusBadge tone="emerald">Active</StatusBadge>
+            <StatusBadge tone={teacherData.status === 'Active' ? 'emerald' : 'rose'}>{teacherData.status}</StatusBadge>
             <button className="mt-4 w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors">
               Change Photo
             </button>
@@ -52,16 +58,7 @@ export default function TeacherProfile() {
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Full Name</label>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm"
-                  />
-                ) : (
-                  <p className="text-slate-900 font-medium">{teacherData.name}</p>
-                )}
+                <p className="text-slate-900 font-medium capitalize">{teacherData.name}</p>
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Email</label>
@@ -69,16 +66,7 @@ export default function TeacherProfile() {
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Phone</label>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm"
-                  />
-                ) : (
-                  <p className="text-slate-900 font-medium">{teacherData.phone}</p>
-                )}
+                <p className="text-slate-900 font-medium">{teacherData.phone}</p>
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Employee ID</label>
@@ -86,16 +74,7 @@ export default function TeacherProfile() {
               </div>
               <div className="md:col-span-2">
                 <label className="block text-xs font-medium text-slate-500 mb-1">Address</label>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={formData.address}
-                    onChange={(e) => setFormData({...formData, address: e.target.value})}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm"
-                  />
-                ) : (
-                  <p className="text-slate-900 font-medium">{teacherData.address}</p>
-                )}
+                <p className="text-slate-900 font-medium">{teacherData.address}</p>
               </div>
             </div>
           </SectionCard>
@@ -137,40 +116,25 @@ export default function TeacherProfile() {
                   Change
                 </button>
               </div>
-              <div className="flex items-center justify-between p-4 rounded-xl border border-slate-200">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
-                    <AppIcon name="smartphone" size={20} className="text-slate-600" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-slate-900">Two-Factor Authentication</p>
-                    <p className="text-xs text-slate-500">Add extra security to your account</p>
-                  </div>
-                </div>
-                <button className="px-4 py-2 text-sm font-medium border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
-                  Enable
-                </button>
-              </div>
             </div>
           </SectionCard>
 
-          <div className="flex justify-end gap-3">
-            {isEditing ? (
-              <>
-                <button 
-                  onClick={() => setIsEditing(false)}
-                  className="px-4 py-2.5 border border-slate-200 rounded-xl font-medium hover:bg-slate-50 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button 
-                  onClick={handleSave}
-                  className="px-4 py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors"
-                >
-                  Save Changes
-                </button>
-              </>
-            ) : (
+          {isEditing ? (
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={() => setIsEditing(false)}
+                className="px-4 py-2.5 border border-slate-200 rounded-xl font-medium hover:bg-slate-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                className="px-4 py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors"
+              >
+                Save Changes
+              </button>
+            </div>
+          ) : (
+            <div className="flex justify-end">
               <button 
                 onClick={() => setIsEditing(true)}
                 className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors"
@@ -178,8 +142,8 @@ export default function TeacherProfile() {
                 <AppIcon name="edit" size={18} />
                 Edit Profile
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </DashboardPage>

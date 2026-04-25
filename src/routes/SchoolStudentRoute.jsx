@@ -1,15 +1,17 @@
+import { lazy } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import StudentLayout from '../layouts/StudentLayout';
-import SchoolStudentDashboard from '../pages/school/student/Dashboard';
-import SchoolStudentProfile from '../pages/school/student/Profile';
-import SchoolStudentAttendance from '../pages/school/student/Attendance';
-import SchoolStudentAssignments from '../pages/school/student/Assignments';
-import SchoolStudentNotes from '../pages/school/student/Notes';
-import SchoolStudentResults from '../pages/school/student/Results';
-import SchoolStudentTimetable from '../pages/school/student/Timetable';
-import SchoolStudentFees from '../pages/school/student/Payments';
-import SchoolStudentNotices from '../pages/school/student/Notices';
-import SchoolStudentMessages from '../pages/school/student/Messages';
+
+const SchoolStudentDashboard = lazy(() => import('../pages/school/student/Dashboard'));
+const SchoolStudentProfile = lazy(() => import('../pages/school/student/Profile'));
+const SchoolStudentAttendance = lazy(() => import('../pages/school/student/Attendance'));
+const SchoolStudentAssignments = lazy(() => import('../pages/school/student/Assignments'));
+const SchoolStudentNotes = lazy(() => import('../pages/school/student/Notes'));
+const SchoolStudentResults = lazy(() => import('../pages/school/student/Results'));
+const SchoolStudentTimetable = lazy(() => import('../pages/school/student/Timetable'));
+const SchoolStudentFees = lazy(() => import('../pages/school/student/Payments'));
+const SchoolStudentNotices = lazy(() => import('../pages/school/student/Notices'));
+const SchoolStudentMessages = lazy(() => import('../pages/school/student/Messages'));
 
 const schoolStudentRoutes = (
   <Route path="/dashboard/school/student/:studentId" element={<StudentLayout />}>

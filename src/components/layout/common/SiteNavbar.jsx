@@ -1,12 +1,18 @@
 import { Link, NavLink } from 'react-router-dom';
 import AppIcon from '../../common/AppIcon';
 
-const navItems = [
+const isDev = import.meta.env.DEV;
+
+const baseNavItems = [
   { label: 'Services', href: '/services' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ];
+
+const navItems = isDev 
+  ? [...baseNavItems, { label: 'Internal URLs', href: '/temp-urls' }]
+  : baseNavItems;
 
 const profileImage =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuCH7qm8wNa2-Z7myiNgM__4BknR0fc0YdjItCx72MraYEdLRNnm1ZIt677xWZIxuhAxedfY4pU5eg8J1BPCsOngSd4qsm2D37eHLHF38fPr-i0SwV-RQ8kVZ8_gFBB0zdMzdEs0-KAr0WkQh73aYTCuz23QzPkc_I6yz4G-QoR_lkMBFz62lFLe6bFsjoH0x5tRnEqGSTe2h7a8rOGQWqoTHYn3-2Af72vFQXpq26i248v14jiLfDzgl6UVUvr1R1mPLjGg2dlx9AU';

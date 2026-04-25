@@ -6,8 +6,17 @@ import {
   coachingNavItems,
   coachingSidebarContent,
 } from './navigation/coachingNavigation';
+import { useAuth } from '../hooks/api/useAuth';
 
 export default function CoachingLayout() {
+  const { user, logout } = useAuth();
+  
+  const coachingName = user?.institution_name || coachingHeader.userRole || 'Coaching';
+  const adminName = user?.full_name || (user?.first_name || user?.last_name 
+    ? `${user.first_name || ''} ${user.last_name || ''}`.trim() 
+    : 'Admin');
+  const adminRole = 'Coaching Administrator';
+
   const adminMainNavItems = [
     { label: 'Overview', icon: 'dashboard', to: 'overview' },
     { label: 'Students', icon: 'group', to: 'students' },
@@ -17,12 +26,12 @@ export default function CoachingLayout() {
 
   return (
     <DashboardShell
-      topbar={<CoachingTopbar {...coachingHeader} />}
-      sidebar={<CoachingSidebar {...coachingSidebarContent} navItems={coachingNavItems} />}
+      topbar={<CoachingTopbar {...coachingHeader} userName={adminName} userRole={adminRole} />}
+      sidebar={<CoachingSidebar {...coachingSidebarContent} userName={adminName} userRole={adminRole} navItems={coachingNavItems} onLogout={logout} />}
       showBottomNav={true}
       bottomNavItems={coachingNavItems}
       mainNavItems={adminMainNavItems}
-      context={{ coachingName: coachingHeader.userRole }}
+      context={{ coachingName }}
     />
   );
 }

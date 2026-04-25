@@ -9,10 +9,12 @@ import {
 import { useManagerAuth } from '../hooks/api/useManagerAuth';
 
 export default function ManagerLayout() {
-  const { user } = useManagerAuth();
+  const { user, logout } = useManagerAuth();
   
   const platformName = managerHeader.userRole || 'Platform';
-  const adminName = user?.name || user?.username || 'Admin';
+  const adminName = user?.full_name || (user?.first_name || user?.last_name 
+    ? `${user.first_name || ''} ${user.last_name || ''}`.trim() 
+    : 'Admin');
   const adminRole = user?.is_superuser ? 'Platform Admin' : 'Manager';
 
   const adminMainNavItems = [
@@ -25,7 +27,7 @@ export default function ManagerLayout() {
   return (
     <DashboardShell
       topbar={<ManagerTopbar {...managerHeader} userName={adminName} userRole={adminRole} />}
-      sidebar={<ManagerSidebar {...managerSidebarContent} userName={adminName} userRole={adminRole} navItems={managerNavItems} upgradePlan={managerSidebarContent.upgradePlan} />}
+      sidebar={<ManagerSidebar {...managerSidebarContent} userName={adminName} userRole={adminRole} navItems={managerNavItems} upgradePlan={managerSidebarContent.upgradePlan} onLogout={logout} />}
       showBottomNav={true}
       context={{ platformName, adminName }}
       bottomNavItems={managerNavItems}

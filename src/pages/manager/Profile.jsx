@@ -6,25 +6,24 @@ import {
 } from '../../components/common/DashboardPrimitives';
 import toast from 'react-hot-toast';
 import { useManagerAuth } from '../../hooks/api/useManagerAuth';
+import { ProfileSkeleton } from '../../components/common/Skeleton';
 
 export default function ManagerProfile() {
   const { user, isLoadingProfile } = useManagerAuth();
   
   if (isLoadingProfile) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <AppIcon name="sync" size={32} className="animate-spin text-primary" />
-      </div>
-    );
+    return <ProfileSkeleton />;
   }
 
   const managerInfo = {
-    name: user?.name || user?.username || 'Alexander Pierce',
+    name: user?.first_name || user?.last_name 
+      ? `${user.first_name || ''} ${user.last_name || ''}`.trim() 
+      : 'Alexander Pierce',
     email: user?.email || 'alexander@skoolnet.com',
     phone: user?.phone || '+91 98765 43210',
     role: user?.is_superuser ? 'Platform Admin' : 'Platform Manager',
     department: 'Operations',
-    joinDate: user?.date_joined?.split('T')[0] || '2022-01-15',
+    joinDate: user?.created_at?.split('T')[0] || '2022-01-15',
     lastLogin: user?.last_login?.split('T')[0] || '2026-04-13',
     permissions: user?.is_superuser ? 'Full Access' : 'Limited Access',
   };
@@ -42,7 +41,7 @@ export default function ManagerProfile() {
             </div>
             <div>
               <p className="text-xs text-slate-500 font-medium">Full Name</p>
-              <p className="text-lg font-bold text-slate-900">{managerInfo.name}</p>
+              <p className="text-lg font-bold text-slate-900 capitalize">{managerInfo.name}</p>
             </div>
           </div>
           

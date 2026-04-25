@@ -129,6 +129,7 @@ import {
   Building,
   Badge,
   Handshake,
+  Camera,
 } from 'lucide-react';
 
 const iconMap = {
@@ -208,6 +209,7 @@ const iconMap = {
   map: Map,
   home: Home,
   menu: Menu,
+  photo_camera: Camera,
   close: X,
   clock: Clock,
   message: MessageSquare,
@@ -274,6 +276,7 @@ const iconMap = {
   receipt: FileText,
   room: DoorOpen,
   shield_check: Shield,
+  verified: ShieldCheck,
   work: Briefcase,
   sync: RefreshCw,
   login: LogIn,

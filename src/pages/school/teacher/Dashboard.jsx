@@ -14,7 +14,7 @@ export default function TeacherDashboard() {
   return (
     <DashboardPage
       eyebrow="Teacher dashboard"
-      title={`Hi ${userName}`}
+      title={<span>Hi <span className="capitalize">{userName}</span></span>}
     >
       <MetricGrid>
         <MetricCard icon="school" label="My Classes" value="4" change="2 Sections" helper="Assigned by admin" />

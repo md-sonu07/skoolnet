@@ -5,6 +5,7 @@ import { usePartnerAuth } from '../../../hooks/api/usePartnerAuth';
 import { selectPartnerAuth } from '../../../redux/slice/partnerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 import toast from 'react-hot-toast';
+import { getErrorMessage } from '../../../utils/errorHelpers';
 
 export default function PartnerRegister() {
   const [formData, setFormData] = useState({
@@ -54,7 +55,7 @@ export default function PartnerRegister() {
       toast.success('Partner registered successfully!');
       navigate('/dashboard/partner');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration failed');
+      toast.error(getErrorMessage(error, 'Registration failed'));
     }
   };
 

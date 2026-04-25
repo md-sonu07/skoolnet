@@ -1,15 +1,17 @@
+import { lazy } from 'react';
 import { Route } from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
-import Login from '../pages/auth/manager/Login';
-import Signup from '../pages/auth/manager/Signup';
-import InstitutionLogin from '../pages/auth/Institution/Login';
-import InstitutionRegister from '../pages/auth/Institution/Register';
-import TeacherLogin from '../pages/auth/Teacher/Login';
-import TeacherSignup from '../pages/auth/Teacher/Signup';
-import StudentLogin from '../pages/auth/Student/Login';
-import StudentSignup from '../pages/auth/Student/Signup';
-import PartnerLogin from '../pages/auth/Partner/Login';
-import PartnerRegister from '../pages/auth/Partner/Register';
+
+const Login = lazy(() => import('../pages/auth/manager/Login'));
+const Signup = lazy(() => import('../pages/auth/manager/Signup'));
+const InstitutionLogin = lazy(() => import('../pages/auth/Institution/Login'));
+const InstitutionRegister = lazy(() => import('../pages/auth/Institution/Register'));
+const TeacherLogin = lazy(() => import('../pages/auth/Teacher/Login'));
+const TeacherSignup = lazy(() => import('../pages/auth/Teacher/Signup'));
+const StudentLogin = lazy(() => import('../pages/auth/Student/Login'));
+const StudentSignup = lazy(() => import('../pages/auth/Student/Signup'));
+const PartnerLogin = lazy(() => import('../pages/auth/Partner/Login'));
+const PartnerRegister = lazy(() => import('../pages/auth/Partner/Register'));
 
 const authRoutes = (
   <Route path="/auth" element={<AuthLayout />}>

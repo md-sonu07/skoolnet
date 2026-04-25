@@ -6,23 +6,19 @@ import {
   studentNavItems,
   studentSidebarContent,
 } from './navigation/studentNavigation';
-
-const mockStudents = {
-  'aarav-sharma': { name: 'Aarav Sharma', role: 'Class 10-A', avatar: '' },
-  'priya-singh': { name: 'Priya Singh', role: 'Class 10-A', avatar: '' },
-  'rahul-verma': { name: 'Rahul Verma', role: 'Class 9-B', avatar: '' },
-  'sneha-gupta': { name: 'Sneha Gupta', role: 'Class 10-B', avatar: '' },
-  'kunal-patel': { name: 'Kunal Patel', role: 'Class 11-A', avatar: '' },
-  'ananya-reddy': { name: 'Ananya Reddy', role: 'Class 9-A', avatar: '' },
-  'vikram-joshi': { name: 'Vikram Joshi', role: 'Class 12-A', avatar: '' },
-  'meera-nair': { name: 'Meera Nair', role: 'Class 10-A', avatar: '' },
-  'dev-sharma': { name: 'Dev Sharma', role: 'Class 9-A', avatar: '' },
-  'neha-kapoor': { name: 'Neha Kapoor', role: 'Class 10-B', avatar: '' },
-};
+import { useAuth } from '../hooks/api/useAuth';
 
 export default function StudentLayout() {
   const { studentId } = useParams();
-  const student = mockStudents[studentId] || { name: 'Student', role: 'Student', avatar: '' };
+  const { user, logout } = useAuth();
+
+  const student = {
+    name: user?.first_name || user?.last_name 
+      ? `${user.first_name || ''} ${user.last_name || ''}`.trim() 
+      : 'Student',
+    role: user?.student_profile?.class_name || 'Student',
+    avatar: user?.avatar || '',
+  };
 
   const studentHeader = {
     userName: student.name,
@@ -45,7 +41,7 @@ export default function StudentLayout() {
   return (
     <DashboardShell
       topbar={<StudentTopbar {...studentHeader} />}
-      sidebar={<StudentSidebar {...studentSidebarContent} navItems={studentNavItems} studentId={studentId} userRole={student.role} />}
+      sidebar={<StudentSidebar {...studentSidebarContent} navItems={studentNavItems} userName={student.name} studentId={studentId} userRole={student.role} onLogout={logout} />}
       showBottomNav={true}
       context={{ user: student }}
       bottomNavItems={studentNavItems}

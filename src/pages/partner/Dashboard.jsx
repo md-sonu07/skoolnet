@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import AppIcon from '../../components/common/AppIcon';
+import { usePartnerAuth } from '../../hooks/api/usePartnerAuth';
+import { DashboardSkeleton } from '../../components/common/Skeleton';
 import {
   DashboardPage,
   MetricCard,
@@ -22,6 +24,12 @@ const recentActivities = [
 ];
 
 export default function PartnerDashboard() {
+  const { isLoadingProfile } = usePartnerAuth();
+
+  if (isLoadingProfile) {
+    return <DashboardSkeleton />;
+  }
+
   return (
     <DashboardPage
       eyebrow="Partner Dashboard"

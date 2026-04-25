@@ -5,27 +5,37 @@ import {
   StatusBadge,
 } from '../../../components/common/DashboardPrimitives';
 import AppIcon from '../../../components/common/AppIcon';
-
-const studentData = {
-  name: 'Aarav Sharma',
-  rollNo: '001',
-  class: 'Class 10-A',
-  section: 'A',
-  dob: '2008-05-15',
-  gender: 'Male',
-  bloodGroup: 'B+',
-  phone: '+91 98765 43210',
-  email: 'aarav@email.com',
-  address: '123, Gandhi Nagar, City - 123456',
-  fatherName: 'Rajesh Sharma',
-  motherName: 'Sunita Sharma',
-  fatherPhone: '+91 98765 43211',
-  emergencyPhone: '+91 98765 43212',
-  admissionDate: '2024-01-15',
-};
+import { useAuth } from '../../../hooks/api/useAuth';
 
 export default function StudentProfile() {
-  const [isEditing, setIsEditing] = useState(false);
+  const { user, isLoadingProfile } = useAuth();
+
+  if (isLoadingProfile) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <AppIcon name="sync" size={32} className="animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  const studentData = {
+    name: user?.name || user?.username || 'Aarav Sharma',
+    rollNo: user?.student_profile?.roll_number || '001',
+    class: user?.student_profile?.class_name || 'Class 10-A',
+    section: user?.student_profile?.section || 'A',
+    dob: user?.student_profile?.dob || '2008-05-15',
+    gender: user?.student_profile?.gender || 'Male',
+    bloodGroup: user?.student_profile?.blood_group || 'B+',
+    phone: user?.phone || '+91 98765 43210',
+    email: user?.email || 'aarav@email.com',
+    address: user?.address || '123, Gandhi Nagar, City - 123456',
+    fatherName: user?.student_profile?.father_name || 'Rajesh Sharma',
+    motherName: user?.student_profile?.mother_name || 'Sunita Sharma',
+    fatherPhone: user?.student_profile?.father_phone || '+91 98765 43211',
+    emergencyPhone: user?.student_profile?.emergency_contact || '+91 98765 43212',
+    admissionDate: user?.date_joined?.split('T')[0] || '2024-01-15',
+    status: user?.is_active ? 'Active' : 'Inactive',
+  };
 
   return (
     <DashboardPage
@@ -39,9 +49,9 @@ export default function StudentProfile() {
             <div className="w-32 h-32 mx-auto rounded-2xl bg-slate-200 flex items-center justify-center mb-4">
               <AppIcon name="person" size={64} className="text-slate-400" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-1">{studentData.name}</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-1 capitalize">{studentData.name}</h3>
             <p className="text-sm text-slate-600 mb-3">Roll No: {studentData.rollNo}</p>
-            <StatusBadge tone="emerald">Active</StatusBadge>
+            <StatusBadge tone={studentData.status === 'Active' ? 'emerald' : 'rose'}>{studentData.status}</StatusBadge>
           </div>
         </SectionCard>
 
@@ -50,7 +60,7 @@ export default function StudentProfile() {
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Full Name</label>
-                <p className="text-slate-900 font-medium">{studentData.name}</p>
+                <p className="text-slate-900 font-medium capitalize">{studentData.name}</p>
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Date of Birth</label>
@@ -104,11 +114,11 @@ export default function StudentProfile() {
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Father's Name</label>
-                <p className="text-slate-900 font-medium">{studentData.fatherName}</p>
+                <p className="text-slate-900 font-medium capitalize">{studentData.fatherName}</p>
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Mother's Name</label>
-                <p className="text-slate-900 font-medium">{studentData.motherName}</p>
+                <p className="text-slate-900 font-medium capitalize">{studentData.motherName}</p>
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Father's Phone</label>

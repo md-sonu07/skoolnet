@@ -6,21 +6,19 @@ import {
   coachingTeacherNavItems,
   coachingTeacherSidebarContent,
 } from './navigation/coachingTeacherNavigation';
-
-const mockCoachingTeachers = {
-  'amit-kumar': { name: 'Dr. Amit Kumar', role: 'Physics Teacher', avatar: '' },
-  'priya-sharma': { name: 'Ms. Priya Sharma', role: 'Chemistry Teacher', avatar: '' },
-  'rahul-verma': { name: 'Mr. Rahul Verma', role: 'Mathematics Teacher', avatar: '' },
-  'sneha-gupta': { name: 'Ms. Sneha Gupta', role: 'Biology Teacher', avatar: '' },
-  'kunal-patel': { name: 'Mr. Kunal Patel', role: 'English Teacher', avatar: '' },
-  'ananya-reddy': { name: 'Ms. Ananya Reddy', role: 'Computer Teacher', avatar: '' },
-  'vikram-joshi': { name: 'Mr. Vikram Joshi', role: 'Physics Teacher', avatar: '' },
-  'meera-nair': { name: 'Ms. Meera Nair', role: 'Chemistry Teacher', avatar: '' },
-};
+import { useAuth } from '../hooks/api/useAuth';
 
 export default function CoachingTeacherLayout() {
   const { teacherId } = useParams();
-  const teacher = mockCoachingTeachers[teacherId] || { name: 'Teacher', role: 'Teacher', avatar: '' };
+  const { user, logout } = useAuth();
+
+  const teacher = {
+    name: user?.first_name || user?.last_name 
+      ? `${user.first_name || ''} ${user.last_name || ''}`.trim() 
+      : 'Teacher',
+    role: user?.subjects ? `${user.subjects} Teacher` : 'Teacher',
+    avatar: user?.avatar || '',
+  };
 
   const teacherHeader = {
     userName: teacher.name,
@@ -43,7 +41,7 @@ export default function CoachingTeacherLayout() {
   return (
     <DashboardShell
       topbar={<CoachingTeacherTopbar {...teacherHeader} />}
-      sidebar={<CoachingTeacherSidebar {...coachingTeacherSidebarContent} navItems={coachingTeacherNavItems} teacherId={teacherId} userRole={teacher.role} />}
+      sidebar={<CoachingTeacherSidebar {...coachingTeacherSidebarContent} navItems={coachingTeacherNavItems} userName={teacher.name} teacherId={teacherId} userRole={teacher.role} onLogout={logout} />}
       showBottomNav={true}
       context={{ user: teacher }}
       bottomNavItems={coachingTeacherNavItems}

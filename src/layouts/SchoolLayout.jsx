@@ -6,10 +6,16 @@ import {
   schoolNavItems,
   schoolSidebarContent,
 } from './navigation/schoolNavigation';
+import { useAuth } from '../hooks/api/useAuth';
 
 export default function SchoolLayout() {
-  const schoolName = schoolHeader.userRole || 'School';
-  const adminName = schoolHeader.userName || 'Admin';
+  const { user, logout } = useAuth();
+  
+  const schoolName = user?.institution_name || schoolHeader.userRole || 'School';
+  const adminName = user?.full_name || (user?.first_name || user?.last_name 
+    ? `${user.first_name || ''} ${user.last_name || ''}`.trim() 
+    : 'Admin');
+  const adminRole = 'School Administrator';
 
   const adminMainNavItems = [
     { label: 'Overview', icon: 'dashboard', to: 'overview' },
@@ -20,8 +26,8 @@ export default function SchoolLayout() {
 
   return (
     <DashboardShell
-      topbar={<SchoolTopbar {...schoolHeader} />}
-      sidebar={<SchoolSidebar {...schoolSidebarContent} navItems={schoolNavItems} />}
+      topbar={<SchoolTopbar {...schoolHeader} userName={adminName} userRole={adminRole} />}
+      sidebar={<SchoolSidebar {...schoolSidebarContent} userName={adminName} userRole={adminRole} navItems={schoolNavItems} onLogout={logout} />}
       showBottomNav={true}
       context={{ schoolName, adminName }}
       bottomNavItems={schoolNavItems}

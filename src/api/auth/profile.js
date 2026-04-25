@@ -1,8 +1,8 @@
 import api from '../axios';
 
-export const getProfile = () => api.get('/accounts/me');
+export const getProfile = () => api.get('/accounts/partner/profile');
 
-export const updateProfile = (data) => api.patch('/accounts/me', data);
+export const updateProfile = (data) => api.patch('/accounts/partner/profile', data);
 
 export const changePassword = (data) => api.post('/accounts/password', data);
 

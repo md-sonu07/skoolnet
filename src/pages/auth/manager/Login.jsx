@@ -5,6 +5,7 @@ import { useManagerAuth } from '../../../hooks/api/useManagerAuth';
 import { selectManagerAuth } from '../../../redux/slice/managerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 import toast from 'react-hot-toast';
+import { getErrorMessage } from '../../../utils/errorHelpers';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ export default function Login() {
       toast.success('Logged in successfully!');
       navigate('/dashboard/manager');
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Login failed');
+      toast.error(getErrorMessage(error, 'Login failed'));
     }
   };
 

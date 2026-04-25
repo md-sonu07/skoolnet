@@ -1,5 +1,7 @@
 import { useOutletContext } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
+import { useManagerAuth } from '../../hooks/api/useManagerAuth';
+import { DashboardSkeleton } from '../../components/common/Skeleton';
 import {
   DashboardPage,
   MetricCard,
@@ -22,6 +24,12 @@ const systemHealth = [
 
 export default function ManagerOverview() {
   const { platformName, adminName } = useOutletContext();
+  const { isLoadingProfile } = useManagerAuth();
+
+  if (isLoadingProfile) {
+    return <DashboardSkeleton />;
+  }
+
   
   return (
     <DashboardPage

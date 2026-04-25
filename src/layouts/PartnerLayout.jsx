@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import DashboardShell from '../components/layout/common/DashboardShell';
 import PartnerSidebar from '../components/layout/partner/PartnerSidebar';
 import PartnerTopbar from '../components/layout/partner/PartnerTopbar';
@@ -7,12 +8,19 @@ import {
   partnerSidebarContent,
 } from './navigation/partnerNavigation';
 import { usePartnerAuth } from '../hooks/api/usePartnerAuth';
+import { useSelector } from 'react-redux';
+import { selectPartnerAuth } from '../redux/slice/partnerAuthSlice';
 
 export default function PartnerLayout() {
-  const { user } = usePartnerAuth();
-  
+  const { user, logout } = usePartnerAuth();
+  const { token, isAuthenticated } = useSelector(selectPartnerAuth);
+
+  if (!token && !isAuthenticated) {
+    return <Navigate to="/auth/partner/login" replace />;
+  }
+
   const platformName = partnerHeader.userRole || 'Partner';
-  const partnerName = user?.name || user?.username || 'Partner';
+  const partnerName = user?.full_name ;
   const partnerRole = 'Organization Partner';
 
   const partnerMainNavItems = [
@@ -25,7 +33,7 @@ export default function PartnerLayout() {
   return (
     <DashboardShell
       topbar={<PartnerTopbar {...partnerHeader} userName={partnerName} userRole={partnerRole} />}
-      sidebar={<PartnerSidebar {...partnerSidebarContent} userName={partnerName} userRole={partnerRole} navItems={partnerNavItems} />}
+      sidebar={<PartnerSidebar {...partnerSidebarContent} userName={partnerName} userRole={partnerRole} navItems={partnerNavItems} onLogout={logout} />}
       showBottomNav={true}
       context={{ platformName, partnerName }}
       bottomNavItems={partnerNavItems}

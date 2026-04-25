@@ -14,7 +14,7 @@ export default function CoachingTeacherDashboard() {
   return (
     <DashboardPage
       eyebrow="Teacher dashboard"
-      title={`Hi, ${userName}`}
+      title={<span>Hi, <span className="capitalize">{userName}</span></span>}
     >
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="w-full lg:w-1/3">

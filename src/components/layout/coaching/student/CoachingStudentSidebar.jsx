@@ -1,9 +1,14 @@
 import { NavLink, Link } from 'react-router-dom';
 import AppIcon from '../../../common/AppIcon';
 
-export default function CoachingStudentSidebar({ badge, title, navItems, studentId, onClose, userRole }) {
+export default function CoachingStudentSidebar({ badge, title, navItems, studentId, onClose, userRole, onLogout }) {
+  const handleLogout = (e) => {
+    e.preventDefault();
+    if (onLogout) onLogout();
+  };
+
   return (
-    <aside className="hidden md:flex fixed left-0 top-0 h-screen w-64 glass-sidebar flex flex-col py-6 font-['Inter'] text-sm font-medium">
+    <aside className="hidden md:flex fixed left-0 top-0 h-screen w-64 glass-sidebar flex-col py-6 font-['Inter'] text-sm font-medium">
       <div className="px-6 mb-4 flex items-center gap-3 shrink-0">
         {onClose && (
           <button onClick={onClose} className="md:hidden p-1 -ml-2">
@@ -55,13 +60,13 @@ export default function CoachingStudentSidebar({ badge, title, navItems, student
       </nav>
       
       <div className="px-4 pt-2 mt-4 border-t border-slate-200">
-        <a 
-          className="flex items-center gap-3 px-4 py-2.5 text-slate-500 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all group" 
-          href="#"
+        <button 
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-500 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all group" 
         >
           <AppIcon name="logout" size={18} className="text-slate-400 group-hover:text-red-500" />
           <span className="text-sm font-medium">Logout</span>
-        </a>
+        </button>
       </div>
     </aside>
   );

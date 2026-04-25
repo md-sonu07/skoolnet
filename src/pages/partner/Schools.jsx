@@ -186,7 +186,7 @@ export default function PartnerSchools() {
                   <tr key={school.id} className="hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-3">
                       <div>
-                        <p className="font-semibold text-sm text-slate-900">{school.name}</p>
+                        <p className="font-semibold text-sm text-slate-900 capitalize">{school.name}</p>
                         <p className="text-xs text-slate-500">{school.address}</p>
                       </div>
                     </td>

@@ -5,6 +5,7 @@ import { useManagerAuth } from '../../../hooks/api/useManagerAuth';
 import { selectManagerAuth } from '../../../redux/slice/managerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 import toast from 'react-hot-toast';
+import { getErrorMessage } from '../../../utils/errorHelpers';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -60,7 +61,7 @@ export default function Signup() {
       toast.success('Account created! Please check your email to verify.');
       navigate('/auth/manager/login');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration failed');
+      toast.error(getErrorMessage(error, 'Registration failed'));
     }
   };
 

@@ -1,15 +1,18 @@
+import { lazy, Suspense } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import PartnerLayout from '../layouts/PartnerLayout';
-import PartnerDashboard from '../pages/partner/Dashboard';
-import PartnerSchools from '../pages/partner/Schools';
-import PartnerCoaching from '../pages/partner/Coaching';
-import PartnerPricing from '../pages/partner/Pricing';
-import PartnerActivity from '../pages/partner/Activity';
-import PartnerNotices from '../pages/partner/Notices';
-import PartnerMessages from '../pages/partner/Messages';
-import PartnerStudents from '../pages/partner/Students';
-import PartnerSettings from '../pages/partner/Settings';
-import PartnerProfile from '../pages/partner/Profile';
+import { ProfileSkeleton } from '../components/common/Skeleton';
+
+const PartnerDashboard = lazy(() => import('../pages/partner/Dashboard'));
+const PartnerSchools = lazy(() => import('../pages/partner/Schools'));
+const PartnerCoaching = lazy(() => import('../pages/partner/Coaching'));
+const PartnerPricing = lazy(() => import('../pages/partner/Pricing'));
+const PartnerActivity = lazy(() => import('../pages/partner/Activity'));
+const PartnerNotices = lazy(() => import('../pages/partner/Notices'));
+const PartnerMessages = lazy(() => import('../pages/partner/Messages'));
+const PartnerStudents = lazy(() => import('../pages/partner/Students'));
+const PartnerSettings = lazy(() => import('../pages/partner/Settings'));
+const PartnerProfile = lazy(() => import('../pages/partner/Profile'));
 
 const partnerRoutes = (
   <Route path="/dashboard/partner" element={<PartnerLayout />}>
@@ -23,7 +26,14 @@ const partnerRoutes = (
     <Route path="messages" element={<PartnerMessages />} />
     <Route path="students" element={<PartnerStudents />} />
     <Route path="settings" element={<PartnerSettings />} />
-    <Route path="profile" element={<PartnerProfile />} />
+    <Route 
+      path="profile" 
+      element={
+        <Suspense fallback={<ProfileSkeleton />}>
+          <PartnerProfile />
+        </Suspense>
+      } 
+    />
   </Route>
 );
 

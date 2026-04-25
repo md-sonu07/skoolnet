@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import AppIcon from '../../../components/common/AppIcon';
 import Dropdown from '../../../components/common/Dropdown';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../../hooks/api/useAuth';
+import { getErrorMessage } from '../../../utils/errorHelpers';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -21,33 +23,51 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
 
-  const typeOptions = [
-    { value: 'school', label: 'School' },
-    { value: 'coaching', label: 'Coaching Center' },
+  const institutionTypes = [
+    { value: 'SCHOOL', label: 'School' },
+    { value: 'COACHING', label: 'Coaching Center' },
+    { value: 'OTHER', label: 'Other' },
   ];
 
-  const stateOptions = [
-    { value: 'delhi', label: 'Delhi' },
-    { value: 'mumbai', label: 'Mumbai' },
-    { value: 'bangalore', label: 'Bangalore' },
-    { value: 'chennai', label: 'Chennai' },
-    { value: 'kolkata', label: 'Kolkata' },
-    { value: 'hyderabad', label: 'Hyderabad' },
-    { value: 'pune', label: 'Pune' },
-    { value: 'other', label: 'Other' },
-  ];
+  const navigate = useNavigate();
+  const { registerInstitution, isRegisteringInstitution } = useAuth();
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match');
       return;
     }
-    toast.success('Institution registration submitted!');
+    
+    try {
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+        full_name: formData.fullName,
+        phone: formData.phone,
+        institution_name: formData.institutionName,
+        institution_type: formData.type || 'SCHOOL',
+        address: formData.address,
+        city: formData.city,
+        state: formData.state
+      };
+      
+      await registerInstitution(payload);
+      toast.success('Institution registered successfully!');
+      
+      // Redirect based on type from TempUrls.jsx
+      if (formData.type === 'COACHING') {
+        navigate('/dashboard/coaching/overview');
+      } else {
+        navigate('/dashboard/school/overview');
+      }
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Registration failed. Please try again.'));
+    }
   };
 
   return (
@@ -138,7 +158,7 @@ export default function Register() {
             <Dropdown
               value={formData.type}
               onChange={(val) => handleChange('type', val)}
-              options={typeOptions}
+              options={institutionTypes}
               placeholder="Select type"
               className="w-full"
             />
@@ -183,13 +203,18 @@ export default function Register() {
           {/* State */}
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">State</label>
-            <Dropdown
-              value={formData.state}
-              onChange={(val) => handleChange('state', val)}
-              options={stateOptions}
-              placeholder="Select state"
-              className="w-full"
-            />
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <AppIcon name="location_on" size={16} />
+              </div>
+              <input
+                type="text"
+                value={formData.state}
+                onChange={(e) => handleChange('state', e.target.value)}
+                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                placeholder="State"
+              />
+            </div>
           </div>
         </div>
 
@@ -258,9 +283,17 @@ export default function Register() {
         </div>
 
         {/* Submit */}
-        <button type="submit" disabled={!agreeTerms} className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
-          <AppIcon name="business" size={16} />
-          Register Institution
+        <button 
+          type="submit" 
+          disabled={!agreeTerms || isRegisteringInstitution} 
+          className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {isRegisteringInstitution ? (
+            <AppIcon name="sync" size={16} className="animate-spin" />
+          ) : (
+            <AppIcon name="business" size={16} />
+          )}
+          {isRegisteringInstitution ? 'Registering...' : 'Register Institution'}
         </button>
       </form>
 

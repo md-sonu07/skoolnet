@@ -10,7 +10,7 @@ import { updateProfile } from '../../api/auth/profile';
 
 import toast from 'react-hot-toast';
 
-export default function CoachingProfile() {
+export default function SchoolProfile() {
   const [editing, setEditing] = useState(false);
   const { user, isLoadingProfile } = useAuth();
   const [formData, setFormData] = useState({
@@ -48,7 +48,7 @@ export default function CoachingProfile() {
 
   if (isLoadingProfile || !user) {
     return (
-      <DashboardPage eyebrow="Coaching Dashboard" title="Coaching Profile">
+      <DashboardPage eyebrow="Institution Dashboard" title="School Profile">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <SectionCard title="Overview" description="Your institutional identity" className="overflow-visible">
             <div className="text-left animate-pulse">
@@ -144,8 +144,8 @@ export default function CoachingProfile() {
 
   return (
     <DashboardPage
-      eyebrow="Coaching Dashboard"
-      title="Coaching Profile"
+      eyebrow="Institution Dashboard"
+      title="School Profile"
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Overview */}

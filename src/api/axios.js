@@ -14,12 +14,25 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    // Attempt to get token from Redux store first, then localStorage
-    const state = store.getState();
-    const token = state.managerAuth?.token || state.partnerAuth?.token || localStorage.getItem('access_token');
-    
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // List of public endpoints that don't need the Authorization header
+    const publicEndpoints = [
+      '/accounts/login',
+      '/accounts/register',
+      '/accounts/refresh',
+      '/accounts/verify-email',
+      '/accounts/password-reset',
+    ];
+
+    const isPublicEndpoint = publicEndpoints.some(endpoint => config.url.includes(endpoint));
+
+    if (!isPublicEndpoint) {
+      // Attempt to get token from Redux store first, then localStorage
+      const state = store.getState();
+      const token = state.managerAuth?.token || state.partnerAuth?.token || state.auth?.token || localStorage.getItem('access_token');
+      
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -47,13 +60,13 @@ api.interceptors.response.use(
           localStorage.setItem('refresh_token', refresh);
           
           originalRequest.headers.Authorization = `Bearer ${access}`;
+          return api(originalRequest);
         }
-        
-        return api(originalRequest);
       } catch (refreshError) {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
-        window.location.href = '/login';
+        // Redirect to a sensible default or the specific login page
+        window.location.href = '/auth/partner/login';
       }
     }
     

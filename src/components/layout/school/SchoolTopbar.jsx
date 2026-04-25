@@ -59,7 +59,7 @@ export default function SchoolTopbar({
           className="flex items-center gap-2 md:gap-3 hover:bg-slate-100 rounded-xl py-1 px-1.5 transition-all"
         >
           <div className="text-right hidden md:block">
-            <p className="text-xs font-bold text-on-surface">{userName}</p>
+            <p className="text-xs font-bold text-on-surface capitalize">{userName}</p>
             <p className="text-[10px] text-on-surface-variant font-medium">{userRole}</p>
           </div>
           <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-200 flex items-center justify-center">

@@ -15,7 +15,7 @@ export default function StudentDashboard() {
   return (
     <DashboardPage
       eyebrow="Student dashboard"
-      title={`Hi ${userName}`}
+      title={<span>Hi <span className="capitalize">{userName}</span></span>}
     >
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="w-full lg:w-1/3">
