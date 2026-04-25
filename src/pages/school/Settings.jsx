@@ -4,8 +4,19 @@ import {
   MetricGrid,
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
+import { useAuth } from '../../hooks/api/useAuth';
+import { DashboardSkeleton } from '../../components/common/Skeleton';
 
 export default function SchoolSettings() {
+  const { isLoadingProfile } = useAuth();
+
+  if (isLoadingProfile) {
+    return (
+      <DashboardPage eyebrow="School controls" title="Settings">
+        <DashboardSkeleton />
+      </DashboardPage>
+    );
+  }
   return (
     <DashboardPage
       eyebrow="School controls"

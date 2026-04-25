@@ -166,6 +166,7 @@ const iconMap = {
   location_on: MapPin,
   logout: LogOut,
   mail: Mail,
+  email: Mail,
   more_vert: EllipsisVertical,
   monitoring: BarChart3,
   notifications: Bell,

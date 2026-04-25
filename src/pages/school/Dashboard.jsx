@@ -5,9 +5,20 @@ import {
   MetricGrid,
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
+import { useAuth } from '../../hooks/api/useAuth';
+import { DashboardSkeleton } from '../../components/common/Skeleton';
 
 export default function SchoolOverview() {
   const { schoolName, adminName } = useOutletContext();
+  const { isLoadingProfile } = useAuth();
+
+  if (isLoadingProfile) {
+    return (
+      <DashboardPage eyebrow="School dashboard" title="Overview">
+        <DashboardSkeleton />
+      </DashboardPage>
+    );
+  }
   
   return (
     <DashboardPage

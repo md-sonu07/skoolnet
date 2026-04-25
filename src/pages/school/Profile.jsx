@@ -7,6 +7,7 @@ import {
 } from '../../components/common/DashboardPrimitives';
 import { useAuth } from '../../hooks/api/useAuth';
 import { updateProfile } from '../../api/auth/profile';
+import { ProfileSkeleton } from '../../components/common/Skeleton';
 
 import toast from 'react-hot-toast';
 
@@ -49,69 +50,11 @@ export default function SchoolProfile() {
   if (isLoadingProfile || !user) {
     return (
       <DashboardPage eyebrow="Institution Dashboard" title="School Profile">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <SectionCard title="Overview" description="Your institutional identity" className="overflow-visible">
-            <div className="text-left animate-pulse">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-20 h-20 rounded-2xl bg-slate-100 border border-slate-200 shrink-0"></div>
-                <div className="space-y-2.5 w-full">
-                  <div className="h-5 bg-slate-200 rounded-md w-3/4"></div>
-                  <div className="h-4 bg-slate-200 rounded-md w-1/2"></div>
-                  <div className="h-3 bg-slate-200 rounded-md w-1/3 mt-2"></div>
-                </div>
-              </div>
-              <div className="space-y-3 mb-6">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <div className="w-[18px] h-[18px] rounded-full bg-slate-200 shrink-0"></div>
-                    <div className="space-y-2 w-full">
-                      <div className="h-2.5 bg-slate-200 rounded w-16"></div>
-                      <div className="h-3.5 bg-slate-200 rounded w-2/3"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="w-full h-[42px] bg-slate-100 border border-slate-200 rounded-xl mb-3"></div>
-            </div>
-          </SectionCard>
-
-          <div className="lg:col-span-2 space-y-6">
-            <SectionCard title="Administrator Details" description="Your personal contact information">
-              <div className="space-y-4 animate-pulse">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1.5"><div className="h-3.5 bg-slate-200 rounded w-20"></div><div className="h-[38px] bg-slate-100 border border-slate-200 rounded-lg"></div></div>
-                  <div className="space-y-1.5"><div className="h-3.5 bg-slate-200 rounded w-24"></div><div className="h-[38px] bg-slate-100 border border-slate-200 rounded-lg"></div></div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1.5"><div className="h-3.5 bg-slate-200 rounded w-24"></div><div className="h-[38px] bg-slate-100 border border-slate-200 rounded-lg"></div></div>
-                  <div className="space-y-1.5"><div className="h-3.5 bg-slate-200 rounded w-28"></div><div className="h-[38px] bg-slate-100 border border-slate-200 rounded-lg"></div></div>
-                </div>
-                <div className="space-y-1.5"><div className="h-3.5 bg-slate-200 rounded w-32"></div><div className="h-[38px] bg-slate-100 border border-slate-200 rounded-lg"></div></div>
-                <div className="space-y-1.5"><div className="h-3.5 bg-slate-200 rounded w-36"></div><div className="h-16 bg-slate-100 border border-slate-200 rounded-lg"></div></div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1.5"><div className="h-3.5 bg-slate-200 rounded w-16"></div><div className="h-[38px] bg-slate-100 border border-slate-200 rounded-lg"></div></div>
-                  <div className="space-y-1.5"><div className="h-3.5 bg-slate-200 rounded w-16"></div><div className="h-[38px] bg-slate-100 border border-slate-200 rounded-lg"></div></div>
-                </div>
-                <div className="pt-2"><div className="w-[120px] h-[40px] bg-slate-200 rounded-xl"></div></div>
-              </div>
-            </SectionCard>
-          </div>
-        </div>
-        <SectionCard title="Security & Authentication">
-           <div className="w-full h-[74px] bg-slate-50 border border-slate-100 rounded-xl animate-pulse flex items-center justify-between p-4 gap-4">
-             <div className="flex gap-3 w-full">
-                <div className="w-10 h-10 rounded-lg bg-slate-200 shrink-0"></div>
-                <div className="space-y-2 w-full max-w-[200px] mt-1">
-                  <div className="h-3.5 bg-slate-200 rounded w-full"></div>
-                  <div className="h-2.5 bg-slate-200 rounded w-3/4"></div>
-                </div>
-             </div>
-             <div className="w-32 h-9 bg-slate-200 rounded-lg shrink-0"></div>
-           </div>
-        </SectionCard>
+        <ProfileSkeleton />
       </DashboardPage>
     );
   }
+
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
