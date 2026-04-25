@@ -1,29 +1,45 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AppIcon from '../../../components/common/AppIcon';
-import Dropdown from '../../../components/common/Dropdown';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../../hooks/api/useAuth';
+import { getErrorMessage } from '../../../utils/errorHelpers';
+import { useSelector } from 'react-redux';
+import { selectAuth } from '../../../redux/slice/authSlice';
 
 export default function InstitutionLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [institutionCode, setInstitutionCode] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  const roleOptions = [
-    { value: 'admin', label: 'Administrator' },
-    { value: 'teacher', label: 'Teacher' },
-    // { value: 'staff', label: 'Staff' },
-  ];
+  const navigate = useNavigate();
+  const { login, isLoggingIn } = useAuth();
+  const { isAuthenticated, user } = useSelector(selectAuth);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (user?.institution?.type === 'COACHING') {
+        navigate('/dashboard/coaching/overview');
+      } else {
+        navigate('/dashboard/school/overview');
+      }
+    }
+  }, [isAuthenticated, user, navigate]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password || !institutionCode) {
+    if (!email || !password) {
       toast.error('Please fill in all required fields');
       return;
     }
-    toast.success('Logging in to Institution...');
+    
+    try {
+      await login({ email, password });
+      toast.success('Logged in successfully!');
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Login failed. Please check your credentials.'));
+    }
   };
 
   return (
@@ -38,23 +54,6 @@ export default function InstitutionLogin() {
 
       <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="space-y-3">
-          {/* Institution Code */}
-          <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Institution Code</label>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                <AppIcon name="business" size={16} />
-              </div>
-              <input
-                type="text"
-                value={institutionCode}
-                onChange={(e) => setInstitutionCode(e.target.value)}
-                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="e.g., DPS001, COACH2024"
-              />
-            </div>
-          </div>
-
           {/* Email */}
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">Email Address</label>
@@ -68,6 +67,7 @@ export default function InstitutionLogin() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 placeholder="your.email@institution.com"
+                required
               />
             </div>
           </div>
@@ -90,25 +90,16 @@ export default function InstitutionLogin() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 placeholder="Enter password"
+                required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
               >
                 <AppIcon name={showPassword ? 'visibility_off' : 'visibility'} size={16} />
               </button>
             </div>
-          </div>
-
-          {/* Role */}
-          <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Login as</label>
-            <Dropdown
-              options={roleOptions}
-              placeholder="Select your role"
-              className="w-full"
-            />
           </div>
 
           {/* Remember Me */}
@@ -124,9 +115,17 @@ export default function InstitutionLogin() {
           </div>
         </div>
 
-        <button type="submit" className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2">
-          <AppIcon name="login" size={16} />
-          Sign in to Dashboard
+        <button 
+          type="submit" 
+          disabled={isLoggingIn}
+          className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+        >
+          {isLoggingIn ? (
+            <AppIcon name="sync" size={16} className="animate-spin" />
+          ) : (
+            <AppIcon name="login" size={16} />
+          )}
+          {isLoggingIn ? 'Signing in...' : 'Sign in to Dashboard'}
         </button>
       </form>
 
