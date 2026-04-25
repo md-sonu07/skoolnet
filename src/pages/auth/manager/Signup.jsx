@@ -17,7 +17,7 @@ export default function Signup() {
     last_name: '',
     phone: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswords, setShowPasswords] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
 
   const navigate = useNavigate();
@@ -165,7 +165,7 @@ export default function Signup() {
                 <AppIcon name="lock" size={16} />
               </div>
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPasswords ? 'text' : 'password'}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -175,10 +175,10 @@ export default function Signup() {
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                onClick={() => setShowPasswords(!showPasswords)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 outline-none cursor-pointer"
               >
-                <AppIcon name={showPassword ? 'visibility_off' : 'visibility'} size={16} />
+                <AppIcon name={showPasswords ? 'visibility_off' : 'visibility'} size={18} />
               </button>
             </div>
           </div>
@@ -190,7 +190,7 @@ export default function Signup() {
                 <AppIcon name="lock" size={16} />
               </div>
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPasswords ? 'text' : 'password'}
                 name="password_confirm"
                 value={formData.password_confirm}
                 onChange={handleChange}

@@ -9,8 +9,10 @@ import {
 import { useAuth } from '../hooks/api/useAuth';
 
 export default function TeacherLayout() {
-  const { teacherId } = useParams();
+  const { teacherId: paramId } = useParams();
   const { user, logout } = useAuth();
+  
+  const teacherId = paramId || user?.id;
 
   const teacher = {
     name: user?.first_name || user?.last_name 

@@ -11,21 +11,25 @@ import CoachingTeacherSchedule from '../pages/coaching/teacher/Schedule';
 import CoachingTeacherNotices from '../pages/coaching/teacher/Notices';
 import CoachingTeacherProfile from '../pages/coaching/teacher/Profile';
 
+import ProtectedRoute from '../components/auth/ProtectedRoute';
+
 const coachingTeacherRoutes = (
-  <Route path="/dashboard/coaching/teacher/:teacherId" element={<CoachingTeacherLayout />}>
-    <Route index element={<Navigate to="dashboard" replace />} />
-    <Route path="dashboard" element={<CoachingTeacherDashboard />} />
-    <Route path="courses" element={<CoachingTeacherCourses />} />
-    <Route path="students" element={<CoachingTeacherStudents />} />
-    <Route path="attendance" element={<CoachingTeacherAttendance />} />
-    <Route path="assignments" element={<CoachingTeacherAssignments />} />
-    <Route path="notes" element={<CoachingTeacherNotes />} />
-    <Route path="marks" element={<CoachingTeacherMarks />} />
-    <Route path="results" element={<CoachingTeacherMarks />} />
-    <Route path="schedule" element={<CoachingTeacherSchedule />} />
-    <Route path="notices" element={<CoachingTeacherNotices />} />
-    <Route path="messages" element={<CoachingTeacherNotices />} />
-    <Route path="profile" element={<CoachingTeacherProfile />} />
+  <Route element={<ProtectedRoute role="teacher" allowedType="COACHING" requiredRole="TEACHER" />}>
+    <Route path="/dashboard/coaching/teacher/:teacherId" element={<CoachingTeacherLayout />}>
+      <Route index element={<Navigate to="dashboard" replace />} />
+      <Route path="dashboard" element={<CoachingTeacherDashboard />} />
+      <Route path="courses" element={<CoachingTeacherCourses />} />
+      <Route path="students" element={<CoachingTeacherStudents />} />
+      <Route path="attendance" element={<CoachingTeacherAttendance />} />
+      <Route path="assignments" element={<CoachingTeacherAssignments />} />
+      <Route path="notes" element={<CoachingTeacherNotes />} />
+      <Route path="marks" element={<CoachingTeacherMarks />} />
+      <Route path="results" element={<CoachingTeacherMarks />} />
+      <Route path="schedule" element={<CoachingTeacherSchedule />} />
+      <Route path="notices" element={<CoachingTeacherNotices />} />
+      <Route path="messages" element={<CoachingTeacherNotices />} />
+      <Route path="profile" element={<CoachingTeacherProfile />} />
+    </Route>
   </Route>
 );
 

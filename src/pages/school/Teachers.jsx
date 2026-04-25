@@ -163,7 +163,7 @@ export default function TeacherManagement() {
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
                         <Link 
-                          to={`/dashboard/school/teacher/${teacher.slug}/dashboard`}
+                          to={`/dashboard/school-teacher/dashboard`}
                           target="_blank"
                           className="p-2 rounded hover:bg-slate-100 transition-colors text-blue-600 hover:text-blue-700"
                           title="View Dashboard (New Tab)"

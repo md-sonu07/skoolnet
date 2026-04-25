@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   DashboardPage,
   SectionCard,
@@ -5,9 +6,36 @@ import {
 } from '../../../components/common/DashboardPrimitives';
 import AppIcon from '../../../components/common/AppIcon';
 import { useAuth } from '../../../hooks/api/useAuth';
+import toast from 'react-hot-toast';
 
 export default function CoachingTeacherProfile() {
+  const [isEditing, setIsEditing] = useState(false);
   const { user, isLoadingProfile } = useAuth();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    employeeId: '',
+    qualification: '',
+    experience: '',
+    subjects: '',
+    address: '',
+  });
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || user.username || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        employeeId: user.employee_id || '',
+        qualification: user.qualification || '',
+        experience: user.experience || '',
+        subjects: user.subjects || '',
+        address: user.address || '',
+      });
+    }
+  }, [user]);
 
   if (isLoadingProfile) {
     return (
@@ -17,17 +45,25 @@ export default function CoachingTeacherProfile() {
     );
   }
 
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSave = () => {
+    toast.success('Coaching teacher profile updated successfully! (Demo)');
+    setIsEditing(false);
+  };
+
   const teacherData = {
-    name: user?.first_name || user?.last_name 
-      ? `${user.first_name || ''} ${user.last_name || ''}`.trim() 
-      : 'Dr. Amit Kumar',
-    email: user?.email || 'amit@skoolnet.com',
-    phone: user?.phone || '+91 98765 43210',
-    employeeId: user?.employee_id || 'COACH-2023-0142',
-    qualification: user?.qualification || 'M.Sc Physics, B.Ed',
-    experience: user?.experience || '8 Years',
-    subjects: user?.subjects || 'Physics, NEET, JEE',
-    joinDate: user?.date_joined?.split('T')[0] || '2022-07-15',
+    name: formData.name || user?.name || user?.username || 'Not Set',
+    email: formData.email || user?.email || 'Not Set',
+    phone: formData.phone || user?.phone || 'Not Set',
+    employeeId: formData.employeeId || user?.employee_id || 'Not Set',
+    qualification: formData.qualification || user?.qualification || 'Not Set',
+    experience: formData.experience || user?.experience || 'Not Set',
+    subjects: formData.subjects || user?.subjects || 'Not Set',
+    joinDate: user?.date_joined?.split('T')[0] || 'Not Set',
+    address: formData.address || user?.address || 'Not Set',
     status: user?.is_active ? 'Active' : 'Inactive',
   };
 
@@ -35,38 +71,117 @@ export default function CoachingTeacherProfile() {
     <DashboardPage
       eyebrow="Account"
       title="Profile"
-      description="View and manage your profile"
+      description="View and manage your coaching profile"
     >
       <div className="grid gap-6 lg:grid-cols-3">
-        <SectionCard title="Profile Picture" description="" className="lg:col-span-1">
+        {/* Sidebar Column */}
+        <SectionCard title="Teacher Overview" description="" className="lg:col-span-1">
           <div className="text-center">
-            <div className="w-32 h-32 mx-auto rounded-2xl bg-slate-200 flex items-center justify-center mb-4">
-              <AppIcon name="person" size={64} className="text-slate-400" />
+            <div className="w-32 h-32 mx-auto rounded-2xl bg-slate-100 flex items-center justify-center mb-4 border-2 border-slate-50 shadow-inner">
+              <AppIcon name="person" size={64} className="text-slate-300" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-1 capitalize">{teacherData.name}</h3>
-            <p className="text-sm text-slate-600 mb-3">{teacherData.subjects}</p>
-            <StatusBadge tone={teacherData.status === 'Active' ? 'emerald' : 'rose'}>{teacherData.status}</StatusBadge>
+            <h3 className="text-xl font-bold text-slate-900 mb-1 capitalize truncate">{teacherData.name}</h3>
+            <p className="text-sm font-semibold text-primary mb-3 bg-primary/5 py-1 px-3 rounded-full inline-block">
+              {teacherData.subjects} Coach
+            </p>
+            
+            <div className="flex justify-center mb-6">
+              <StatusBadge tone={teacherData.status === 'Active' ? 'emerald' : 'rose'}>{teacherData.status}</StatusBadge>
+            </div>
+
+            <div className="space-y-3 text-left border-t border-slate-100 pt-6">
+              <div className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/50 border border-transparent hover:border-slate-200 transition-all">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+                  <AppIcon name="mail" size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Official Email</p>
+                  <p className="text-xs font-medium text-slate-700 truncate">{teacherData.email}</p>
+                </div>
+              </div>
+
+              <div className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/50 border border-transparent hover:border-slate-200 transition-all">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+                  <AppIcon name="phone" size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Contact Number</p>
+                  <p className="text-xs font-medium text-slate-700">{teacherData.phone}</p>
+                </div>
+              </div>
+
+              <div className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/50 border border-transparent hover:border-slate-200 transition-all">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+                  <AppIcon name="calendar_today" size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Joined Platform</p>
+                  <p className="text-xs font-medium text-slate-700">{teacherData.joinDate}</p>
+                </div>
+              </div>
+            </div>
+
+            <button className="mt-8 w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
+              <AppIcon name="photo_camera" size={14} />
+              Update Photo
+            </button>
           </div>
         </SectionCard>
 
+        {/* Main Content Column */}
         <div className="lg:col-span-2 space-y-6">
           <SectionCard title="Personal Information" description="">
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Full Name</label>
-                <p className="text-slate-900 font-medium capitalize">{teacherData.name}</p>
+                <input 
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="Enter full name"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Email</label>
-                <p className="text-slate-900 font-medium">{teacherData.email}</p>
+                <input 
+                  type="email"
+                  value={formData.email}
+                  disabled={true}
+                  className="w-full px-3 py-2 border border-transparent bg-slate-50 rounded-lg text-sm font-medium text-slate-500 cursor-not-allowed"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Phone</label>
-                <p className="text-slate-900 font-medium">{teacherData.phone}</p>
+                <input 
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="Enter phone number"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Employee ID</label>
-                <p className="text-slate-900 font-medium">{teacherData.employeeId}</p>
+                <input 
+                  type="text"
+                  value={formData.employeeId}
+                  disabled={true}
+                  className="w-full px-3 py-2 border border-transparent bg-slate-50 rounded-lg text-sm font-medium text-slate-500 cursor-not-allowed"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-xs font-medium text-slate-500 mb-1">Address</label>
+                <textarea 
+                  value={formData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  disabled={!isEditing}
+                  rows={2}
+                  placeholder="Street, City, Pincode"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all resize-none"
+                />
               </div>
             </div>
           </SectionCard>
@@ -75,23 +190,94 @@ export default function CoachingTeacherProfile() {
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Qualification</label>
-                <p className="text-slate-900 font-medium">{teacherData.qualification}</p>
+                <input 
+                  type="text"
+                  value={formData.qualification}
+                  onChange={(e) => handleInputChange('qualification', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="M.Sc. Physics"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Experience</label>
-                <p className="text-slate-900 font-medium">{teacherData.experience}</p>
+                <input 
+                  type="text"
+                  value={formData.experience}
+                  onChange={(e) => handleInputChange('experience', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="5 Years"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Subjects</label>
-                <p className="text-slate-900 font-medium">{teacherData.subjects}</p>
+                <input 
+                  type="text"
+                  value={formData.subjects}
+                  onChange={(e) => handleInputChange('subjects', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="e.g. Physics, Chemistry"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Join Date</label>
-                <p className="text-slate-900 font-medium">{teacherData.joinDate}</p>
+                <p className="px-3 py-2 text-sm font-medium text-slate-500 bg-slate-50 rounded-lg capitalize">
+                  {teacherData.joinDate}
+                </p>
               </div>
             </div>
           </SectionCard>
+
+          <div className="flex justify-end gap-3">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="px-6 py-2.5 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
+                >
+                  Save Changes
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
+              >
+                <AppIcon name="edit" size={18} />
+                Edit Profile
+              </button>
+            )}
+          </div>
         </div>
+      </div>
+
+      <div className="mt-6">
+        <SectionCard title="Security" description="Manage your account security">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 rounded-xl border border-slate-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                  <AppIcon name="lock" size={20} className="text-slate-600" />
+                </div>
+                <div>
+                  <p className="font-bold text-slate-900">Change Password</p>
+                  <p className="text-xs text-slate-500">Update your account password</p>
+                </div>
+              </div>
+              <button className="px-4 py-2 text-xs font-bold border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                Change
+              </button>
+            </div>
+          </div>
+        </SectionCard>
       </div>
     </DashboardPage>
   );

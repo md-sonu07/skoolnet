@@ -4,7 +4,7 @@ import { selectAuth } from '../../redux/slice/authSlice';
 import { selectManagerAuth } from '../../redux/slice/managerAuthSlice';
 import { selectPartnerAuth } from '../../redux/slice/partnerAuthSlice';
 
-export default function ProtectedRoute({ role, allowedType }) {
+export default function ProtectedRoute({ role, allowedType, requiredRole }) {
   const auth = useSelector(selectAuth);
   const managerAuth = useSelector(selectManagerAuth);
   const partnerAuth = useSelector(selectPartnerAuth);
@@ -23,7 +23,9 @@ export default function ProtectedRoute({ role, allowedType }) {
       ? '/auth/manager/login' 
       : role === 'partner'
         ? '/auth/partner/login'
-        : '/auth/institution/login';
+        : role === 'teacher'
+          ? '/auth/teacher/login'
+          : '/auth/institution/login';
     
     return <Navigate to={loginPath} state={{ from: location }} replace />;
   }
@@ -40,7 +42,17 @@ export default function ProtectedRoute({ role, allowedType }) {
     }
   }
 
-  // 4. Check partner role if required
+  // 4. Check membership role if required
+  if (requiredRole && user?.institution) {
+    if (user.institution.role !== requiredRole) {
+      const fallbackPath = user.institution.type === 'COACHING' 
+        ? '/dashboard/coaching/overview' 
+        : '/dashboard/school/overview';
+      return <Navigate to={fallbackPath} replace />;
+    }
+  }
+
+  // 5. Check partner role if required
   if (role === 'partner' && !user?.partner) {
      return <Navigate to="/auth/partner/login" replace />;
   }

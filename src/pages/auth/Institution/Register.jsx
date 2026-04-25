@@ -19,8 +19,7 @@ export default function Register() {
     password: '',
     confirmPassword: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPasswords, setShowPasswords] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
 
   const institutionTypes = [
@@ -227,7 +226,7 @@ export default function Register() {
                 <AppIcon name="lock" size={16} />
               </div>
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPasswords ? 'text' : 'password'}
                 value={formData.password}
                 onChange={(e) => handleChange('password', e.target.value)}
                 className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -235,10 +234,10 @@ export default function Register() {
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                onClick={() => setShowPasswords(!showPasswords)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 outline-none cursor-pointer"
               >
-                <AppIcon name={showPassword ? 'visibility_off' : 'visibility'} size={16} />
+                <AppIcon name={showPasswords ? 'visibility_off' : 'visibility'} size={18} />
               </button>
             </div>
           </div>
@@ -251,19 +250,12 @@ export default function Register() {
                 <AppIcon name="lock" size={16} />
               </div>
               <input
-                type={showConfirmPassword ? 'text' : 'password'}
+                type={showPasswords ? 'text' : 'password'}
                 value={formData.confirmPassword}
                 onChange={(e) => handleChange('confirmPassword', e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 placeholder="Confirm password"
               />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
-              >
-                <AppIcon name={showConfirmPassword ? 'visibility_off' : 'visibility'} size={16} />
-              </button>
             </div>
           </div>
         </div>
