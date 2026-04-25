@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AppIcon from '../../../components/common/AppIcon';
 import Dropdown from '../../../components/common/Dropdown';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../../hooks/api/useAuth';
 
 export default function StudentLogin() {
   const [email, setEmail] = useState('');
@@ -10,6 +11,16 @@ export default function StudentLogin() {
   const [institution, setInstitution] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  
+  const { login, isLoggingIn, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard/school-student/');
+    }
+  }, [isAuthenticated, navigate]);
 
   const institutionOptions = [
     { value: 'delhi-public', label: 'Delhi Public School' },
@@ -18,13 +29,20 @@ export default function StudentLogin() {
     { value: 'bright-future', label: 'Bright Future Institute' },
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       toast.error('Please enter email and password');
       return;
     }
-    toast.success('Logging in as Student...');
+
+    try {
+      await login({ email, password });
+      toast.success('Successfully logged in!');
+      navigate('/dashboard/school-student/');
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Invalid credentials');
+    }
   };
 
   return (
@@ -51,21 +69,6 @@ export default function StudentLogin() {
             />
           </div>
 
-          {/* Roll Number / Admission No */}
-          <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Roll Number / Admission No</label>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                <AppIcon name="badge" size={16} />
-              </div>
-              <input
-                type="text"
-                placeholder="e.g., 001, ADM2024001"
-                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-              />
-            </div>
-          </div>
-
           {/* Email */}
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">Email Address</label>
@@ -77,8 +80,9 @@ export default function StudentLogin() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
                 placeholder="your.email@example.com"
+                required
               />
             </div>
           </div>
@@ -101,13 +105,14 @@ export default function StudentLogin() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 placeholder="Enter password"
+                required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 outline-none cursor-pointer"
               >
-                <AppIcon name={showPassword ? 'visibility_off' : 'visibility'} size={16} />
+                <AppIcon name={showPassword ? 'visibility_off' : 'visibility'} size={18} />
               </button>
             </div>
           </div>
@@ -125,9 +130,13 @@ export default function StudentLogin() {
           </div>
         </div>
 
-        <button type="submit" className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2">
-          <AppIcon name="login" size={16} />
-          Access Student Portal
+        <button 
+          type="submit" 
+          disabled={isLoggingIn}
+          className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+        >
+          <AppIcon name={isLoggingIn ? 'sync' : 'login'} size={16} className={isLoggingIn ? 'animate-spin' : ''} />
+          {isLoggingIn ? 'Signing in...' : 'Access Student Portal'}
         </button>
       </form>
 

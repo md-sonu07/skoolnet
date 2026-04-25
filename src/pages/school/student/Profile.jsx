@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   DashboardPage,
   SectionCard,
@@ -6,9 +6,48 @@ import {
 } from '../../../components/common/DashboardPrimitives';
 import AppIcon from '../../../components/common/AppIcon';
 import { useAuth } from '../../../hooks/api/useAuth';
+import toast from 'react-hot-toast';
 
 export default function StudentProfile() {
+  const [isEditing, setIsEditing] = useState(false);
   const { user, isLoadingProfile } = useAuth();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    dob: '',
+    gender: '',
+    bloodGroup: '',
+    class: '',
+    section: '',
+    rollNo: '',
+    fatherName: '',
+    motherName: '',
+    fatherPhone: '',
+    emergencyPhone: '',
+  });
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || user.username || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        address: user.address || '',
+        dob: user.student_profile?.dob || '',
+        gender: user.student_profile?.gender || '',
+        bloodGroup: user.student_profile?.blood_group || '',
+        class: user.student_profile?.class_name || '',
+        section: user.student_profile?.section || '',
+        rollNo: user.student_profile?.roll_number || '',
+        fatherName: user.student_profile?.father_name || '',
+        motherName: user.student_profile?.mother_name || '',
+        fatherPhone: user.student_profile?.father_phone || '',
+        emergencyPhone: user.student_profile?.emergency_contact || '',
+      });
+    }
+  }, [user]);
 
   if (isLoadingProfile) {
     return (
@@ -18,22 +57,31 @@ export default function StudentProfile() {
     );
   }
 
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSave = () => {
+    toast.success('Your profile has been updated! (Demo)');
+    setIsEditing(false);
+  };
+
   const studentData = {
-    name: user?.name || user?.username || 'Aarav Sharma',
-    rollNo: user?.student_profile?.roll_number || '001',
-    class: user?.student_profile?.class_name || 'Class 10-A',
-    section: user?.student_profile?.section || 'A',
-    dob: user?.student_profile?.dob || '2008-05-15',
-    gender: user?.student_profile?.gender || 'Male',
-    bloodGroup: user?.student_profile?.blood_group || 'B+',
-    phone: user?.phone || '+91 98765 43210',
-    email: user?.email || 'aarav@email.com',
-    address: user?.address || '123, Gandhi Nagar, City - 123456',
-    fatherName: user?.student_profile?.father_name || 'Rajesh Sharma',
-    motherName: user?.student_profile?.mother_name || 'Sunita Sharma',
-    fatherPhone: user?.student_profile?.father_phone || '+91 98765 43211',
-    emergencyPhone: user?.student_profile?.emergency_contact || '+91 98765 43212',
-    admissionDate: user?.date_joined?.split('T')[0] || '2024-01-15',
+    name: formData.name || user?.name || user?.username || 'Not Set',
+    email: formData.email || user?.email || 'Not Set',
+    phone: formData.phone || user?.phone || 'Not Set',
+    address: formData.address || user?.address || 'Not Set',
+    dob: formData.dob || 'Not Set',
+    gender: formData.gender || 'Not Set',
+    bloodGroup: formData.bloodGroup || 'Not Set',
+    class: formData.class || 'Not Set',
+    section: formData.section || 'Not Set',
+    rollNo: formData.rollNo || 'Not Set',
+    fatherName: formData.fatherName || 'Not Set',
+    motherName: formData.motherName || 'Not Set',
+    fatherPhone: formData.fatherPhone || 'Not Set',
+    emergencyPhone: formData.emergencyPhone || 'Not Set',
+    admissionDate: user?.date_joined?.split('T')[0] || 'Not Set',
     status: user?.is_active ? 'Active' : 'Inactive',
   };
 
@@ -41,50 +89,140 @@ export default function StudentProfile() {
     <DashboardPage
       eyebrow="Account"
       title="My Profile"
-      description="View and manage your profile information"
+      description="View and manage your student profile information"
     >
       <div className="grid gap-6 lg:grid-cols-3">
-        <SectionCard title="Profile Picture" description="" className="lg:col-span-1">
+        {/* Sidebar Column */}
+        <SectionCard title="Student Overview" description="" className="lg:col-span-1">
           <div className="text-center">
-            <div className="w-32 h-32 mx-auto rounded-2xl bg-slate-200 flex items-center justify-center mb-4">
-              <AppIcon name="person" size={64} className="text-slate-400" />
+            <div className="w-32 h-32 mx-auto rounded-2xl bg-slate-100 flex items-center justify-center mb-4 border-2 border-slate-50 shadow-inner">
+              <AppIcon name="person" size={64} className="text-slate-300" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-1 capitalize">{studentData.name}</h3>
-            <p className="text-sm text-slate-600 mb-3">Roll No: {studentData.rollNo}</p>
-            <StatusBadge tone={studentData.status === 'Active' ? 'emerald' : 'rose'}>{studentData.status}</StatusBadge>
+            <h3 className="text-xl font-bold text-slate-900 mb-1 capitalize truncate">{studentData.name}</h3>
+            <p className="text-sm font-semibold text-primary mb-3 bg-primary/5 py-1 px-3 rounded-full inline-block">
+              {studentData.class} • Section {studentData.section}
+            </p>
+            
+            <div className="flex justify-center mb-6">
+              <StatusBadge tone={studentData.status === 'Active' ? 'emerald' : 'rose'}>{studentData.status}</StatusBadge>
+            </div>
+
+            <div className="space-y-3 text-left border-t border-slate-100 pt-6">
+              <div className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/50 border border-transparent hover:border-slate-200 transition-all">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+                  <AppIcon name="badge" size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Roll Number</p>
+                  <p className="text-xs font-medium text-slate-700">{studentData.rollNo}</p>
+                </div>
+              </div>
+
+              <div className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/50 border border-transparent hover:border-slate-200 transition-all">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+                  <AppIcon name="phone" size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Contact</p>
+                  <p className="text-xs font-medium text-slate-700">{studentData.phone}</p>
+                </div>
+              </div>
+
+              <div className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/50 border border-transparent hover:border-slate-200 transition-all">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+                  <AppIcon name="calendar_today" size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Admission Date</p>
+                  <p className="text-xs font-medium text-slate-700">{studentData.admissionDate}</p>
+                </div>
+              </div>
+            </div>
+
+            <button className="mt-8 w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
+              <AppIcon name="photo_camera" size={14} />
+              Update Photo
+            </button>
           </div>
         </SectionCard>
 
+        {/* Main Content Column */}
         <div className="lg:col-span-2 space-y-6">
           <SectionCard title="Personal Information" description="">
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Full Name</label>
-                <p className="text-slate-900 font-medium capitalize">{studentData.name}</p>
+                <input 
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Date of Birth</label>
-                <p className="text-slate-900 font-medium">{studentData.dob}</p>
+                <input 
+                  type="date"
+                  value={formData.dob}
+                  onChange={(e) => handleInputChange('dob', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Gender</label>
-                <p className="text-slate-900 font-medium">{studentData.gender}</p>
+                <select
+                  value={formData.gender}
+                  onChange={(e) => handleInputChange('gender', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Blood Group</label>
-                <p className="text-slate-900 font-medium">{studentData.bloodGroup}</p>
+                <input 
+                  type="text"
+                  value={formData.bloodGroup}
+                  onChange={(e) => handleInputChange('bloodGroup', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="e.g. B+"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Phone</label>
-                <p className="text-slate-900 font-medium">{studentData.phone}</p>
+                <input 
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Email</label>
-                <p className="text-slate-900 font-medium">{studentData.email}</p>
+                <input 
+                  type="email"
+                  value={formData.email}
+                  disabled={true}
+                  className="w-full px-3 py-2 border border-transparent bg-slate-50 rounded-lg text-sm font-medium text-slate-500 cursor-not-allowed"
+                />
               </div>
               <div className="md:col-span-2">
                 <label className="block text-xs font-medium text-slate-500 mb-1">Address</label>
-                <p className="text-slate-900 font-medium">{studentData.address}</p>
+                <textarea 
+                  value={formData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  disabled={!isEditing}
+                  rows={2}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all resize-none"
+                />
               </div>
             </div>
           </SectionCard>
@@ -93,19 +231,36 @@ export default function StudentProfile() {
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Class</label>
-                <p className="text-slate-900 font-medium">{studentData.class}</p>
+                <input 
+                  type="text"
+                  value={formData.class}
+                  disabled={true}
+                  className="w-full px-3 py-2 border border-transparent bg-slate-50 rounded-lg text-sm font-medium text-slate-500 cursor-not-allowed"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Section</label>
-                <p className="text-slate-900 font-medium">{studentData.section}</p>
+                <input 
+                  type="text"
+                  value={formData.section}
+                  disabled={true}
+                  className="w-full px-3 py-2 border border-transparent bg-slate-50 rounded-lg text-sm font-medium text-slate-500 cursor-not-allowed"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Roll Number</label>
-                <p className="text-slate-900 font-medium">{studentData.rollNo}</p>
+                <input 
+                  type="text"
+                  value={formData.rollNo}
+                  disabled={true}
+                  className="w-full px-3 py-2 border border-transparent bg-slate-50 rounded-lg text-sm font-medium text-slate-500 cursor-not-allowed"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Admission Date</label>
-                <p className="text-slate-900 font-medium">{studentData.admissionDate}</p>
+                <p className="px-3 py-2 text-sm font-medium text-slate-500 bg-slate-50 rounded-lg">
+                  {studentData.admissionDate}
+                </p>
               </div>
             </div>
           </SectionCard>
@@ -114,22 +269,73 @@ export default function StudentProfile() {
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Father's Name</label>
-                <p className="text-slate-900 font-medium capitalize">{studentData.fatherName}</p>
+                <input 
+                  type="text"
+                  value={formData.fatherName}
+                  onChange={(e) => handleInputChange('fatherName', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Mother's Name</label>
-                <p className="text-slate-900 font-medium capitalize">{studentData.motherName}</p>
+                <input 
+                  type="text"
+                  value={formData.motherName}
+                  onChange={(e) => handleInputChange('motherName', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Father's Phone</label>
-                <p className="text-slate-900 font-medium">{studentData.fatherPhone}</p>
+                <input 
+                  type="tel"
+                  value={formData.fatherPhone}
+                  onChange={(e) => handleInputChange('fatherPhone', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Emergency Contact</label>
-                <p className="text-slate-900 font-medium">{studentData.emergencyPhone}</p>
+                <input 
+                  type="tel"
+                  value={formData.emergencyPhone}
+                  onChange={(e) => handleInputChange('emergencyPhone', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-slate-50 disabled:border-transparent transition-all"
+                />
               </div>
             </div>
           </SectionCard>
+
+          <div className="flex justify-end gap-3">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="px-6 py-2.5 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
+                >
+                  Save Changes
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
+              >
+                <AppIcon name="edit" size={18} />
+                Edit Profile
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </DashboardPage>

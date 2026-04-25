@@ -1,19 +1,31 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AppIcon from '../../../components/common/AppIcon';
 import Dropdown from '../../../components/common/Dropdown';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../../hooks/api/useAuth';
 
 export default function StudentSignup() {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     phone: '',
+    password: '',
     institution: '',
     parentName: '',
     parentPhone: '',
   });
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  
+  const { register, isRegistering, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard/school-student/');
+    }
+  }, [isAuthenticated, navigate]);
 
   const institutionOptions = [
     { value: 'delhi-public', label: 'Delhi Public School' },
@@ -26,13 +38,32 @@ export default function StudentSignup() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.email || !formData.institution) {
+    if (!formData.fullName || !formData.email || !formData.password || !formData.institution) {
       toast.error('Please fill in all required fields');
       return;
     }
-    toast.success('Access request submitted successfully!');
+
+    try {
+      const nameParts = formData.fullName.trim().split(' ');
+      const firstName = nameParts[0];
+      const lastName = nameParts.slice(1).join(' ');
+
+      await register({
+        first_name: firstName,
+        last_name: lastName,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        role: 'STUDENT'
+      });
+
+      toast.success('Registration successful!');
+      navigate('/dashboard/school-student/');
+    } catch (error) {
+      toast.error(error.response?.data?.email?.[0] || error.message || 'Registration failed');
+    }
   };
 
   return (
@@ -42,7 +73,7 @@ export default function StudentSignup() {
           <AppIcon name="school" size={28} className="text-primary" />
         </div>
         <h1 className="text-2xl font-bold text-slate-900">Student Registration</h1>
-        <p className="text-sm text-slate-500 mt-1">Request access to your student portal</p>
+        <p className="text-sm text-slate-500 mt-1">Create your student account</p>
       </div>
 
       <form className="space-y-3" onSubmit={handleSubmit}>
@@ -72,24 +103,51 @@ export default function StudentSignup() {
                 onChange={(e) => handleChange('fullName', e.target.value)}
                 className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 placeholder="Your full name"
+                required
               />
             </div>
           </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Email</label>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                <AppIcon name="mail" size={16} />
+          {/* Email & Password Side by side */}
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Email</label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                  <AppIcon name="mail" size={16} />
+                </div>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleChange('email', e.target.value)}
+                  className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  placeholder="email@example.com"
+                  required
+                />
               </div>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => handleChange('email', e.target.value)}
-                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="email@example.com"
-              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Password</label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                  <AppIcon name="lock" size={16} />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.password}
+                  onChange={(e) => handleChange('password', e.target.value)}
+                  className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  placeholder="Create password"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 outline-none cursor-pointer"
+                >
+                  <AppIcon name={showPassword ? 'visibility_off' : 'visibility'} size={18} />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -110,44 +168,33 @@ export default function StudentSignup() {
             </div>
           </div>
 
-          {/* Parent Name & Phone (Optional) - Side by side */}
+          {/* Parent Info - Optional */}
           <div className="grid sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Parent Name <span className="text-slate-400">(Optional)</span></label>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                  <AppIcon name="person" size={16} />
-                </div>
-                <input
-                  type="text"
-                  value={formData.parentName}
-                  onChange={(e) => handleChange('parentName', e.target.value)}
-                  className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  placeholder="Parent's name"
-                />
-              </div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Parent Name <span className="text-slate-400">(Opt)</span></label>
+              <input
+                type="text"
+                value={formData.parentName}
+                onChange={(e) => handleChange('parentName', e.target.value)}
+                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                placeholder="Parent's name"
+              />
             </div>
-
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Parent Phone <span className="text-slate-400">(Optional)</span></label>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                  <AppIcon name="phone" size={16} />
-                </div>
-                <input
-                  type="tel"
-                  value={formData.parentPhone}
-                  onChange={(e) => handleChange('parentPhone', e.target.value)}
-                  className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  placeholder="+91 98765 43210"
-                />
-              </div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Parent Phone <span className="text-slate-400">(Opt)</span></label>
+              <input
+                type="tel"
+                value={formData.parentPhone}
+                onChange={(e) => handleChange('parentPhone', e.target.value)}
+                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                placeholder="+91 XXXXX"
+              />
             </div>
           </div>
         </div>
 
         {/* Terms */}
-        <div className="flex items-start gap-2">
+        <div className="flex items-start gap-2 pt-1">
           <button
             type="button"
             onClick={() => setAgreeTerms(!agreeTerms)}
@@ -160,14 +207,18 @@ export default function StudentSignup() {
           </span>
         </div>
 
-        <button type="submit" disabled={!agreeTerms} className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
-          <AppIcon name="person_add" size={16} />
-          Request Access
+        <button 
+          type="submit" 
+          disabled={!agreeTerms || isRegistering} 
+          className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2 transition-all"
+        >
+          <AppIcon name={isRegistering ? 'sync' : 'person_add'} size={16} className={isRegistering ? 'animate-spin' : ''} />
+          {isRegistering ? 'Creating account...' : 'Create Student Account'}
         </button>
       </form>
 
-      <p className="text-center text-xs text-slate-500">
-        Already have access?{' '}
+      <p className="text-center text-xs text-slate-500 pb-2">
+        Already have an account?{' '}
         <Link to="/auth/student/login" className="text-primary font-medium">Sign in</Link>
       </p>
     </div>
