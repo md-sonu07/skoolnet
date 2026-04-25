@@ -14,8 +14,11 @@ const PartnerStudents = lazy(() => import('../pages/partner/Students'));
 const PartnerSettings = lazy(() => import('../pages/partner/Settings'));
 const PartnerProfile = lazy(() => import('../pages/partner/Profile'));
 
+import ProtectedRoute from '../components/auth/ProtectedRoute';
+
 const partnerRoutes = (
-  <Route path="/dashboard/partner" element={<PartnerLayout />}>
+  <Route element={<ProtectedRoute role="partner" />}>
+    <Route path="/dashboard/partner" element={<PartnerLayout />}>
     <Route index element={<Navigate to="overview" replace />} />
     <Route path="overview" element={<PartnerDashboard />} />
     <Route path="schools" element={<PartnerSchools />} />
@@ -34,6 +37,7 @@ const partnerRoutes = (
         </Suspense>
       } 
     />
+    </Route>
   </Route>
 );
 

@@ -21,7 +21,7 @@ const Batches = lazy(() => import('../pages/coaching/Batches'));
 const Reports = lazy(() => import('../pages/coaching/Reports'));
 
 const coachingRoutes = (
-  <Route element={<ProtectedRoute />}>
+  <Route element={<ProtectedRoute allowedType="COACHING" />}>
     <Route path="/dashboard/coaching" element={<CoachingLayout />}>
       <Route index element={<Navigate to="overview" replace />} />
       <Route path="overview" element={<Dashboard />} />

@@ -1,21 +1,48 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectAuth } from '../../redux/slice/authSlice';
 import { selectManagerAuth } from '../../redux/slice/managerAuthSlice';
+import { selectPartnerAuth } from '../../redux/slice/partnerAuthSlice';
 
-export default function ProtectedRoute({ role }) {
+export default function ProtectedRoute({ role, allowedType }) {
   const auth = useSelector(selectAuth);
   const managerAuth = useSelector(selectManagerAuth);
+  const partnerAuth = useSelector(selectPartnerAuth);
+  const location = useLocation();
 
-  // Check if authenticated based on role or globally
-  const isAuthenticated = role === 'manager' 
-    ? managerAuth.isAuthenticated 
-    : auth.isAuthenticated;
+  // 1. Determine which auth slice to use
+  let currentAuth = auth;
+  if (role === 'manager') currentAuth = managerAuth;
+  else if (role === 'partner') currentAuth = partnerAuth;
 
+  const { isAuthenticated, user } = currentAuth;
+
+  // 2. Check basic authentication
   if (!isAuthenticated) {
-    // Redirect to the appropriate login page
-    const loginPath = role === 'manager' ? '/auth/manager/login' : '/auth/institution/login';
-    return <Navigate to={loginPath} replace />;
+    const loginPath = role === 'manager' 
+      ? '/auth/manager/login' 
+      : role === 'partner'
+        ? '/auth/partner/login'
+        : '/auth/institution/login';
+    
+    return <Navigate to={loginPath} state={{ from: location }} replace />;
+  }
+
+  // 3. Check specific institution type if required
+  if (allowedType && user?.institution) {
+    if (user.institution.type !== allowedType) {
+      // Redirect to their correct dashboard if they are on the wrong one
+      const correctDashboard = user.institution.type === 'COACHING' 
+        ? '/dashboard/coaching' 
+        : '/dashboard/school';
+      
+      return <Navigate to={correctDashboard} replace />;
+    }
+  }
+
+  // 4. Check partner role if required
+  if (role === 'partner' && !user?.partner) {
+     return <Navigate to="/auth/partner/login" replace />;
   }
 
   return <Outlet />;

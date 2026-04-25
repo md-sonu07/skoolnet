@@ -19,7 +19,7 @@ const Teachers = lazy(() => import('../pages/school/Teachers'));
 const Profile = lazy(() => import('../pages/school/Profile'));
 
 const schoolRoutes = (
-  <Route element={<ProtectedRoute />}>
+  <Route element={<ProtectedRoute allowedType="SCHOOL" />}>
     <Route path="/dashboard/school" element={<SchoolLayout />}>
       <Route index element={<Navigate to="overview" replace />} />
       <Route path="overview" element={<Dashboard />} />
