@@ -58,8 +58,8 @@ export default function Signup() {
     const { password_confirm, ...registerData } = formData;
     try {
       await register(registerData);
-      toast.success('Account created! Please check your email to verify.');
-      navigate('/auth/manager/login');
+      toast.success('Welcome! Your account has been created successfully.');
+      navigate('/dashboard/manager');
     } catch (error) {
       toast.error(getErrorMessage(error, 'Registration failed'));
     }

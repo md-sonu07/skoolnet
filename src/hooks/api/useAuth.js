@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import loginAPI from '../../api/auth/login';
 import registerAPI, { registerInstitution as registerInstitutionAPI } from '../../api/auth/register';
+import signupAPI from '../../api/auth/signup';
 import logoutAPI from '../../api/auth/logout';
 import { getProfile } from '../../api/auth/profile';
 import { setCredentials, logout as logoutAction, setUser, selectAuth } from '../../redux/slice/authSlice';
@@ -59,13 +60,22 @@ export const useAuth = () => {
     mutationFn: (userData) => registerInstitutionAPI(userData),
     onSuccess: (response) => {
       const data = response.data;
-      if (data.user || data.access) {
-        if (data.access) {
-           dispatch(setCredentials(data));
-        }
-        const user = data.user || data;
-        dispatch(setUser(user));
-        queryClient.setQueryData([QUERY_KEYS.ME], user);
+      if (data.access) {
+        dispatch(setCredentials(data));
+        queryClient.setQueryData([QUERY_KEYS.ME], data.user);
+      }
+    },
+  });
+
+  // Signup Mutation
+  const signupMutation = useMutation({
+    mutationFn: (userData) => signupAPI(userData),
+    onSuccess: (response) => {
+      const data = response.data;
+      // CRITICAL FIX: Store tokens properly!
+      if (data.access) {
+        dispatch(setCredentials(data));
+        queryClient.setQueryData([QUERY_KEYS.ME], data.user);
       }
     },
   });
@@ -101,6 +111,9 @@ export const useAuth = () => {
     registerInstitution: instRegisterMutation.mutateAsync,
     isRegisteringInstitution: instRegisterMutation.isPending,
     registerInstitutionError: instRegisterMutation.error,
+    signup: signupMutation.mutateAsync,
+    isSigningUp: signupMutation.isPending,
+    signupError: signupMutation.error,
     logout: handleLogout,
     isLoggingOut: logoutMutation.isPending,
   };

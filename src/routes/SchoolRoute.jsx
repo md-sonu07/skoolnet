@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import SchoolLayout from '../layouts/SchoolLayout';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
+import NotFound from '../pages/NotFound';
 
 const Applications = lazy(() => import('../pages/school/Applications'));
 const Assignments = lazy(() => import('../pages/school/Assignments'));
@@ -36,6 +37,7 @@ const schoolRoutes = (
       <Route path="reports" element={<Reports />} />
       <Route path="settings" element={<Settings />} />
       <Route path="profile" element={<Profile />} />
+      <Route path="*" element={<NotFound />} />
     </Route>
   </Route>
 );

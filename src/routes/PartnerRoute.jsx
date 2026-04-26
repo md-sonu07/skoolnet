@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import PartnerLayout from '../layouts/PartnerLayout';
 import { ProfileSkeleton } from '../components/common/Skeleton';
+import NotFound from '../pages/NotFound';
 
 const PartnerDashboard = lazy(() => import('../pages/partner/Dashboard'));
 const PartnerSchools = lazy(() => import('../pages/partner/Schools'));
@@ -37,6 +38,7 @@ const partnerRoutes = (
         </Suspense>
       } 
     />
+    <Route path="*" element={<NotFound />} />
     </Route>
   </Route>
 );

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectAuth } from '../../redux/slice/authSlice';
 import { selectManagerAuth } from '../../redux/slice/managerAuthSlice';
 import { selectPartnerAuth } from '../../redux/slice/partnerAuthSlice';
+import { DashboardSkeleton } from '../common/Skeleton';
 
 export default function ProtectedRoute({ role, allowedType, requiredRole }) {
   const auth = useSelector(selectAuth);
@@ -18,6 +19,10 @@ export default function ProtectedRoute({ role, allowedType, requiredRole }) {
   const { isAuthenticated, user } = currentAuth;
 
   // 2. Check basic authentication
+  if (isAuthenticated && !user) {
+    return <DashboardSkeleton />;
+  }
+
   if (!isAuthenticated) {
     const loginPath = role === 'manager' 
       ? '/auth/manager/login' 

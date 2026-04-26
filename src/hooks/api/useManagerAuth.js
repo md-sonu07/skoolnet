@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { managerAuthAPI } from '../../api/auth/manager';
 import { setCredentials, logout as logoutAction, setUser, selectManagerAuth } from '../../redux/slice/managerAuthSlice';
 import { QUERY_KEYS } from '../../query/queryKeys';
+import { getErrorMessage } from '../../utils/errorHelpers';
+import toast from 'react-hot-toast';
 
 export const useManagerAuth = () => {
   const dispatch = useDispatch();
@@ -38,6 +40,9 @@ export const useManagerAuth = () => {
         queryClient.setQueryData([QUERY_KEYS.ME], data.user);
       }
     },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Login failed'));
+    },
   });
 
   // Register Mutation
@@ -45,11 +50,17 @@ export const useManagerAuth = () => {
     mutationFn: (userData) => managerAuthAPI.register(userData),
     onSuccess: (response) => {
       const data = response.data;
-      // Depending on backend, might need to login automatically or just store user
-      if (data.user) {
+      // Automatically log in the user if tokens are provided
+      if (data.access && data.refresh) {
+        dispatch(setCredentials(data));
+        queryClient.setQueryData([QUERY_KEYS.ME], data.user);
+      } else if (data.user) {
         dispatch(setUser(data.user));
         queryClient.setQueryData([QUERY_KEYS.ME], data.user);
       }
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Registration failed'));
     },
   });
 
@@ -62,6 +73,20 @@ export const useManagerAuth = () => {
     },
   });
 
+  // Update Profile Mutation
+  const updateProfileMutation = useMutation({
+    mutationFn: (data) => managerAuthAPI.updateProfile(data),
+    onSuccess: (response) => {
+      const data = response.data;
+      dispatch(setUser(data));
+      queryClient.setQueryData([QUERY_KEYS.ME], data);
+      toast.success('Profile updated successfully');
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Failed to update profile'));
+    },
+  });
+
   return {
     user: meQuery.data || reduxUser,
     isLoadingProfile: meQuery.isLoading,
@@ -71,6 +96,8 @@ export const useManagerAuth = () => {
     register: registerMutation.mutateAsync,
     isRegistering: registerMutation.isPending,
     registerError: registerMutation.error,
+    updateProfile: updateProfileMutation.mutateAsync,
+    isUpdatingProfile: updateProfileMutation.isPending,
     logout: logoutMutation.mutateAsync,
     isLoggingOut: logoutMutation.isPending,
   };

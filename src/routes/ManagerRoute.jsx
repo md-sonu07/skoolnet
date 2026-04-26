@@ -3,6 +3,7 @@ import { Navigate, Route } from 'react-router-dom';
 import ManagerLayout from '../layouts/ManagerLayout';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import { ProfileSkeleton } from '../components/common/Skeleton';
+import NotFound from '../pages/NotFound';
 
 const Activity = lazy(() => import('../pages/manager/Activity'));
 const Coaching = lazy(() => import('../pages/manager/Coaching'));
@@ -40,6 +41,7 @@ const managerRoutes = (
           </Suspense>
         } 
       />
+      <Route path="*" element={<NotFound />} />
     </Route>
   </Route>
 );

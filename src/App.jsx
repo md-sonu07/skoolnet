@@ -1,4 +1,4 @@
-import { Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import appRoutes from './routes/AppRoute';
 import authRoutes from './routes/AuthRoute';
@@ -10,6 +10,7 @@ import partnerRoutes from './routes/PartnerRoute';
 import schoolRoutes from './routes/SchoolRoute';
 import schoolTeacherRoutes from './routes/SchoolTeacherRoute';
 import schoolStudentRoutes from './routes/SchoolStudentRoute';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
         {coachingRoutes}
         {coachingTeacherRoutes}
         {coachingStudentRoutes}
+        
+        {/* 404 Catch-all */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

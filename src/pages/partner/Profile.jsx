@@ -46,10 +46,10 @@ export default function PartnerProfile() {
   const partnerInfo = {
     name: formData.name || 'Not Set',
     company: formData.company || 'Not Set',
-    email: formData.email || '',
+    email: formData.email || 'Not Set',
     phone: formData.phone || 'Not Set',
     address: formData.address || 'Not Set',
-    id: formData.id || 'Not Generated',
+    id: formData.id || 'Not Set',
     since: formData.since || 'Not Set',
     status: formData.status || 'Inactive',
     tier: formData.tier || 'Silver',

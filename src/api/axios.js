@@ -76,12 +76,13 @@ api.interceptors.response.use(
         }
       } catch (refreshError) {
         // Refresh failed, clear tokens and redirect to login
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        localStorage.removeItem('user');
+        const keys = [
+          'access_token', 'refresh_token', 'user',
+          'manager_access_token', 'manager_refresh_token', 'manager_user',
+          'partner_access_token', 'partner_refresh_token', 'partner_user'
+        ];
+        keys.forEach(key => localStorage.removeItem(key));
         
-        // Redirect to a sensible default or the specific login page
-        // Use local variable to avoid unnecessary re-renders if in a component context
         if (!window.location.pathname.includes('/auth/')) {
           window.location.href = '/auth/institution/login';
         }

@@ -73,12 +73,15 @@ export function MetricCard({ icon, label, value, change, helper, tone = 'blue' }
   );
 }
 
-export function SectionCard({ title, description, className = '', children }) {
+export function SectionCard({ title, description, actions, className = '', children }) {
   return (
     <section className={`glass-card p-8 rounded-3xl shadow-sm border border-slate-100 ${className}`.trim()}>
-      <div className="mb-6">
-        <h4 className="text-lg font-bold text-on-surface">{title}</h4>
-        <p className="text-xs text-on-surface-variant font-medium">{description}</p>
+      <div className="flex justify-between items-start mb-6">
+        <div>
+          <h4 className="text-lg font-bold text-on-surface">{title}</h4>
+          <p className="text-xs text-on-surface-variant font-medium">{description}</p>
+        </div>
+        {actions && <div className="flex gap-2">{actions}</div>}
       </div>
       {children}
     </section>

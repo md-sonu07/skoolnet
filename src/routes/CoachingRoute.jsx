@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import CoachingLayout from '../layouts/CoachingLayout';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
+import NotFound from '../pages/NotFound';
 
 const Applications = lazy(() => import('../pages/coaching/Applications'));
 const Attendance = lazy(() => import('../pages/coaching/Attendance'));
@@ -40,6 +41,7 @@ const coachingRoutes = (
       <Route path="results" element={<Results />} />
       <Route path="reports" element={<Reports />} />
       <Route path="settings" element={<Settings />} />
+      <Route path="*" element={<NotFound />} />
     </Route>
   </Route>
 );

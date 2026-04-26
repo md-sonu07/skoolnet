@@ -47,8 +47,8 @@ export const usePartnerAuth = () => {
     mutationFn: (userData) => registerAPI(userData),
     onSuccess: (response) => {
       const data = response.data;
+      dispatch(setCredentials(data));
       if (data.user) {
-        dispatch(setUser(data.user));
         queryClient.setQueryData([QUERY_KEYS.ME, 'partner'], data.user);
       }
     },

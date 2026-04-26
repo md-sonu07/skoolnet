@@ -99,8 +99,8 @@ export default function SchoolProfile() {
                 <AppIcon name="school" size={32} className="text-primary" />
               </div>
               <div>
-                <p className="text-lg font-bold text-slate-900 leading-tight">{formData.institutionName}</p>
-                <p className="text-sm font-medium text-slate-700 capitalize">{formData.name}</p>
+                <p className="text-lg font-bold text-slate-900 leading-tight">{formData.institutionName || 'Not Set'}</p>
+                <p className="text-sm font-medium text-slate-700 capitalize">{formData.name || 'Not Set'}</p>
                 <p className="text-sm text-primary font-bold capitalize mt-1">{user?.institution?.role || 'Administrator'}</p>
               </div>
             </div>
@@ -110,14 +110,14 @@ export default function SchoolProfile() {
                 <AppIcon name="email" size={18} className="text-slate-400" />
                 <div>
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Email</p>
-                  <p className="text-sm font-medium text-slate-700">{formData.email}</p>
+                  <p className="text-sm font-medium text-slate-700">{formData.email || 'Not Set'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
                 <AppIcon name="call" size={18} className="text-slate-400" />
                 <div>
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Phone</p>
-                  <p className="text-sm font-medium text-slate-700">{formData.phone || 'Not set'}</p>
+                  <p className="text-sm font-medium text-slate-700">{formData.phone || 'Not Set'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
@@ -126,7 +126,7 @@ export default function SchoolProfile() {
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Location</p>
                   <p className="text-sm font-medium text-slate-700">
                     {(!formData.city && !formData.state) 
-                      ? 'Not set' 
+                      ? 'Not Set' 
                       : [formData.city, formData.state].filter(Boolean).join(', ')}
                   </p>
                 </div>

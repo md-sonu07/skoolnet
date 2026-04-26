@@ -153,7 +153,7 @@ export default function Pricing() {
         <>
           <button 
             type="button" 
-            className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2"
+            className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:opacity-90 transition-all flex items-center gap-2"
             onClick={() => {
               setShowAddModal(true);
               toast.success('Custom Plan modal opened');
@@ -234,7 +234,7 @@ export default function Pricing() {
             </div>
           ) : (
             paginatedPlans.map((plan) => (
-              <div key={plan.id} className={`group relative overflow-hidden rounded-2xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${
+              <div key={plan.id} className={`group relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-primary/30 ${
                 plan.type === 'custom' 
                   ? 'border-purple-200 bg-gradient-to-br from-purple-50/50 to-white hover:border-purple-300' 
                   : 'border-slate-200 bg-gradient-to-br from-slate-50/50 to-white hover:border-slate-300'
@@ -251,7 +251,7 @@ export default function Pricing() {
                       plan.type === 'custom' 
                         ? 'bg-gradient-to-br from-purple-500 to-purple-600' 
                         : 'bg-gradient-to-br from-primary to-primary/80'
-                    } shadow-lg`}>
+                    } border border-white/20 shadow-sm`}>
                       <AppIcon name={plan.type === 'custom' ? 'star' : 'payments'} size={20} className="text-white" />
                     </div>
                       <div className="flex-1 min-w-0">
@@ -316,10 +316,10 @@ export default function Pricing() {
                   
                   {/* Apply and More Options buttons */}
                   <div className="flex gap-2">
-                    <button className={`flex-1 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 transform hover:scale-102 ${
+                    <button className={`flex-1 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
                       plan.type === 'custom'
-                        ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-purple-500/25'
-                        : 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg hover:shadow-primary/25'
+                        ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white border border-purple-400/20'
+                        : 'bg-gradient-to-r from-primary to-primary/80 text-white border border-primary-light/20'
                     }`}>
                       Apply Now
                     </button>

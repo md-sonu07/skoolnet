@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  user: null,
-  token: localStorage.getItem('access_token') || null,
-  isAuthenticated: !!localStorage.getItem('access_token'),
+  user: JSON.parse(localStorage.getItem('manager_user')) || null,
+  token: localStorage.getItem('manager_access_token') || null,
+  isAuthenticated: !!localStorage.getItem('manager_access_token'),
 };
 
 const managerAuthSlice = createSlice({
@@ -12,25 +12,30 @@ const managerAuthSlice = createSlice({
   reducers: {
     setCredentials: (state, action) => {
       const { user, access, refresh } = action.payload;
-      if (user) state.user = user;
+      if (user) {
+        state.user = user;
+        localStorage.setItem('manager_user', JSON.stringify(user));
+      }
       if (access) {
         state.token = access;
         state.isAuthenticated = true;
-        localStorage.setItem('access_token', access);
+        localStorage.setItem('manager_access_token', access);
       }
       if (refresh) {
-        localStorage.setItem('refresh_token', refresh);
+        localStorage.setItem('manager_refresh_token', refresh);
       }
     },
     setUser: (state, action) => {
       state.user = action.payload;
+      localStorage.setItem('manager_user', JSON.stringify(action.payload));
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('manager_access_token');
+      localStorage.removeItem('manager_refresh_token');
+      localStorage.removeItem('manager_user');
     },
   },
 });
