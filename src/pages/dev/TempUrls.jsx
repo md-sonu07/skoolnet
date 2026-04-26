@@ -201,6 +201,13 @@ export default function TempUrls() {
     }));
   };
 
+  const resetTasks = () => {
+    if (window.confirm('Are you sure you want to reset all tasks? This cannot be undone.')) {
+      setCompleted({});
+      localStorage.removeItem('skoolnet_dev_tasks');
+    }
+  };
+
   const allLinks = getAllLinks(URL_GROUPS);
   const progress = Math.round(
     (Object.values(completed).filter(Boolean).length / allLinks.length) * 100
@@ -297,12 +304,20 @@ export default function TempUrls() {
               <span>Overall Progress</span>
               <span>{progress}%</span>
             </div>
-            <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden mb-4">
               <div 
                 className="h-full bg-primary transition-all duration-500" 
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
+            
+            <button
+              onClick={resetTasks}
+              className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-500 hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all shadow-sm"
+            >
+              <AppIcon name="rotate_ccw" size={14} />
+              Reset All Tasks
+            </button>
           </div>
         </header>
 

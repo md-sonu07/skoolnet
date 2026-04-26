@@ -54,7 +54,25 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       
       try {
-        const refreshToken = localStorage.getItem('refresh_token');
+        const state = store.getState();
+        // Determine which refresh token to use and which slice to update
+        let refreshToken = null;
+        let updateAction = null;
+        let loginPath = '/auth/institution/login';
+
+        if (state.managerAuth?.token) {
+          refreshToken = localStorage.getItem('manager_refresh_token');
+          updateAction = (data) => store.dispatch({ type: 'managerAuth/setCredentials', payload: data });
+          loginPath = '/auth/manager/login';
+        } else if (state.partnerAuth?.token) {
+          refreshToken = localStorage.getItem('partner_refresh_token');
+          updateAction = (data) => store.dispatch({ type: 'partnerAuth/setCredentials', payload: data });
+          loginPath = '/auth/partner/login';
+        } else {
+          refreshToken = localStorage.getItem('refresh_token');
+          updateAction = (data) => store.dispatch(setCredentials(data));
+        }
+        
         if (refreshToken) {
           const response = await axios.post(
             `${API_BASE}/accounts/refresh`,
@@ -63,20 +81,27 @@ api.interceptors.response.use(
           
           const { access, refresh, user } = response.data;
           
-          // Update localStorage
-          localStorage.setItem('access_token', access);
-          localStorage.setItem('refresh_token', refresh);
+          // Update role-specific storage
+          if (state.managerAuth?.token) {
+            localStorage.setItem('manager_access_token', access);
+            localStorage.setItem('manager_refresh_token', refresh);
+          } else if (state.partnerAuth?.token) {
+            localStorage.setItem('partner_access_token', access);
+            localStorage.setItem('partner_refresh_token', refresh);
+          } else {
+            localStorage.setItem('access_token', access);
+            localStorage.setItem('refresh_token', refresh);
+          }
           
-          // Update Redux state to prevent stale token reuse in subsequent requests
-          // We update the primary 'auth' slice which is used by institutions/schools
-          store.dispatch(setCredentials({ access, refresh, user }));
+          // Update Redux state
+          updateAction({ access, refresh, user });
           
           // Retry the original request with the new token
           originalRequest.headers.Authorization = `Bearer ${access}`;
           return api(originalRequest);
         }
       } catch (refreshError) {
-        // Refresh failed, clear tokens and redirect to login
+        // Refresh failed, clear all tokens and redirect to correct login
         const keys = [
           'access_token', 'refresh_token', 'user',
           'manager_access_token', 'manager_refresh_token', 'manager_user',
@@ -84,8 +109,18 @@ api.interceptors.response.use(
         ];
         keys.forEach(key => localStorage.removeItem(key));
         
+        // Also clear Redux state for all roles
+        store.dispatch({ type: 'auth/logout' });
+        store.dispatch({ type: 'managerAuth/logout' });
+        store.dispatch({ type: 'partnerAuth/logout' });
+
         if (!window.location.pathname.includes('/auth/')) {
-          window.location.href = '/auth/institution/login';
+          // Determine where to redirect based on the current URL
+          let redirectPath = '/auth/institution/login';
+          if (window.location.pathname.includes('/manager')) redirectPath = '/auth/manager/login';
+          else if (window.location.pathname.includes('/partner')) redirectPath = '/auth/partner/login';
+          
+          window.location.href = redirectPath;
         }
       }
     }

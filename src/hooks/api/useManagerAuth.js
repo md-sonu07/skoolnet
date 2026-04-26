@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 export const useManagerAuth = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
-  const { token, user: reduxUser } = useSelector(selectManagerAuth);
+  const { token, user: reduxUser, isAuthenticated } = useSelector(selectManagerAuth);
 
   // Get current user profile
   const meQuery = useQuery({
@@ -90,6 +90,7 @@ export const useManagerAuth = () => {
   return {
     user: meQuery.data || reduxUser,
     isLoadingProfile: meQuery.isLoading,
+    isAuthenticated,
     login: loginMutation.mutateAsync,
     isLoggingIn: loginMutation.isPending,
     loginError: loginMutation.error,

@@ -133,7 +133,7 @@ export default function ManagerProfile() {
                       <label className="absolute inset-0 bg-slate-900/40 backdrop-blur-[1px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer">
                         <input type="file" name="profile_picture" onChange={handleFileChange} className="hidden" accept="image/*" />
                         <AppIcon name="photo_camera" size={24} className="text-white mb-1" />
-                        <span className="text-[10px] text-white font-bold uppercase tracking-widest">Update</span>
+                        <span className="text-[10px] text-white font-medium uppercase tracking-widest">Update</span>
                       </label>
                     )}
                   </div>
@@ -147,12 +147,12 @@ export default function ManagerProfile() {
               <div className="flex-1 pb-2">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div>
-                    <h3 className="text-4xl font-black text-slate-900 tracking-tight leading-none mb-3">{managerInfo.name}</h3>
+                    <h3 className="text-4xl font-medium text-slate-900 tracking-tight leading-none mb-3">{managerInfo.name}</h3>
                     <div className="flex flex-wrap items-center gap-3">
-                      <span className="px-3 py-1 bg-primary text-white text-[10px] font-black rounded-lg uppercase tracking-wider shadow-sm">
+                      <span className="px-3 py-1 bg-primary text-white text-[10px] font-medium rounded-lg uppercase tracking-wider shadow-sm">
                         {managerInfo.role}
                       </span>
-                      <div className="flex items-center gap-1.5 text-slate-500 text-xs font-bold bg-white px-2.5 py-1.5 rounded-lg border border-slate-100 shadow-sm">
+                      <div className="flex items-center gap-1.5 text-slate-500 text-xs font-medium bg-white px-2.5 py-1.5 rounded-lg border border-slate-100 shadow-sm">
                         <AppIcon name="mail" size={14} className="text-slate-400" />
                         {managerInfo.email}
                       </div>
@@ -164,7 +164,7 @@ export default function ManagerProfile() {
                       <button
                         type="button"
                         onClick={() => setIsEditing(true)}
-                        className="px-6 py-2.5 bg-white text-slate-900 border border-slate-100 rounded-xl text-sm font-black hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm"
+                        className="px-6 py-2.5 bg-white text-slate-900 border border-slate-100 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm"
                       >
                         <AppIcon name="edit" size={16} />
                         Edit Profile
@@ -174,14 +174,14 @@ export default function ManagerProfile() {
                         <button
                           type="button"
                           onClick={() => setIsEditing(false)}
-                          className="px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-sm font-black hover:bg-slate-200 transition-all"
+                          className="px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-200 transition-all"
                         >
                           Cancel
                         </button>
                         <button
                           type="submit"
                           disabled={isUpdatingProfile}
-                          className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-black hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-2"
+                          className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-2"
                         >
                           {isUpdatingProfile ? (
                             <AppIcon name="refresh" size={16} className="animate-spin" />
@@ -221,8 +221,8 @@ export default function ManagerProfile() {
                     </label>
                   )}
 
-                  <h4 className="text-lg font-black text-slate-900 tracking-tight">{managerInfo.company}</h4>
-                  <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">Primary Organization</p>
+                  <h4 className="text-lg font-medium text-slate-900 tracking-tight">{managerInfo.company}</h4>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-widest mt-1">Primary Organization</p>
                 </div>
 
                 <div className="space-y-4 px-2">
@@ -231,17 +231,17 @@ export default function ManagerProfile() {
                       <AppIcon name="language" size={16} className="text-indigo-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Website</p>
+                      <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Website</p>
                       {isEditing ? (
                         <input
                           type="text"
                           name="website"
                           value={formData.website}
                           onChange={handleInputChange}
-                          className="w-full text-xs font-bold text-slate-900 border-b border-indigo-200 focus:border-indigo-500 outline-none bg-transparent"
+                          className="w-full text-xs font-medium text-slate-900 border-b border-indigo-200 focus:border-indigo-500 outline-none bg-transparent"
                         />
                       ) : (
-                        <a href={managerInfo.website} target="_blank" rel="noreferrer" className="text-sm font-bold text-slate-900 hover:text-primary transition-colors truncate block">
+                        <a href={managerInfo.website} target="_blank" rel="noreferrer" className="text-sm font-medium text-slate-900 hover:text-primary transition-colors truncate block">
                           {managerInfo.website}
                         </a>
                       )}
@@ -253,8 +253,8 @@ export default function ManagerProfile() {
                       <AppIcon name="calendar_today" size={16} className="text-emerald-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Partner Since</p>
-                      <p className="text-sm font-bold text-slate-900">{managerInfo.joinDate}</p>
+                      <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Partner Since</p>
+                      <p className="text-sm font-medium text-slate-900">{managerInfo.joinDate}</p>
                     </div>
                   </div>
                 </div>
@@ -264,12 +264,12 @@ export default function ManagerProfile() {
             <SectionCard title="Performance Status">
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10">
-                  <p className="text-[10px] text-primary font-black uppercase tracking-widest mb-1">Status</p>
-                  <p className="text-lg font-black text-slate-900 leading-none">Active</p>
+                  <p className="text-[10px] text-primary font-medium uppercase tracking-widest mb-1">Status</p>
+                  <p className="text-lg font-medium text-slate-900 leading-none">Active</p>
                 </div>
                 <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100">
-                  <p className="text-[10px] text-amber-600 font-black uppercase tracking-widest mb-1">Tier</p>
-                  <p className="text-lg font-black text-slate-900 leading-none">Premium</p>
+                  <p className="text-[10px] text-amber-600 font-medium uppercase tracking-widest mb-1">Tier</p>
+                  <p className="text-lg font-medium text-slate-900 leading-none">Premium</p>
                 </div>
               </div>
             </SectionCard>
@@ -281,94 +281,94 @@ export default function ManagerProfile() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                 {/* First Name */}
                 <div>
-                  <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">First Name</label>
+                  <label className="text-[10px] text-slate-400 font-medium uppercase tracking-widest block mb-1">First Name</label>
                   {isEditing ? (
                     <input
                       type="text"
                       name="first_name"
                       value={formData.first_name}
                       onChange={handleInputChange}
-                      className="w-full text-base font-bold text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
+                      className="w-full text-base font-medium text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
                     />
                   ) : (
-                    <p className="text-base font-black text-slate-900">{user?.first_name || 'Not Set'}</p>
+                    <p className="text-base font-medium text-slate-900">{user?.first_name || 'Not Set'}</p>
                   )}
                 </div>
 
                 {/* Last Name */}
                 <div>
-                  <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">Last Name</label>
+                  <label className="text-[10px] text-slate-400 font-medium uppercase tracking-widest block mb-1">Last Name</label>
                   {isEditing ? (
                     <input
                       type="text"
                       name="last_name"
                       value={formData.last_name}
                       onChange={handleInputChange}
-                      className="w-full text-base font-bold text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
+                      className="w-full text-base font-medium text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
                     />
                   ) : (
-                    <p className="text-base font-black text-slate-900">{user?.last_name || 'Not Set'}</p>
+                    <p className="text-base font-medium text-slate-900">{user?.last_name || 'Not Set'}</p>
                   )}
                 </div>
 
                 {/* Phone */}
                 <div>
-                  <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">Phone Number</label>
+                  <label className="text-[10px] text-slate-400 font-medium uppercase tracking-widest block mb-1">Phone Number</label>
                   {isEditing ? (
                     <input
                       type="text"
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full text-base font-bold text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
+                      className="w-full text-base font-medium text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
                     />
                   ) : (
-                    <p className="text-base font-bold text-slate-900">{managerInfo.phone}</p>
+                    <p className="text-base font-medium text-slate-900">{managerInfo.phone}</p>
                   )}
                 </div>
 
                 {/* Address */}
                 <div>
-                  <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">Office Address</label>
+                  <label className="text-[10px] text-slate-400 font-medium uppercase tracking-widest block mb-1">Office Address</label>
                   {isEditing ? (
                     <input
                       type="text"
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
-                      className="w-full text-base font-bold text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
+                      className="w-full text-base font-medium text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
                     />
                   ) : (
-                    <p className="text-base font-bold text-slate-900">{user?.address || 'Not Set'}</p>
+                    <p className="text-base font-medium text-slate-900">{user?.address || 'Not Set'}</p>
                   )}
                 </div>
 
                 {/* Company Name (Editable) */}
                 <div className="md:col-span-2">
-                  <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">Company / Organization Name</label>
+                  <label className="text-[10px] text-slate-400 font-medium uppercase tracking-widest block mb-1">Company / Organization Name</label>
                   {isEditing ? (
                     <input
                       type="text"
                       name="company_name"
                       value={formData.company_name}
                       onChange={handleInputChange}
-                      className="w-full text-base font-bold text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
+                      className="w-full text-base font-medium text-slate-900 border-b-2 border-slate-100 focus:border-primary outline-none bg-transparent py-1 transition-colors"
                     />
                   ) : (
-                    <p className="text-base font-black text-slate-900">{managerInfo.company}</p>
+                    <p className="text-base font-medium text-slate-900">{managerInfo.company}</p>
                   )}
                 </div>
 
                 {/* Description */}
                 <div className="md:col-span-2">
-                  <label className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">Organization Bio</label>
+                  <label className="text-[10px] text-slate-400 font-medium uppercase tracking-widest block mb-1">Organization Bio</label>
                   {isEditing ? (
                     <textarea
                       name="description"
                       value={formData.description}
                       onChange={handleInputChange}
                       rows={4}
-                      className="w-full text-sm font-bold text-slate-900 border-2 border-slate-100 rounded-2xl p-4 mt-2 focus:border-primary outline-none bg-white transition-all shadow-inner"
+                      className="w-full text-sm font-medium text-slate-900 border-2 border-slate-100 rounded-2xl p-4 mt-2 focus:border-primary outline-none bg-white transition-all shadow-inner"
                       placeholder="Tell us about your organization..."
                     />
                   ) : (
@@ -386,14 +386,14 @@ export default function ManagerProfile() {
                   <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
                     <div className="flex items-center gap-3">
                       <AppIcon name="security" size={18} className="text-blue-600" />
-                      <span className="text-sm font-bold text-slate-700">Role level</span>
+                      <span className="text-sm font-medium text-slate-700">Role level</span>
                     </div>
-                    <span className="text-sm font-black text-slate-900 uppercase tracking-tighter">{managerInfo.permissions}</span>
+                    <span className="text-sm font-medium text-slate-900 uppercase tracking-tighter">{managerInfo.permissions}</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => toast.success('Redirecting to security settings...')}
-                    className="w-full py-3 bg-white border-2 border-slate-100 rounded-xl text-sm font-black text-slate-900 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-white border-2 border-slate-100 rounded-xl text-sm font-medium text-slate-900 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2"
                   >
                     <AppIcon name="lock" size={16} />
                     Manage Security
@@ -406,14 +406,14 @@ export default function ManagerProfile() {
                   <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
                     <div className="flex items-center gap-3">
                       <AppIcon name="login" size={18} className="text-emerald-600" />
-                      <span className="text-sm font-bold text-slate-700">Last login</span>
+                      <span className="text-sm font-medium text-slate-700">Last login</span>
                     </div>
-                    <span className="text-sm font-bold text-slate-900">{managerInfo.lastLogin}</span>
+                    <span className="text-sm font-medium text-slate-900">{managerInfo.lastLogin}</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => toast.success('Fetching activity logs...')}
-                    className="w-full py-3 bg-white border-2 border-slate-100 rounded-xl text-sm font-black text-slate-900 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-white border-2 border-slate-100 rounded-xl text-sm font-medium text-slate-900 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2"
                   >
                     <AppIcon name="history" size={16} />
                     View History
