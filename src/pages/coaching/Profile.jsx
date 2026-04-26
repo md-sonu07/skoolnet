@@ -9,6 +9,7 @@ import { useAuth } from '../../hooks/api/useAuth';
 import { updateProfile } from '../../api/auth/profile';
 
 import toast from 'react-hot-toast';
+import { formatUserRole } from '../../utils/authHelpers';
 
 export default function CoachingProfile() {
   const [editing, setEditing] = useState(false);
@@ -158,7 +159,7 @@ export default function CoachingProfile() {
               <div>
                 <p className="text-lg font-bold text-slate-900 leading-tight">{formData.institutionName || 'Not Set'}</p>
                 <p className="text-sm font-medium text-slate-700 capitalize">{formData.name || 'Not Set'}</p>
-                <p className="text-sm text-primary font-bold capitalize mt-1">{user?.institution?.role || 'Administrator'}</p>
+                <p className="text-sm text-primary font-bold capitalize mt-1">{formatUserRole(user)}</p>
               </div>
             </div>
 

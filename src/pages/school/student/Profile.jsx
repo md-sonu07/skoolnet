@@ -7,6 +7,7 @@ import {
 import AppIcon from '../../../components/common/AppIcon';
 import { useAuth } from '../../../hooks/api/useAuth';
 import toast from 'react-hot-toast';
+import { formatUserRole } from '../../../utils/authHelpers';
 
 export default function StudentProfile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -118,7 +119,10 @@ export default function StudentProfile() {
               <AppIcon name="person" size={64} className="text-slate-300" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 mb-1 capitalize truncate">{studentData.name}</h3>
-            <p className="text-sm font-semibold text-primary mb-3 bg-primary/5 py-1 px-3 rounded-full inline-block">
+            <p className="text-sm font-semibold text-primary mb-1 bg-primary/5 py-1 px-3 rounded-full inline-block">
+              {formatUserRole(user)}
+            </p>
+            <p className="text-xs text-slate-500 mb-3 font-medium">
               {studentData.class} • Section {studentData.section}
             </p>
             

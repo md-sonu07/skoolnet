@@ -51,6 +51,7 @@ export default function StudentLogin() {
       await login({
         ...formData,
         institution_type: institutionType,
+        role: 'STUDENT',
       });
       toast.success('Logged in successfully!');
       

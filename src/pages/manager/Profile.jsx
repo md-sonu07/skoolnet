@@ -8,6 +8,7 @@ import {
 import toast from 'react-hot-toast';
 import { useManagerAuth } from '../../hooks/api/useManagerAuth';
 import { ProfileSkeleton } from '../../components/common/Skeleton';
+import { formatUserRole } from '../../utils/authHelpers';
 
 export default function ManagerProfile() {
   const { user, isLoadingProfile, updateProfile, isUpdatingProfile } = useManagerAuth();
@@ -90,7 +91,7 @@ export default function ManagerProfile() {
       : 'Not Set',
     email: user?.email || 'Not Set',
     phone: user?.phone || 'Not Set',
-    role: user?.is_superuser ? 'Platform Admin' : 'Manager',
+    role: formatUserRole(user),
     company: user?.partner?.company_name || 'Not Set',
     website: user?.partner?.website || 'Not Set',
     joinDate: user?.created_at?.split('T')[0] || 'Not Set',

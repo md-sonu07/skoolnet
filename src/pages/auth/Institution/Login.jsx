@@ -18,11 +18,16 @@ export default function InstitutionLogin() {
   const { isAuthenticated, user } = useSelector(selectAuth);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      if (user?.institution?.type === 'COACHING') {
-        navigate('/dashboard/coaching/overview');
-      } else {
-        navigate('/dashboard/school/overview');
+    if (isAuthenticated && user) {
+      const role = user.institution?.role;
+      const type = user.institution?.type;
+
+      if (role === 'STUDENT') {
+        navigate(type === 'COACHING' ? '/dashboard/coaching-student/dashboard' : '/dashboard/school-student/profile');
+      } else if (role === 'TEACHER') {
+        navigate(type === 'COACHING' ? '/dashboard/coaching/teacher/dashboard' : '/dashboard/school-teacher/dashboard');
+      } else if (role === 'ADMIN') {
+        navigate(type === 'COACHING' ? '/dashboard/coaching/overview' : '/dashboard/school/overview');
       }
     }
   }, [isAuthenticated, user, navigate]);

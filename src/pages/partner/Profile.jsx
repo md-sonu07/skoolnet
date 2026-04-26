@@ -8,6 +8,7 @@ import { usePartnerAuth } from '../../hooks/api/usePartnerAuth';
 import { updateProfile } from '../../api/auth/profile';
 import { ProfileSkeleton } from '../../components/common/Skeleton';
 import toast from 'react-hot-toast';
+import { formatUserRole } from '../../utils/authHelpers';
 
 export default function PartnerProfile() {
   const [editing, setEditing] = useState(false);
@@ -111,7 +112,8 @@ export default function PartnerProfile() {
               </div>
               <div>
                 <p className="text-lg font-bold text-slate-900 capitalize leading-tight">{partnerInfo.name}</p>
-                <p className="text-sm text-primary font-bold capitalize mt-1">{partnerInfo.company}</p>
+                <p className="text-xs text-primary font-bold capitalize mt-1 mb-1">{formatUserRole(user)}</p>
+                <p className="text-sm text-slate-500 font-bold capitalize">{partnerInfo.company}</p>
               </div>
             </div>
 

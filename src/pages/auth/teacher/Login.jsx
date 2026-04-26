@@ -51,6 +51,7 @@ export default function TeacherLogin() {
         ...formData,
         institution_id: formData.institution_id,
         institution_type: institutionType,
+        role: 'TEACHER',
       });
       toast.success('Logged in successfully!');
       

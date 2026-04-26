@@ -35,7 +35,7 @@ export default function PartnerLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(formData);
+      await login({ ...formData, panel: 'partner' });
       toast.success('Joined Partner Portal!');
       navigate('/dashboard/partner');
     } catch (error) {
