@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 
 export default function CoachingStudentProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const { user, isLoadingProfile } = useAuth();
+  const { user, isLoadingProfile, updateProfile, isUpdatingProfile } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,22 +19,23 @@ export default function CoachingStudentProfile() {
     dob: '',
     course: '',
     batch: '',
-    parentName: '',
+    fatherName: '',
     parentPhone: '',
   });
 
   useEffect(() => {
     if (user) {
+      const inst = user.institution || {};
       setFormData({
-        name: user.name || user.username || '',
+        name: user.full_name || user.username || '',
         email: user.email || '',
         phone: user.phone || '',
         address: user.address || '',
-        dob: user.student_profile?.dob || '',
-        course: user.student_profile?.course_name || '',
-        batch: user.student_profile?.batch_name || '',
-        parentName: user.student_profile?.father_name || '',
-        parentPhone: user.student_profile?.father_phone || '',
+        dob: inst.dob || '',
+        course: inst.course_name || '',
+        batch: inst.batch_name || '',
+        fatherName: inst.father_name || '',
+        parentPhone: inst.parent_phone || '',
       });
     }
   }, [user]);
@@ -51,13 +52,28 @@ export default function CoachingStudentProfile() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    toast.success('Profile updated successfully!');
-    setIsEditing(false);
+  const handleSave = async () => {
+    try {
+      const updateData = {
+        full_name: formData.name,
+        phone: formData.phone,
+        address: formData.address,
+        dob: formData.dob,
+        father_name: formData.fatherName,
+        parent_phone: formData.parentPhone,
+        course_name: formData.course,
+        batch_name: formData.batch,
+      };
+
+      await updateProfile(updateData);
+      setIsEditing(false);
+    } catch (error) {
+      toast.error(error.message || 'Failed to update profile');
+    }
   };
 
   const studentData = {
-    name: formData.name || user?.name || user?.username || 'Not Set',
+    name: formData.name || user?.full_name || user?.username || 'Not Set',
     email: formData.email || user?.email || 'Not Set',
     phone: formData.phone || user?.phone || 'Not Set',
     address: formData.address || user?.address || 'Not Set',
@@ -255,9 +271,17 @@ export default function CoachingStudentProfile() {
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
+                  disabled={isUpdatingProfile}
+                  className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center gap-2"
                 >
-                  Save Changes
+                  {isUpdatingProfile ? (
+                    <>
+                      <AppIcon name="sync" size={16} className="animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Changes'
+                  )}
                 </button>
               </>
             ) : (

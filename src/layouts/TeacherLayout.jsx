@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import DashboardShell from '../components/layout/common/DashboardShell';
 import TeacherSidebar from '../components/layout/school/teacher/SchoolTeacherSidebar';
 import TeacherTopbar from '../components/layout/school/teacher/SchoolTeacherTopbar';
@@ -10,7 +10,11 @@ import { useAuth } from '../hooks/api/useAuth';
 
 export default function TeacherLayout() {
   const { teacherId: paramId } = useParams();
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/teacher/login" replace />;
+  }
   
   const teacherId = paramId || user?.id;
 

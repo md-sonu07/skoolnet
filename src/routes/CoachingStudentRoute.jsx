@@ -13,7 +13,7 @@ import CoachingStudentMessages from '../pages/coaching/student/Messages';
 import CoachingStudentProfile from '../pages/coaching/student/Profile';
 
 const coachingStudentRoutes = (
-  <Route path="/dashboard/coaching/student/:studentId" element={<CoachingStudentLayout />}>
+  <Route path="/dashboard/coaching-student" element={<CoachingStudentLayout />}>
     <Route index element={<Navigate to="dashboard" replace />} />
     <Route path="dashboard" element={<CoachingStudentDashboard />} />
     <Route path="courses" element={<CoachingStudentCourses />} />

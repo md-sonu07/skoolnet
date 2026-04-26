@@ -1,11 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import AppIcon from '../../components/common/AppIcon';
 
 const URL_GROUPS = [
   {
-    title: 'Platform Management (Manager)',
+    title: 'Landing & Public Pages',
+    icon: 'public',
     links: [
-      { id: 'dash-manager', name: 'Manager Dashboard', path: '/dashboard/manager/overview' },
+      { id: 'home', name: 'Home Page', path: '/' },
+      { id: 'about', name: 'About Us', path: '/about' },
+      { id: 'services', name: 'Services', path: '/services' },
+      { id: 'pricing', name: 'Pricing Page', path: '/pricing' },
+      { id: 'contact', name: 'Contact Us', path: '/contact' },
+    ],
+  },
+  {
+    title: 'Platform Management (Manager)',
+    icon: 'admin_panel_settings',
+    links: [
+      { id: 'dash-manager', name: 'Dashboard Overview', path: '/dashboard/manager/overview' },
+      { id: 'manager-schools', name: 'Schools Management', path: '/dashboard/manager/schools' },
+      { id: 'manager-coaching', name: 'Coaching Management', path: '/dashboard/manager/coaching' },
+      { id: 'manager-partners', name: 'Partners Management', path: '/dashboard/manager/partners' },
+      { id: 'manager-pricing', name: 'Plan Pricing', path: '/dashboard/manager/pricing' },
+      { id: 'manager-users', name: 'User Management', path: '/dashboard/manager/users' },
+      { id: 'manager-activity', name: 'System Activity', path: '/dashboard/manager/activity' },
       { id: 'prof-manager', name: 'Manager Profile', path: '/dashboard/manager/profile' },
+      { id: 'manager-settings', name: 'System Settings', path: '/dashboard/manager/settings' },
       {
         name: 'Manager Auth',
         subLinks: [
@@ -17,8 +37,14 @@ const URL_GROUPS = [
   },
   {
     title: 'Partner Network',
+    icon: 'handshake',
     links: [
       { id: 'dash-partner', name: 'Partner Dashboard', path: '/dashboard/partner/overview' },
+      { id: 'partner-schools', name: 'Referred Schools', path: '/dashboard/partner/schools' },
+      { id: 'partner-coaching', name: 'Referred Coaching', path: '/dashboard/partner/coaching' },
+      { id: 'partner-pricing', name: 'Commission Plans', path: '/dashboard/partner/pricing' },
+      { id: 'partner-students', name: 'Student Referrals', path: '/dashboard/partner/students' },
+      { id: 'prof-partner', name: 'Partner Profile', path: '/dashboard/partner/profile' },
       {
         name: 'Partner Auth',
         subLinks: [
@@ -30,8 +56,15 @@ const URL_GROUPS = [
   },
   {
     title: 'School Panel',
+    icon: 'school',
     links: [
-      { id: 'school-admin', name: 'School Admin Dashboard', path: '/dashboard/school/overview' },
+      { id: 'school-admin', name: 'Admin Dashboard', path: '/dashboard/school/overview' },
+      { id: 'school-students', name: 'Student Registry', path: '/dashboard/school/students' },
+      { id: 'school-teachers', name: 'Teacher Registry', path: '/dashboard/school/teachers' },
+      { id: 'school-classes', name: 'Class Management', path: '/dashboard/school/classes' },
+      { id: 'school-attendance', name: 'Attendance Tracker', path: '/dashboard/school/attendance' },
+      { id: 'school-fees', name: 'Fee Management', path: '/dashboard/school/fees' },
+      { id: 'school-reports', name: 'Academic Reports', path: '/dashboard/school/reports' },
       { id: 'prof-school', name: 'School Profile', path: '/dashboard/school/profile' },
       { 
         name: 'School Auth', 
@@ -41,49 +74,55 @@ const URL_GROUPS = [
         ]
       },
       {
-        name: 'Teacher Module',
+        name: 'School Teacher Module',
         subLinks: [
           { id: 'school-teacher-dash', name: 'Dashboard', path: '/dashboard/school-teacher/dashboard' },
-          { id: 'prof-teacher', name: 'Profile', path: '/dashboard/school-teacher/profile' },
+          { id: 'school-teacher-classes', name: 'My Classes', path: '/dashboard/school-teacher/my-classes' },
+          { id: 'school-teacher-students', name: 'My Students', path: '/dashboard/school-teacher/my-students' },
+          { id: 'school-teacher-attendance', name: 'Attendance', path: '/dashboard/school-teacher/attendance' },
+          { id: 'prof-teacher-school', name: 'Teacher Profile', path: '/dashboard/school-teacher/profile' },
           { id: 'auth-teacher-login', name: 'Auth Login', path: '/auth/teacher/login' },
-          { id: 'auth-teacher-signup', name: 'Auth Signup', path: '/auth/teacher/signup' },
         ]
       },
       {
-        name: 'Student Module',
+        name: 'School Student Module',
         subLinks: [
           { id: 'school-student-dash', name: 'Dashboard', path: '/dashboard/school-student/dashboard' },
-          { id: 'prof-student', name: 'Profile', path: '/dashboard/school-student/profile' },
+          { id: 'school-student-profile', name: 'Student Profile', path: '/dashboard/school-student/profile' },
+          { id: 'school-student-fees', name: 'My Fees', path: '/dashboard/school-student/fees' },
+          { id: 'school-student-timetable', name: 'Timetable', path: '/dashboard/school-student/timetable' },
           { id: 'auth-student-login', name: 'Auth Login', path: '/auth/student/login' },
-          { id: 'auth-student-signup', name: 'Auth Signup', path: '/auth/student/signup' },
         ]
       }
     ],
   },
   {
     title: 'Coaching Panel',
+    icon: 'auto_stories',
     links: [
-      { id: 'coaching-admin', name: 'Coaching Admin Dashboard', path: '/dashboard/coaching/overview' },
+      { id: 'coaching-admin', name: 'Admin Dashboard', path: '/dashboard/coaching/overview' },
+      { id: 'coaching-courses', name: 'Course Catalog', path: '/dashboard/coaching/courses' },
+      { id: 'coaching-batches', name: 'Batch Management', path: '/dashboard/coaching/batches' },
+      { id: 'coaching-students', name: 'Student List', path: '/dashboard/coaching/students' },
+      { id: 'coaching-teachers', name: 'Faculty List', path: '/dashboard/coaching/teachers' },
+      { id: 'coaching-payments', name: 'Payment Records', path: '/dashboard/coaching/payments' },
       { id: 'prof-coaching', name: 'Coaching Profile', path: '/dashboard/coaching/profile' },
       {
-        name: 'Coaching Auth',
+        name: 'Coaching Teacher Module',
         subLinks: [
-          { id: 'auth-coach-login', name: 'Login', path: '/auth/institution/login' },
-          { id: 'auth-coach-reg', name: 'Register', path: '/auth/institution/register' },
+          { id: 'coach-teacher-dash', name: 'Dashboard', path: '/dashboard/coaching-teacher/dashboard' },
+          { id: 'coach-teacher-courses', name: 'My Courses', path: '/dashboard/coaching-teacher/courses' },
+          { id: 'coach-teacher-prof', name: 'Teacher Profile', path: '/dashboard/coaching-teacher/profile' },
+          { id: 'coach-teacher-schedule', name: 'My Schedule', path: '/dashboard/coaching-teacher/schedule' },
         ]
       },
       {
-        name: 'Teacher Module',
+        name: 'Coaching Student Module',
         subLinks: [
-          { id: 'coach-teacher-dash', name: 'Dashboard', path: '/dashboard/coaching/teacher/dev-teacher/dashboard' },
-          { id: 'coach-teacher-prof', name: 'Profile', path: '/dashboard/coaching/teacher/dev-teacher/profile' },
-        ]
-      },
-      {
-        name: 'Student Module',
-        subLinks: [
-          { id: 'coach-student-dash', name: 'Dashboard', path: '/dashboard/coaching/student/dev-student/dashboard' },
-          { id: 'coach-student-prof', name: 'Profile', path: '/dashboard/coaching/student/dev-student/profile' },
+          { id: 'coach-student-dash', name: 'Dashboard', path: '/dashboard/coaching-student/dashboard' },
+          { id: 'coach-student-courses', name: 'My Courses', path: '/dashboard/coaching-student/courses' },
+          { id: 'coach-student-prof', name: 'Student Profile', path: '/dashboard/coaching-student/profile' },
+          { id: 'coach-student-payments', name: 'My Payments', path: '/dashboard/coaching-student/payments' },
         ]
       }
     ],
@@ -111,6 +150,13 @@ export default function TempUrls() {
     return saved ? JSON.parse(saved) : {};
   });
 
+  const [expandedGroups, setExpandedGroups] = useState(() => {
+    // Default all groups to expanded
+    const initialState = {};
+    URL_GROUPS.forEach((_, idx) => { initialState[idx] = true; });
+    return initialState;
+  });
+
   useEffect(() => {
     localStorage.setItem('skoolnet_dev_tasks', JSON.stringify(completed));
   }, [completed]);
@@ -119,6 +165,13 @@ export default function TempUrls() {
     setCompleted(prev => ({
       ...prev,
       [id]: !prev[id]
+    }));
+  };
+
+  const toggleGroup = (idx) => {
+    setExpandedGroups(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
     }));
   };
 
@@ -132,7 +185,7 @@ export default function TempUrls() {
       return (
         <div className={`mt-4 mb-2 first:mt-0 ${isSub ? 'ml-6' : ''}`}>
           <div className="flex items-center gap-2 mb-2 px-2">
-            <span className="material-symbols-outlined text-xs text-slate-400">folder_open</span>
+            <AppIcon name="folder_open" className="text-slate-400" size={14} />
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{link.name}</span>
           </div>
           <div className="space-y-1 ml-4 border-l-2 border-slate-100 pl-4">
@@ -160,7 +213,7 @@ export default function TempUrls() {
               : 'border-slate-300 bg-white hover:border-primary text-transparent'
           }`}
         >
-          <span className="material-symbols-outlined text-sm font-bold">🗸</span>
+          <AppIcon name="check" size={14} strokeWidth={3} />
         </button>
 
         <a
@@ -180,11 +233,13 @@ export default function TempUrls() {
             }`}>
               {link.path}
             </code>
-            <span className={`material-symbols-outlined text-sm transition-colors ${
-              completed[link.id] ? 'text-slate-300' : 'text-slate-300 group-hover:text-primary'
-            }`}>
-              open_in_new_tab
-            </span>
+            <AppIcon 
+              name="open_in_new_tab" 
+              size={14} 
+              className={`transition-colors ${
+                completed[link.id] ? 'text-slate-300' : 'text-slate-300 group-hover:text-primary'
+              }`}
+            />
           </div>
         </a>
       </div>
@@ -225,24 +280,53 @@ export default function TempUrls() {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 gap-6">
           {URL_GROUPS.map((group, idx) => {
             const { done, total } = getGroupStats(group);
+            const isExpanded = expandedGroups[idx];
+            
             return (
               <div key={idx} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-all">
-                <div className="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-                  <h2 className="font-bold text-slate-800 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]"></span>
-                    {group.title}
-                  </h2>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    {done} / {total} Completed
-                  </span>
+                <div 
+                  className="p-4 bg-slate-50/80 border-b border-slate-200 flex justify-between items-center cursor-pointer select-none"
+                  onClick={() => toggleGroup(idx)}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                      isExpanded ? 'bg-primary/10 text-primary' : 'bg-slate-100 text-slate-400'
+                    }`}>
+                      <AppIcon 
+                        name={isExpanded ? 'expand_more' : 'chevron_right'} 
+                        size={20} 
+                      />
+                    </div>
+                    <div>
+                      <h2 className="font-bold text-slate-800 flex items-center gap-2">
+                        <AppIcon name={group.icon} className="text-primary/60" size={18} />
+                        {group.title}
+                        {done === total && total > 0 && (
+                          <AppIcon name="check_circle" className="text-emerald-500" size={16} />
+                        )}
+                      </h2>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      {done} / {total} Completed
+                    </span>
+                  </div>
                 </div>
-                <div className="p-6 space-y-2">
-                  {group.links.map((link, lIdx) => (
-                    <LinkRow key={link.id || lIdx} link={link} />
-                  ))}
+                
+                <div 
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                    isExpanded ? 'max-h-[2000px] opacity-100 p-6' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="space-y-2">
+                    {group.links.map((link, lIdx) => (
+                      <LinkRow key={link.id || lIdx} link={link} />
+                    ))}
+                  </div>
                 </div>
               </div>
             );

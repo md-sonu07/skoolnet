@@ -14,7 +14,7 @@ const SchoolStudentNotices = lazy(() => import('../pages/school/student/Notices'
 const SchoolStudentMessages = lazy(() => import('../pages/school/student/Messages'));
 
 const schoolStudentRoutes = (
-  <Route path="/dashboard/school/student/:studentId" element={<StudentLayout />}>
+  <Route path="/dashboard/school-student" element={<StudentLayout />}>
     <Route index element={<Navigate to="dashboard" replace />} />
     <Route path="dashboard" element={<SchoolStudentDashboard />} />
     <Route path="profile" element={<SchoolStudentProfile />} />

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import DashboardShell from '../components/layout/common/DashboardShell';
 import CoachingTeacherSidebar from '../components/layout/coaching/teacher/CoachingTeacherSidebar';
 import CoachingTeacherTopbar from '../components/layout/coaching/teacher/CoachingTeacherTopbar';
@@ -9,8 +9,14 @@ import {
 import { useAuth } from '../hooks/api/useAuth';
 
 export default function CoachingTeacherLayout() {
-  const { teacherId } = useParams();
-  const { user, logout } = useAuth();
+  const { teacherId: paramId } = useParams();
+  const { user, logout, isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/teacher/login" replace />;
+  }
+
+  const teacherId = paramId || user?.id;
 
   const teacher = {
     name: user?.first_name || user?.last_name 

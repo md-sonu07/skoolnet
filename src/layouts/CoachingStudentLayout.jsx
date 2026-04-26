@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import DashboardShell from '../components/layout/common/DashboardShell';
 import CoachingStudentSidebar from '../components/layout/coaching/student/CoachingStudentSidebar';
 import CoachingStudentTopbar from '../components/layout/coaching/student/CoachingStudentTopbar';
@@ -10,7 +10,11 @@ import { useAuth } from '../hooks/api/useAuth';
 
 export default function CoachingStudentLayout() {
   const { studentId } = useParams();
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/student/login" replace />;
+  }
 
   const student = {
     name: user?.first_name || user?.last_name 
@@ -32,10 +36,10 @@ export default function CoachingStudentLayout() {
   };
 
   const studentMainNavItems = [
-    { label: 'Home', icon: 'dashboard', to: 'dashboard' },
-    { label: 'Courses', icon: 'school', to: 'courses' },
-    { label: 'Assignments', icon: 'folder_open', to: 'assignments' },
-    { label: 'Results', icon: 'grade', to: 'results' },
+    { label: 'Home', icon: 'dashboard', to: '/dashboard/coaching-student/dashboard' },
+    { label: 'Courses', icon: 'school', to: '/dashboard/coaching-student/courses' },
+    { label: 'Assignments', icon: 'folder_open', to: '/dashboard/coaching-student/assignments' },
+    { label: 'Results', icon: 'grade', to: '/dashboard/coaching-student/results' },
   ];
 
   return (

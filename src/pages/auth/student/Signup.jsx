@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/api/useAuth';
+import { useInstitutionsList } from '../../../hooks/api/useInstitutions';
 import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
 import api from '../../../api/axios';
 
 export default function StudentSignup() {
   const [institutionType, setInstitutionType] = useState('');
-  const [institutions, setInstitutions] = useState([]);
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -16,31 +16,21 @@ export default function StudentSignup() {
     confirmPassword: '',
     institution_id: '',
   });
-  const [loadingInstitutions, setLoadingInstitutions] = useState(false);
   const [showPasswords, setShowPasswords] = useState(false);
 
   const navigate = useNavigate();
   const { signup, isSigningUp } = useAuth();
 
-  // Fetch institutions when type is selected
+  // Fetch institutions using React Query hook
+  const { data: institutionsData, isLoading: loadingInstitutions } = useInstitutionsList(
+    institutionType ? { type: institutionType, page_size: 100 } : null
+  );
+
+  const institutions = institutionsData?.results || institutionsData || [];
+
+  // Reset institution selection if type changes
   useEffect(() => {
-    if (institutionType) {
-      setLoadingInstitutions(true);
-      api.get(`/institutions?type=${institutionType}`)
-        .then(response => {
-          setInstitutions(response.data || []);
-        })
-        .catch(() => {
-          toast.error('Failed to load institutions');
-          setInstitutions([]);
-        })
-        .finally(() => {
-          setLoadingInstitutions(false);
-        });
-    } else {
-      setInstitutions([]);
-      setFormData(prev => ({ ...prev, institution_id: '' }));
-    }
+    setFormData(prev => ({ ...prev, institution_id: '' }));
   }, [institutionType]);
 
   const handleChange = (field, value) => {
@@ -68,11 +58,15 @@ export default function StudentSignup() {
     try {
       const response = await signup({
         ...formData,
-        role: 'student'
+        role: 'student',
+        institution_type: institutionType
       });
       
       toast.success('Student registered successfully!');
-      navigate('/dashboard/school/student/profile');
+      const redirectPath = institutionType === 'COACHING' 
+        ? '/dashboard/coaching-student/profile' 
+        : '/dashboard/school-student/profile';
+      navigate(redirectPath);
     } catch (error) {
       toast.error(error.message || 'Registration failed. Please try again.');
     }

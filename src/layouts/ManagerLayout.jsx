@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import DashboardShell from '../components/layout/common/DashboardShell';
 import ManagerSidebar from '../components/layout/manager/ManagerSidebar';
 import ManagerTopbar from '../components/layout/manager/ManagerTopbar';
@@ -9,7 +10,11 @@ import {
 import { useManagerAuth } from '../hooks/api/useManagerAuth';
 
 export default function ManagerLayout() {
-  const { user, logout } = useManagerAuth();
+  const { user, logout, isAuthenticated } = useManagerAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/manager/login" replace />;
+  }
   
   const platformName = managerHeader.userRole || 'Platform';
   const adminName = user?.full_name || (user?.first_name || user?.last_name 

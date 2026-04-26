@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import DashboardShell from '../components/layout/common/DashboardShell';
 import SchoolSidebar from '../components/layout/school/SchoolSidebar';
 import SchoolTopbar from '../components/layout/school/SchoolTopbar';
@@ -9,7 +10,11 @@ import {
 import { useAuth } from '../hooks/api/useAuth';
 
 export default function SchoolLayout() {
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/institution/login" replace />;
+  }
   
   const schoolName = user?.institution_name || schoolHeader.userRole || 'School';
   const adminName = user?.full_name || (user?.first_name || user?.last_name 

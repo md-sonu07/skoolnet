@@ -48,7 +48,7 @@ export default function CoachingStudentSidebar({ badge, title, navItems, student
         {navItems.map(item => (
           <NavLink
             key={item.to}
-            to={`/dashboard/coaching/student/${studentId}/${item.to}`}
+            to={`/dashboard/coaching-student/${item.to}`}
             onClick={onClose}
             className={({ isActive }) =>
               [

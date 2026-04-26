@@ -15,7 +15,7 @@ import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 const coachingTeacherRoutes = (
   <Route element={<ProtectedRoute role="teacher" allowedType="COACHING" requiredRole="TEACHER" />}>
-    <Route path="/dashboard/coaching/teacher/:teacherId" element={<CoachingTeacherLayout />}>
+    <Route path="/dashboard/coaching-teacher" element={<CoachingTeacherLayout />}>
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<CoachingTeacherDashboard />} />
       <Route path="courses" element={<CoachingTeacherCourses />} />

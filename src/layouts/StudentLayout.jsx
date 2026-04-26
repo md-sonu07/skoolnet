@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import DashboardShell from '../components/layout/common/DashboardShell';
 import StudentSidebar from '../components/layout/school/student/SchoolStudentSidebar';
 import StudentTopbar from '../components/layout/school/student/SchoolStudentTopbar';
@@ -10,7 +10,11 @@ import { useAuth } from '../hooks/api/useAuth';
 
 export default function StudentLayout() {
   const { studentId } = useParams();
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/student/login" replace />;
+  }
 
   const student = {
     name: user?.first_name || user?.last_name 
@@ -32,10 +36,10 @@ export default function StudentLayout() {
   };
 
   const studentMainNavItems = [
-    { label: 'Home', icon: 'dashboard', to: 'dashboard' },
-    { label: 'Profile', icon: 'person', to: 'profile' },
-    { label: 'Attendance', icon: 'monitoring', to: 'attendance' },
-    { label: 'Results', icon: 'grade', to: 'results' },
+    { label: 'Home', icon: 'dashboard', to: '/dashboard/school-student/dashboard' },
+    { label: 'Profile', icon: 'person', to: '/dashboard/school-student/profile' },
+    { label: 'Attendance', icon: 'monitoring', to: '/dashboard/school-student/attendance' },
+    { label: 'Results', icon: 'grade', to: '/dashboard/school-student/results' },
   ];
 
   return (

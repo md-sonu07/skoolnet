@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import DashboardShell from '../components/layout/common/DashboardShell';
 import CoachingSidebar from '../components/layout/coaching/CoachingSidebar';
 import CoachingTopbar from '../components/layout/coaching/CoachingTopbar';
@@ -9,7 +10,11 @@ import {
 import { useAuth } from '../hooks/api/useAuth';
 
 export default function CoachingLayout() {
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/institution/login" replace />;
+  }
   
   const coachingName = user?.institution_name || coachingHeader.userRole || 'Coaching';
   const adminName = user?.full_name || (user?.first_name || user?.last_name 

@@ -292,6 +292,16 @@ const iconMap = {
   partner: Handshake,
   partners: Handshake,
   pending: Clock,
+  // TempUrls Icons
+  admin_panel_settings: ShieldCheck,
+  handshake: Handshake,
+  auto_stories: BookOpen,
+  expand_more: ChevronDown,
+  chevron_right: ChevronRight,
+  folder_open: FolderOpen,
+  open_in_new_tab: ExternalLink,
+  check: Check,
+  sync: RefreshCw,
 };
 
 export default function AppIcon({ name, className, strokeWidth = 2, ...props }) {

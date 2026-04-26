@@ -115,7 +115,7 @@ export const useAuth = () => {
     onSuccess: (response) => {
       const updatedUser = response.data.user || response.data;
       dispatch(setUser(updatedUser));
-      queryClient.setQueryData([QUERY_KEYS.ME], updatedUser);
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ME] });
       toast.success('Profile updated successfully!');
     },
     onError: (error) => {

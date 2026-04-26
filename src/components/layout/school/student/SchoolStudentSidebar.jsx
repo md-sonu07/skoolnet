@@ -43,7 +43,7 @@ export default function StudentSidebar({ badge, title, navItems, studentId, user
         {navItems.map(item => (
           <NavLink
             key={item.to}
-            to={`/dashboard/school/student/${studentId}/${item.to}`}
+            to={`/dashboard/school-student/${item.to}`}
             className={({ isActive }) =>
               [
                 'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-150 ease-out border',

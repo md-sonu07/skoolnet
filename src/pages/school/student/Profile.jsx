@@ -10,12 +10,11 @@ import toast from 'react-hot-toast';
 
 export default function StudentProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const { user, isLoadingProfile } = useAuth();
+  const { user, isLoadingProfile, updateProfile, isUpdatingProfile } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    address: '',
     dob: '',
     gender: '',
     bloodGroup: '',
@@ -26,25 +25,27 @@ export default function StudentProfile() {
     motherName: '',
     fatherPhone: '',
     emergencyPhone: '',
+    address: '',
   });
 
   useEffect(() => {
     if (user) {
+      const inst = user.institution || {};
       setFormData({
-        name: user.name || user.username || '',
+        name: user.full_name || (user.first_name ? `${user.first_name} ${user.last_name}`.trim() : user.username) || '',
         email: user.email || '',
         phone: user.phone || '',
+        dob: inst.dob || '',
+        gender: inst.gender || '',
+        bloodGroup: inst.blood_group || '',
+        class: inst.class_name || '',
+        section: inst.section_name || '',
+        rollNo: inst.roll_number || '',
+        fatherName: inst.father_name || '',
+        motherName: inst.mother_name || '',
+        fatherPhone: inst.parent_phone || '',
+        emergencyPhone: inst.emergency_contact || '',
         address: user.address || '',
-        dob: user.student_profile?.dob || '',
-        gender: user.student_profile?.gender || '',
-        bloodGroup: user.student_profile?.blood_group || '',
-        class: user.student_profile?.class_name || '',
-        section: user.student_profile?.section || '',
-        rollNo: user.student_profile?.roll_number || '',
-        fatherName: user.student_profile?.father_name || '',
-        motherName: user.student_profile?.mother_name || '',
-        fatherPhone: user.student_profile?.father_phone || '',
-        emergencyPhone: user.student_profile?.emergency_contact || '',
       });
     }
   }, [user]);
@@ -61,13 +62,31 @@ export default function StudentProfile() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    toast.success('Your profile has been updated! (Demo)');
-    setIsEditing(false);
+  const handleSave = async () => {
+    try {
+      const updateData = {
+        full_name: formData.name,
+        phone: formData.phone,
+        address: formData.address,
+        dob: formData.dob,
+        gender: formData.gender,
+        blood_group: formData.bloodGroup,
+        father_name: formData.fatherName,
+        mother_name: formData.motherName,
+        parent_phone: formData.fatherPhone,
+        emergency_contact: formData.emergencyPhone,
+        roll_number: formData.rollNo, // Explicitly send roll_number
+      };
+
+      await updateProfile(updateData);
+      setIsEditing(false);
+    } catch (error) {
+      toast.error(error.message || 'Failed to update profile');
+    }
   };
 
   const studentData = {
-    name: formData.name || user?.name || user?.username || 'Not Set',
+    name: formData.name || user?.full_name || user?.username || 'Not Set',
     email: formData.email || user?.email || 'Not Set',
     phone: formData.phone || user?.phone || 'Not Set',
     address: formData.address || user?.address || 'Not Set',
@@ -321,9 +340,17 @@ export default function StudentProfile() {
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
+                  disabled={isUpdatingProfile}
+                  className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center gap-2"
                 >
-                  Save Changes
+                  {isUpdatingProfile ? (
+                    <>
+                      <AppIcon name="sync" size={16} className="animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Changes'
+                  )}
                 </button>
               </>
             ) : (
