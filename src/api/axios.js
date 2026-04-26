@@ -22,6 +22,7 @@ api.interceptors.request.use(
       '/accounts/refresh',
       '/accounts/verify-email',
       '/accounts/password-reset',
+      '/institutions',
     ];
 
     const isPublicEndpoint = publicEndpoints.some(endpoint => config.url.includes(endpoint));

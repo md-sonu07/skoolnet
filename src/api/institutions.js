@@ -8,7 +8,7 @@ export const institutionsAPI = {
   updatePartner: (id, data) => api.patch(`/institutions/partners/${id}`, data),
   
   // Institution
-  getInstitutions: () => api.get('/institutions'),
+  getInstitutions: (params) => api.get('/institutions', { params }),
   getInstitution: (id) => api.get(`/institutions/${id}`),
   createInstitution: (data) => api.post('/institutions', data),
   updateInstitution: (id, data) => api.patch(`/institutions/${id}`, data),

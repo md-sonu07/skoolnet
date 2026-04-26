@@ -1,42 +1,32 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/api/useAuth';
+import { useInstitutionsList } from '../../../hooks/api/useInstitutions';
 import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
-import api from '../../../api/axios';
 
 export default function TeacherLogin() {
   const [institutionType, setInstitutionType] = useState('');
-  const [institutions, setInstitutions] = useState([]);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     institution_id: '',
   });
-  const [loadingInstitutions, setLoadingInstitutions] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
   const { login, isLoggingIn } = useAuth();
 
+  // Fetch institutions using React Query hook
+  const { data: institutionsData, isLoading: loadingInstitutions } = useInstitutionsList(
+    institutionType ? { type: institutionType, page_size: 100 } : null
+  );
+
+  const institutions = institutionsData?.results || institutionsData || [];
+
+  // Reset institution selection if type changes
   useEffect(() => {
-    if (institutionType) {
-      setLoadingInstitutions(true);
-      api.get(`/institutions?type=${institutionType}`)
-        .then(response => {
-          setInstitutions(response.data || []);
-        })
-        .catch(() => {
-          toast.error('Failed to load institutions');
-          setInstitutions([]);
-        })
-        .finally(() => {
-          setLoadingInstitutions(false);
-        });
-    } else {
-      setInstitutions([]);
-      setFormData(prev => ({ ...prev, institution_id: '' }));
-    }
+    setFormData(prev => ({ ...prev, institution_id: '' }));
   }, [institutionType]);
 
   const handleChange = (field, value) => {
@@ -60,6 +50,7 @@ export default function TeacherLogin() {
       await login({
         ...formData,
         institution_id: formData.institution_id,
+        institution_type: institutionType,
       });
       toast.success('Logged in successfully!');
       

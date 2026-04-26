@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/api/useAuth';
+import { useInstitutionsList } from '../../../hooks/api/useInstitutions';
 import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
-import api from '../../../api/axios';
 
 export default function TeacherSignup() {
   const [institutionType, setInstitutionType] = useState('');
-  const [institutions, setInstitutions] = useState([]);
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -16,30 +15,21 @@ export default function TeacherSignup() {
     confirmPassword: '',
     institution_id: '',
   });
-  const [loadingInstitutions, setLoadingInstitutions] = useState(false);
   const [showPasswords, setShowPasswords] = useState(false);
 
   const navigate = useNavigate();
   const { signup, isSigningUp } = useAuth();
 
+  // Fetch institutions using React Query hook
+  const { data: institutionsData, isLoading: loadingInstitutions } = useInstitutionsList(
+    institutionType ? { type: institutionType, page_size: 100 } : null
+  );
+
+  const institutions = institutionsData?.results || institutionsData || [];
+
+  // Reset institution selection if type changes
   useEffect(() => {
-    if (institutionType) {
-      setLoadingInstitutions(true);
-      api.get(`/institutions?type=${institutionType}`)
-        .then(response => {
-          setInstitutions(response.data || []);
-        })
-        .catch(() => {
-          toast.error('Failed to load institutions');
-          setInstitutions([]);
-        })
-        .finally(() => {
-          setLoadingInstitutions(false);
-        });
-    } else {
-      setInstitutions([]);
-      setFormData(prev => ({ ...prev, institution_id: '' }));
-    }
+    setFormData(prev => ({ ...prev, institution_id: '' }));
   }, [institutionType]);
 
   const handleChange = (field, value) => {
@@ -67,7 +57,8 @@ export default function TeacherSignup() {
     try {
       await signup({
         ...formData,
-        role: 'teacher'
+        role: 'teacher',
+        institution_type: institutionType
       });
       
       toast.success('Teacher registered successfully!');

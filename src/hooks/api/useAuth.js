@@ -1,11 +1,17 @@
+import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import loginAPI from '../../api/auth/login';
+import loginAPI, { loginSchool, loginCoaching } from '../../api/auth/login';
 import registerAPI, { registerInstitution as registerInstitutionAPI } from '../../api/auth/register';
-import signupAPI from '../../api/auth/signup';
+import signupAPI, { 
+  signupSchoolTeacher, 
+  signupCoachingTeacher, 
+  signupSchoolStudent, 
+  signupCoachingStudent 
+} from '../../api/auth/signup';
 import logoutAPI from '../../api/auth/logout';
-import { getProfile } from '../../api/auth/profile';
+import { getProfile, updateProfile as updateProfileAPI } from '../../api/auth/profile';
 import { setCredentials, logout as logoutAction, setUser, selectAuth } from '../../redux/slice/authSlice';
 import { QUERY_KEYS } from '../../query/queryKeys';
 
@@ -33,7 +39,15 @@ export const useAuth = () => {
 
   // Login Mutation
   const loginMutation = useMutation({
-    mutationFn: (credentials) => loginAPI(credentials),
+    mutationFn: (credentials) => {
+      if (credentials.institution_type === 'COACHING') {
+        return loginCoaching(credentials);
+      }
+      if (credentials.institution_type === 'SCHOOL') {
+        return loginSchool(credentials);
+      }
+      return loginAPI(credentials);
+    },
     onSuccess: (response) => {
       const data = response.data;
       dispatch(setCredentials(data));
@@ -69,7 +83,22 @@ export const useAuth = () => {
 
   // Signup Mutation
   const signupMutation = useMutation({
-    mutationFn: (userData) => signupAPI(userData),
+    mutationFn: (userData) => {
+      // Role-specific signup routing
+      if (userData.role === 'teacher') {
+        const institutionType = userData.institution_type || userData.institutionType;
+        return institutionType === 'COACHING' 
+          ? signupCoachingTeacher(userData) 
+          : signupSchoolTeacher(userData);
+      }
+      if (userData.role === 'student') {
+        const institutionType = userData.institution_type || userData.institutionType;
+        return institutionType === 'COACHING' 
+          ? signupCoachingStudent(userData) 
+          : signupSchoolStudent(userData);
+      }
+      return signupAPI(userData);
+    },
     onSuccess: (response) => {
       const data = response.data;
       // CRITICAL FIX: Store tokens properly!
@@ -78,6 +107,20 @@ export const useAuth = () => {
         queryClient.setQueryData([QUERY_KEYS.ME], data.user);
       }
     },
+  });
+
+  // Update Profile Mutation
+  const updateProfileMutation = useMutation({
+    mutationFn: (data) => updateProfileAPI(data),
+    onSuccess: (response) => {
+      const updatedUser = response.data.user || response.data;
+      dispatch(setUser(updatedUser));
+      queryClient.setQueryData([QUERY_KEYS.ME], updatedUser);
+      toast.success('Profile updated successfully!');
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to update profile');
+    }
   });
 
   // Logout Mutation
@@ -114,6 +157,8 @@ export const useAuth = () => {
     signup: signupMutation.mutateAsync,
     isSigningUp: signupMutation.isPending,
     signupError: signupMutation.error,
+    updateProfile: updateProfileMutation.mutateAsync,
+    isUpdatingProfile: updateProfileMutation.isPending,
     logout: handleLogout,
     isLoggingOut: logoutMutation.isPending,
   };

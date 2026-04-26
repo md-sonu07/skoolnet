@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 
 export default function TeacherProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const { user, isLoadingProfile } = useAuth();
+  const { user, isLoadingProfile, updateProfile, isUpdatingProfile } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,15 +24,16 @@ export default function TeacherProfile() {
 
   useEffect(() => {
     if (user) {
+      const inst = user.institution || {};
       setFormData({
-        name: user.name || user.username || '',
+        name: user.full_name || (user.first_name ? `${user.first_name} ${user.last_name}`.trim() : user.username) || '',
         email: user.email || '',
         phone: user.phone || '',
-        employeeId: user.employee_id || '',
+        employeeId: inst.employee_id || '',
         address: user.address || '',
-        department: user.department || '',
-        qualification: user.qualification || '',
-        experience: user.experience || '',
+        department: inst.specialization || '',
+        qualification: inst.qualification || '',
+        experience: inst.experience || '',
       });
     }
   }, [user]);
@@ -49,20 +50,40 @@ export default function TeacherProfile() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    toast.success('Teacher profile updated successfully! (Demo)');
-    setIsEditing(false);
+  const handleSave = async () => {
+    try {
+      // Split name into first and last
+      const nameParts = formData.name.trim().split(' ');
+      const firstName = nameParts[0];
+      const lastName = nameParts.slice(1).join(' ');
+
+      const updateData = {
+        first_name: firstName,
+        last_name: lastName,
+        phone: formData.phone,
+        address: formData.address,
+        qualification: formData.qualification,
+        employee_id: formData.employeeId,
+        specialization: formData.department, // Mapping department to specialization
+        experience: formData.experience,
+      };
+
+      await updateProfile(updateData);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Profile update error:', error);
+    }
   };
 
   const teacherData = {
-    name: formData.name || user?.name || user?.username || 'Not Set',
-    email: formData.email || user?.email || 'Not Set',
+    name: formData.name || user?.full_name || (user?.first_name ? `${user.first_name} ${user.last_name}`.trim() : user?.username) || 'Not Set',
+    email: user?.email || 'Not Set',
     phone: formData.phone || user?.phone || 'Not Set',
-    employeeId: formData.employeeId || user?.employee_id || 'Not Set',
-    department: formData.department || user?.department || 'Not Set',
-    qualification: formData.qualification || user?.qualification || 'Not Set',
-    experience: formData.experience || user?.experience || 'Not Set',
-    joinDate: user?.date_joined?.split('T')[0] || 'Not Set',
+    employeeId: formData.employeeId || user?.institution?.employee_id || 'Not Set',
+    department: formData.department || user?.institution?.specialization || 'Not Set',
+    qualification: formData.qualification || user?.institution?.qualification || 'Not Set',
+    experience: formData.experience || user?.institution?.experience || 'Not Set',
+    joinDate: user?.created_at?.split('T')[0] || 'Not Set',
     address: formData.address || user?.address || 'Not Set',
     status: user?.is_active ? 'Active' : 'Inactive',
   };
@@ -241,9 +262,17 @@ export default function TeacherProfile() {
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
+                  disabled={isUpdatingProfile}
+                  className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2 disabled:opacity-70"
                 >
-                  Save Changes
+                  {isUpdatingProfile ? (
+                    <>
+                      <AppIcon name="sync" size={16} className="animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Changes'
+                  )}
                 </button>
               </>
             ) : (
