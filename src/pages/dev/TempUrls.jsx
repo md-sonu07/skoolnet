@@ -81,7 +81,13 @@ const URL_GROUPS = [
           { id: 'school-teacher-students', name: 'My Students', path: '/dashboard/school-teacher/my-students' },
           { id: 'school-teacher-attendance', name: 'Attendance', path: '/dashboard/school-teacher/attendance' },
           { id: 'prof-teacher-school', name: 'Teacher Profile', path: '/dashboard/school-teacher/profile' },
-          { id: 'auth-teacher-login', name: 'Auth Login', path: '/auth/teacher/login' },
+          {
+            name: 'Teacher Auth',
+            subLinks: [
+              { id: 'auth-teacher-school-login', name: 'Login', path: '/auth/teacher/login' },
+              { id: 'auth-teacher-school-signup', name: 'Signup', path: '/auth/teacher/signup' },
+            ]
+          }
         ]
       },
       {
@@ -91,7 +97,13 @@ const URL_GROUPS = [
           { id: 'school-student-profile', name: 'Student Profile', path: '/dashboard/school-student/profile' },
           { id: 'school-student-fees', name: 'My Fees', path: '/dashboard/school-student/fees' },
           { id: 'school-student-timetable', name: 'Timetable', path: '/dashboard/school-student/timetable' },
-          { id: 'auth-student-login', name: 'Auth Login', path: '/auth/student/login' },
+          {
+            name: 'Student Auth',
+            subLinks: [
+              { id: 'auth-student-school-login', name: 'Login', path: '/auth/student/login' },
+              { id: 'auth-student-school-signup', name: 'Signup', path: '/auth/student/signup' },
+            ]
+          }
         ]
       }
     ],
@@ -114,6 +126,13 @@ const URL_GROUPS = [
           { id: 'coach-teacher-courses', name: 'My Courses', path: '/dashboard/coaching-teacher/courses' },
           { id: 'coach-teacher-prof', name: 'Teacher Profile', path: '/dashboard/coaching-teacher/profile' },
           { id: 'coach-teacher-schedule', name: 'My Schedule', path: '/dashboard/coaching-teacher/schedule' },
+          {
+            name: 'Teacher Auth',
+            subLinks: [
+              { id: 'auth-teacher-coach-login', name: 'Login', path: '/auth/teacher/login' },
+              { id: 'auth-teacher-coach-signup', name: 'Signup', path: '/auth/teacher/signup' },
+            ]
+          }
         ]
       },
       {
@@ -123,6 +142,13 @@ const URL_GROUPS = [
           { id: 'coach-student-courses', name: 'My Courses', path: '/dashboard/coaching-student/courses' },
           { id: 'coach-student-prof', name: 'Student Profile', path: '/dashboard/coaching-student/profile' },
           { id: 'coach-student-payments', name: 'My Payments', path: '/dashboard/coaching-student/payments' },
+          {
+            name: 'Student Auth',
+            subLinks: [
+              { id: 'auth-student-coach-login', name: 'Login', path: '/auth/student/login' },
+              { id: 'auth-student-coach-signup', name: 'Signup', path: '/auth/student/signup' },
+            ]
+          }
         ]
       }
     ],
