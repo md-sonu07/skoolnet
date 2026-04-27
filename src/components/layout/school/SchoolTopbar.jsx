@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import AppIcon from '../../common/AppIcon';
+import BrandLogo from '../../common/BrandLogo';
 
 export default function SchoolTopbar({ 
   userName = 'User', 
@@ -14,17 +15,7 @@ export default function SchoolTopbar({
       <div className="flex items-center flex-1 max-w-xl">
         {/* Mobile: Show branding */}
         <div className="md:hidden flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-            <AppIcon name="school" size={18} className="text-white" />
-          </div>
-          <div>
-            <h1 className="font-['Manrope'] -mb-1 font-extrabold text-on-surface text-xl tracking-tight">
-              {title}
-            </h1>
-            <p className="text-[10px] mb-0.5 text-on-surface-variant uppercase tracking-widest font-bold">
-              {userRole}
-            </p>
-          </div>
+          <BrandLogo panelName="School" />
         </div>
         {/* Desktop: Show search bar */}
         <div className="hidden md:block relative w-full">

@@ -1,5 +1,6 @@
 import { Outlet, Link } from 'react-router-dom';
 import AppIcon from '../components/common/AppIcon';
+import BrandLogo from '../components/common/BrandLogo';
 
 export default function AuthLayout() {
   return (
@@ -14,17 +15,7 @@ export default function AuthLayout() {
             
             {/* Brand - Top Left */}
             <div className="relative z-10">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-                  <AppIcon name="school" size={26} className="text-white" />
-                </div>
-                <div>
-                  <h1 className="font-['Manrope'] font-extrabold text-2xl text-white tracking-tight">
-                    Skoolnet
-                  </h1>
-                  <p className="text-white/60 text-xs">Management Platform</p>
-                </div>
-              </div>
+              <BrandLogo variant="light" panelName="Management Platform" />
             </div>
 
             {/* Content */}
@@ -69,12 +60,7 @@ export default function AuthLayout() {
           <div className="w-full lg:w-[55%] flex flex-col justify-center bg-white">
             {/* Mobile Logo */}
             <div className="lg:hidden p-6 pb-0">
-              <div className="flex items-center gap-2">
-                <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-                  <AppIcon name="school" size={18} className="text-white" />
-                </div>
-                <span className="font-['Manrope'] font-extrabold text-xl text-slate-900">Skoolnet</span>
-              </div>
+              <BrandLogo panelName="Auth" />
             </div>
 
             {/* Form Container */}

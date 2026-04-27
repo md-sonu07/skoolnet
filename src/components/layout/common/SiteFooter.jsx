@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import AppIcon from '../../common/AppIcon';
+import BrandLogo from '../../common/BrandLogo';
 
 const footerGroups = [
   {
@@ -26,14 +27,7 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="mb-5 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <AppIcon className="text-white" name="school" size={18} />
-              </div>
-              <span className="font-headline text-2xl font-extrabold tracking-tight text-primary">
-                Skoolnet
-              </span>
-            </div>
+            <BrandLogo className="mb-5" />
             <p className="max-w-sm text-base leading-7 text-on-surface-variant">
               The complete operating system for modern educational institutions. Built for
               speed, clarity, and growth.
