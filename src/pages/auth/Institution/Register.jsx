@@ -57,7 +57,6 @@ export default function Register() {
       await registerInstitution(payload);
       toast.success('Institution registered successfully!');
       
-      // Redirect based on type from TempUrls.jsx
       if (formData.type === 'COACHING') {
         navigate('/dashboard/coaching/overview');
       } else {
