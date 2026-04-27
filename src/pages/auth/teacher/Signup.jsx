@@ -25,7 +25,7 @@ export default function TeacherSignup() {
 
   // Fetch institutions using React Query hook
   const { data: institutionsData, isLoading: loadingInstitutions } = useInstitutionsList(
-    institutionType ? { type: institutionType, page_size: 100 } : null
+    institutionType ? { type: institutionType, page_size: 100, signup: 'true' } : null
   );
 
   const institutions = institutionsData?.results || institutionsData || [];
@@ -150,7 +150,7 @@ export default function TeacherSignup() {
             onChange={setInstitutionType}
             options={[
               { value: 'SCHOOL', label: 'School' },
-              { value: 'COACHING', label: 'Coaching Center' }
+              { value: 'COACHING', label: 'Coaching' }
             ]}
             placeholder="Select type..."
             className="w-full"

@@ -11,6 +11,7 @@ import institutionsAPI from '../../../api/institutions';
 import Dropdown from '../../../components/common/Dropdown';
 
 export default function InstitutionLogin() {
+  const [institutionType, setInstitutionType] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [institutionId, setInstitutionId] = useState('');
@@ -23,12 +24,20 @@ export default function InstitutionLogin() {
   const { login, isLoggingIn } = useAuth();
   const { isAuthenticated, roleInfo, user } = useSelector(selectAuth);
 
-  // Fetch institutions on mount
+  // Fetch institutions whenever type changes
   useEffect(() => {
     const fetchInstitutions = async () => {
+      if (!institutionType) {
+        setInstitutions([]);
+        return;
+      }
       setIsLoadingInstitutions(true);
       try {
-        const response = await institutionsAPI.getInstitutions({ is_active: 'true' });
+        const response = await institutionsAPI.getInstitutions({ 
+          is_active: 'true', 
+          type: institutionType,
+          signup: 'true' // Use discovery mode
+        });
         setInstitutions(response.data.results || response.data);
       } catch (error) {
         console.error('Failed to fetch institutions:', error);
@@ -37,7 +46,8 @@ export default function InstitutionLogin() {
       }
     };
     fetchInstitutions();
-  }, []);
+    setInstitutionId(''); // Reset selection
+  }, [institutionType]);
 
   useEffect(() => {
     if (!isAuthenticated || !roleInfo || !user) return;
@@ -60,20 +70,17 @@ export default function InstitutionLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password || !institutionId) {
+    if (!email || !password || !institutionId || !institutionType) {
       toast.error('Please fill in all required fields');
       return;
     }
 
     try {
-      // Determine institution type for routing to correct backend endpoint
-      const selectedInst = institutions.find(i => i.id.toString() === institutionId.toString());
-
       await login({
         email,
         password,
         institution_id: institutionId,
-        institution_type: selectedInst?.institution_type
+        institution_type: institutionType
       });
       toast.success('Logged in successfully!');
     } catch (error) {
@@ -93,6 +100,22 @@ export default function InstitutionLogin() {
 
       <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="space-y-3">
+          {/* Institution Type */}
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Institution Type</label>
+            <Dropdown
+              value={institutionType}
+              onChange={setInstitutionType}
+              options={[
+                { value: 'SCHOOL', label: 'School' },
+                { value: 'COACHING', label: 'Coaching' }
+              ]}
+              placeholder="Select type..."
+              className="w-full"
+              leftIcon={<AppIcon name="category" size={16} />}
+            />
+          </div>
+
           {/* Institution Selection */}
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">Select Institution</label>
@@ -102,12 +125,12 @@ export default function InstitutionLogin() {
                 onChange={setInstitutionId}
                 options={institutions.map(inst => ({
                   value: inst.id,
-                  label: `${inst.name} (${inst.institution_type})`
+                  label: inst.name
                 }))}
-                placeholder="Select your institution"
+                placeholder={institutionType ? (isLoadingInstitutions ? 'Loading...' : 'Select your institution') : 'Select type first'}
                 className="w-full"
                 leftIcon={<AppIcon name="business" size={16} />}
-                disabled={isLoadingInstitutions}
+                disabled={isLoadingInstitutions || !institutionType}
               />
             </div>
           </div>

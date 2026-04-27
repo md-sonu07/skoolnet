@@ -25,7 +25,7 @@ export default function Register() {
 
   const institutionTypes = [
     { value: 'SCHOOL', label: 'School' },
-    { value: 'COACHING', label: 'Coaching Center' },
+    { value: 'COACHING', label: 'Coaching' },
   ];
 
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ export default function Register() {
       };
 
       await registerInstitution(payload);
-      toast.success('Institution registered successfully!');
+      toast.success(`${institutionTypes === 'SCHOOL' ? 'School' : 'Coaching'} registered successfully!`);
 
       if (formData.type === 'COACHING') {
         navigate('/dashboard/coaching/overview');
@@ -115,37 +115,20 @@ export default function Register() {
           </div>
         </div>
 
-        {/* Email */}
-        <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">Email Address</label>
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-              <AppIcon name="mail" size={16} />
-            </div>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => handleChange('email', e.target.value)}
-              className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-              placeholder="email@example.com"
-            />
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* Institution Name */}
+          {/* Email */}
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Institution Name</label>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Email Address</label>
             <div className="relative">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                <AppIcon name="school" size={16} />
+                <AppIcon name="mail" size={16} />
               </div>
               <input
-                type="text"
-                value={formData.institutionName}
-                onChange={(e) => handleChange('institutionName', e.target.value)}
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleChange('email', e.target.value)}
                 className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="Delhi Public School"
+                placeholder="email@example.com"
               />
             </div>
           </div>
@@ -162,6 +145,25 @@ export default function Register() {
             />
           </div>
         </div>
+
+        {/* Institution Name */}
+        <div>
+          <label className="block text-xs font-medium text-slate-600 mb-1">Institution Name</label>
+          <div className="relative">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+              <AppIcon name="school" size={16} />
+            </div>
+            <input
+              type="text"
+              value={formData.institutionName}
+              onChange={(e) => handleChange('institutionName', e.target.value)}
+              className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              placeholder="Delhi Public School"
+            />
+          </div>
+        </div>
+
+
 
         {/* Address */}
         <div>

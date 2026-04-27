@@ -88,7 +88,7 @@ export default function StudentLogin() {
             onChange={setInstitutionType}
             options={[
               { value: 'SCHOOL', label: 'School' },
-              { value: 'COACHING', label: 'Coaching Center' }
+              { value: 'COACHING', label: 'Coaching' }
             ]}
             placeholder="Select type..."
             className="w-full"

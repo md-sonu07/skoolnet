@@ -43,6 +43,18 @@ api.interceptors.request.use(
         config.headers['X-Institution-ID'] = institutionId;
       }
 
+      // Inject Panel Context header to help backend choose the right isolated cookie
+      const path = window.location.pathname;
+      let panel = null;
+      if (path.includes('/manager')) panel = 'manager';
+      else if (path.includes('/partner')) panel = 'partner';
+      else if (path.includes('/auth/school') || path.includes('/dashboard/school')) panel = 'school';
+      else if (path.includes('/auth/coaching') || path.includes('/dashboard/coaching')) panel = 'coaching';
+      
+      if (panel) {
+        config.headers['X-Panel-Context'] = panel;
+      }
+
       // ─── NO MORE Authorization header injection ───────────────
       // Tokens are now sent automatically via HttpOnly cookies.
       // The browser handles cookie attachment with withCredentials: true.
