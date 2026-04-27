@@ -1,6 +1,8 @@
 export const QUERY_KEYS = {
   // Auth
   ME: 'me',
+  PARTNERS_LIST: 'partners_list',
+
   
   // Academics
   ACADEMIC_YEARS: 'academic_years',

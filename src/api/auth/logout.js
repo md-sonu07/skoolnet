@@ -1,15 +1,13 @@
 import api from '../axios';
 
+/**
+ * Logout — Cookie-Based
+ * 
+ * No need to send refresh token in body.
+ * Server reads it from the HttpOnly cookie and clears all auth cookies.
+ */
 export const logout = () => {
-  const refreshToken = localStorage.getItem('refresh_token') || 
-                       localStorage.getItem('manager_refresh_token') || 
-                       localStorage.getItem('partner_refresh_token');
-  
-  if (!refreshToken) {
-    return Promise.resolve(); // If no token, consider logout successful locally
-  }
-  
-  return api.post('/accounts/logout', { refresh: refreshToken });
+  return api.post('/accounts/logout');
 };
 
 export default logout;

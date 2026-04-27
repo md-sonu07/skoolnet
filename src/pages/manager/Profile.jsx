@@ -9,9 +9,12 @@ import toast from 'react-hot-toast';
 import { useManagerAuth } from '../../hooks/api/useManagerAuth';
 import { ProfileSkeleton } from '../../components/common/Skeleton';
 import { formatUserRole } from '../../utils/authHelpers';
+import { useSelector } from 'react-redux';
+import { selectManagerAuth } from '../../redux/slice/managerAuthSlice';
 
 export default function ManagerProfile() {
   const { user, isLoadingProfile, updateProfile, isUpdatingProfile } = useManagerAuth();
+  const { roleInfo } = useSelector(selectManagerAuth);
   const [isEditing, setIsEditing] = useState(false);
   const [profilePreview, setProfilePreview] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
@@ -91,12 +94,12 @@ export default function ManagerProfile() {
       : 'Not Set',
     email: user?.email || 'Not Set',
     phone: user?.phone || 'Not Set',
-    role: formatUserRole(user),
+    role: formatUserRole(user, roleInfo),
     company: user?.partner?.company_name || 'Not Set',
     website: user?.partner?.website || 'Not Set',
     joinDate: user?.created_at?.split('T')[0] || 'Not Set',
     lastLogin: user?.last_login?.split('T')[0] || 'Not Set',
-    permissions: user?.is_superuser ? 'Full Access' : 'Not Set',
+    permissions: user?.is_superuser || roleInfo?.is_manager ? 'Full Access' : 'Not Set',
   };
 
   return (

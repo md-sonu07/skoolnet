@@ -20,14 +20,16 @@ export default function PartnerRegister() {
   const [showPasswords, setShowPasswords] = useState(false);
 
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector(selectPartnerAuth);
+  const { isAuthenticated, user, roleInfo } = useSelector(selectPartnerAuth);
   const { register, isRegistering } = usePartnerAuth();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard/partner');
+    if (!isAuthenticated || !user) return;
+
+    if (user.is_partner) {
+      navigate('/dashboard/partner', { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -51,9 +53,14 @@ export default function PartnerRegister() {
 
     const { confirmPassword, agreeTerms, ...registerData } = formData;
     try {
-      await register(registerData);
+      const response = await register(registerData);
+      const userData = response.data.user;
+
       toast.success('Partner registered successfully!');
-      navigate('/dashboard/partner');
+      
+      if (userData.is_partner) {
+        navigate('/dashboard/partner', { replace: true });
+      }
     } catch (error) {
       toast.error(getErrorMessage(error, 'Registration failed'));
     }

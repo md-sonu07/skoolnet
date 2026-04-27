@@ -14,7 +14,7 @@ import { formatUserRole } from '../../utils/authHelpers';
 
 export default function SchoolProfile() {
   const [editing, setEditing] = useState(false);
-  const { user, isLoadingProfile } = useAuth();
+  const { user, roleInfo, isLoadingProfile } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -102,7 +102,7 @@ export default function SchoolProfile() {
               <div>
                 <p className="text-lg font-bold text-slate-900 leading-tight">{formData.institutionName || 'Not Set'}</p>
                 <p className="text-sm font-medium text-slate-700 capitalize">{formData.name || 'Not Set'}</p>
-                <p className="text-sm text-primary font-bold capitalize mt-1">{formatUserRole(user)}</p>
+                <p className="text-sm text-primary font-bold capitalize mt-1">{formatUserRole(user, roleInfo)}</p>
               </div>
             </div>
 

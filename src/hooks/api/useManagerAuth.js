@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { managerAuthAPI } from '../../api/auth/manager';
 import { setCredentials, logout as logoutAction, setUser, selectManagerAuth } from '../../redux/slice/managerAuthSlice';
+import { setCredentials as setPartnerCredentials } from '../../redux/slice/partnerAuthSlice';
 import { QUERY_KEYS } from '../../query/queryKeys';
 import { getErrorMessage } from '../../utils/errorHelpers';
 import toast from 'react-hot-toast';
@@ -10,57 +11,71 @@ import toast from 'react-hot-toast';
 export const useManagerAuth = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
-  const { token, user: reduxUser, isAuthenticated } = useSelector(selectManagerAuth);
+  const { user: reduxUser, isAuthenticated } = useSelector(selectManagerAuth);
 
-  // Get current user profile
+  // Sync session state across slices if user has dual roles
+  const syncSlices = (data) => {
+    const { user, role_info } = data;
+    dispatch(setCredentials(data));
+    if (user?.is_partner) {
+      dispatch(setPartnerCredentials({ user, role_info }));
+    }
+  };
+
+  // Get current user profile — enabled by cookie-based auth
   const meQuery = useQuery({
     queryKey: [QUERY_KEYS.ME],
     queryFn: async () => {
       const response = await managerAuthAPI.getProfile();
       return response.data;
     },
-    enabled: !!token,
+    enabled: isAuthenticated,
   });
 
   // Sync session state with Redux when profile is fetched
   useEffect(() => {
     if (meQuery.data && JSON.stringify(meQuery.data) !== JSON.stringify(reduxUser)) {
-      dispatch(setUser(meQuery.data));
+      syncSlices({ user: meQuery.data, role_info: null });
     }
   }, [meQuery.data, reduxUser, dispatch]);
 
   // Login Mutation
   const loginMutation = useMutation({
-    mutationFn: (credentials) => managerAuthAPI.login(credentials),
+    mutationFn: (credentials) => managerAuthAPI.login({ 
+      ...credentials, 
+      role: 'manager',
+      TYPE: 'MANAGER',
+      panel: 'manager' 
+    }),
     onSuccess: (response) => {
       const data = response.data;
-      dispatch(setCredentials(data));
-      // Prefill the 'me' query cache with user data if available in login response
+      syncSlices(data);
       if (data.user) {
         queryClient.setQueryData([QUERY_KEYS.ME], data.user);
       }
     },
     onError: (error) => {
-      toast.error(getErrorMessage(error, 'Login failed'));
+      // Errors are handled by the component using mutateAsync and try/catch
     },
   });
 
   // Register Mutation
   const registerMutation = useMutation({
-    mutationFn: (userData) => managerAuthAPI.register(userData),
+    mutationFn: (userData) => managerAuthAPI.register({
+      ...userData,
+      role: 'manager',
+      TYPE: 'MANAGER',
+      panel: 'manager',
+    }),
     onSuccess: (response) => {
       const data = response.data;
-      // Automatically log in the user if tokens are provided
-      if (data.access && data.refresh) {
-        dispatch(setCredentials(data));
-        queryClient.setQueryData([QUERY_KEYS.ME], data.user);
-      } else if (data.user) {
-        dispatch(setUser(data.user));
+      syncSlices(data);
+      if (data.user) {
         queryClient.setQueryData([QUERY_KEYS.ME], data.user);
       }
     },
     onError: (error) => {
-      toast.error(getErrorMessage(error, 'Registration failed'));
+      // Errors are handled by the component using mutateAsync and try/catch
     },
   });
 
@@ -83,7 +98,7 @@ export const useManagerAuth = () => {
       toast.success('Profile updated successfully');
     },
     onError: (error) => {
-      toast.error(getErrorMessage(error, 'Failed to update profile'));
+      // Errors are handled by the component
     },
   });
 

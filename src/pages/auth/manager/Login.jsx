@@ -16,14 +16,20 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector(selectManagerAuth);
+  const { isAuthenticated, user, roleInfo } = useSelector(selectManagerAuth);
   const { login, isLoggingIn } = useManagerAuth();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard/manager');
+    if (!isAuthenticated || !user) return;
+
+    // Manager Panel Redirection — accept superusers, managers, and partners
+    // Role-based redirection
+    if (user.is_superuser || user.is_manager) {
+      navigate('/dashboard/manager', { replace: true });
+    } else if (user.is_partner) {
+      navigate('/dashboard/partner', { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -35,9 +41,17 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(formData);
+      const response = await login(formData);
+      const userData = response.data.user;
+      
       toast.success('Logged in successfully!');
-      navigate('/dashboard/manager');
+      
+      // Navigate to correct dashboard immediately
+      if (userData?.is_manager || userData?.is_superuser) {
+        navigate('/dashboard/manager', { replace: true });
+      } else {
+        navigate('/dashboard/partner', { replace: true });
+      }
     } catch (error) {
       toast.error(getErrorMessage(error, 'Login failed'));
     }

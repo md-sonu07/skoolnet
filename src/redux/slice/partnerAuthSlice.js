@@ -1,9 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+/**
+ * Partner Auth Slice — Cookie-Based Architecture
+ * 
+ * No localStorage. Session rehydrated via /auth/me.
+ */
 const initialState = {
-  user: JSON.parse(localStorage.getItem('partner_user')) || null,
-  token: localStorage.getItem('partner_access_token') || null,
-  isAuthenticated: !!localStorage.getItem('partner_access_token'),
+  user: null,
+  roleInfo: null,
+  isAuthenticated: false,
+  isRehydrating: true,
 };
 
 const partnerAuthSlice = createSlice({
@@ -11,38 +17,37 @@ const partnerAuthSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { user, access, refresh } = action.payload;
-      if (user) {
-        state.user = user;
-        localStorage.setItem('partner_user', JSON.stringify(user));
-      }
-      if (access) {
-        state.token = access;
-        state.isAuthenticated = true;
-        localStorage.setItem('partner_access_token', access);
-      }
-      if (refresh) {
-        localStorage.setItem('partner_refresh_token', refresh);
-      }
+      const { user, role_info } = action.payload;
+      state.user = user || state.user;
+      state.roleInfo = role_info || state.roleInfo;
+      state.isAuthenticated = true;
+      state.isRehydrating = false;
+    },
+    clearCredentials: (state) => {
+      state.user = null;
+      state.roleInfo = null;
+      state.isAuthenticated = false;
     },
     setUser: (state, action) => {
       state.user = action.payload;
-      localStorage.setItem('partner_user', JSON.stringify(action.payload));
+    },
+    setRehydrating: (state, action) => {
+      state.isRehydrating = action.payload;
     },
     logout: (state) => {
       state.user = null;
-      state.token = null;
+      state.roleInfo = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('partner_access_token');
-      localStorage.removeItem('partner_refresh_token');
-      localStorage.removeItem('partner_user');
+      state.isRehydrating = false;
     },
   },
 });
 
 export const {
   setCredentials,
+  clearCredentials,
   setUser,
+  setRehydrating,
   logout,
 } = partnerAuthSlice.actions;
 

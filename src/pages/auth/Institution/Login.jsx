@@ -6,41 +6,74 @@ import { useAuth } from '../../../hooks/api/useAuth';
 import { getErrorMessage } from '../../../utils/errorHelpers';
 import { useSelector } from 'react-redux';
 import { selectAuth } from '../../../redux/slice/authSlice';
+import institutionsAPI from '../../../api/institutions';
+import Dropdown from '../../../components/common/Dropdown';
 
 export default function InstitutionLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [institutionId, setInstitutionId] = useState('');
+  const [institutions, setInstitutions] = useState([]);
+  const [isLoadingInstitutions, setIsLoadingInstitutions] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
   const { login, isLoggingIn } = useAuth();
-  const { isAuthenticated, user } = useSelector(selectAuth);
+  const { isAuthenticated, roleInfo, user } = useSelector(selectAuth);
+
+  // Fetch institutions on mount
+  useEffect(() => {
+    const fetchInstitutions = async () => {
+      setIsLoadingInstitutions(true);
+      try {
+        const response = await institutionsAPI.getInstitutions({ is_active: 'true' });
+        setInstitutions(response.data.results || response.data);
+      } catch (error) {
+        console.error('Failed to fetch institutions:', error);
+      } finally {
+        setIsLoadingInstitutions(false);
+      }
+    };
+    fetchInstitutions();
+  }, []);
 
   useEffect(() => {
-    if (isAuthenticated && user) {
-      const role = user.institution?.role;
-      const type = user.institution?.type;
+    if (!isAuthenticated || !roleInfo || !user) return;
 
-      if (role === 'STUDENT') {
-        navigate(type === 'COACHING' ? '/dashboard/coaching-student/dashboard' : '/dashboard/school-student/profile');
-      } else if (role === 'TEACHER') {
-        navigate(type === 'COACHING' ? '/dashboard/coaching/teacher/dashboard' : '/dashboard/school-teacher/dashboard');
-      } else if (role === 'ADMIN') {
-        navigate(type === 'COACHING' ? '/dashboard/coaching/overview' : '/dashboard/school/overview');
-      }
+    const { role, institution_type: type } = roleInfo;
+
+    // Student Redirection
+    if (role === 'STUDENT') {
+      navigate(type === 'COACHING' ? '/dashboard/coaching-student/dashboard' : '/dashboard/school-student/profile');
+    } 
+    // Teacher Redirection
+    else if (role === 'TEACHER') {
+      navigate(type === 'COACHING' ? '/dashboard/coaching/teacher/dashboard' : '/dashboard/school-teacher/dashboard');
+    } 
+    // Institution Admin Redirection
+    else if (role === 'ADMIN') {
+      navigate(type === 'COACHING' ? '/dashboard/coaching/overview' : '/dashboard/school/overview');
     }
-  }, [isAuthenticated, user, navigate]);
+  }, [isAuthenticated, roleInfo, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!email || !password || !institutionId) {
       toast.error('Please fill in all required fields');
       return;
     }
     
     try {
-      await login({ email, password });
+      // Determine institution type for routing to correct backend endpoint
+      const selectedInst = institutions.find(i => i.id.toString() === institutionId.toString());
+      
+      await login({ 
+        email, 
+        password, 
+        institution_id: institutionId,
+        institution_type: selectedInst?.institution_type 
+      });
       toast.success('Logged in successfully!');
     } catch (error) {
       toast.error(getErrorMessage(error, 'Login failed. Please check your credentials.'));
@@ -59,6 +92,26 @@ export default function InstitutionLogin() {
 
       <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="space-y-3">
+          {/* Institution Selection */}
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Select Institution</label>
+            <div className="relative">
+              <Dropdown
+                value={institutionId}
+                onChange={setInstitutionId}
+                options={institutions.map(inst => ({ 
+                  value: inst.id, 
+                  label: `${inst.name} (${inst.institution_type})` 
+                }))}
+                placeholder="Select your institution"
+                className="w-full"
+                leftIcon={<AppIcon name="business" size={16} />}
+                disabled={isLoadingInstitutions}
+              />
+            </div>
+          </div>
+
+
           {/* Email */}
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">Email Address</label>

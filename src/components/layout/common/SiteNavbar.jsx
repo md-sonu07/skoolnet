@@ -10,7 +10,7 @@ const baseNavItems = [
   { label: 'Contact', href: '/contact' },
 ];
 
-const navItems = isDev 
+const navItems = isDev
   ? [...baseNavItems, { label: 'Internal URLs', href: '/temp-urls' }]
   : baseNavItems;
 
@@ -57,8 +57,8 @@ export default function SiteNavbar() {
             >
               <AppIcon name="notifications" size={20} />
             </button>
-            <Link 
-              to="/dashboard/manager/overview" 
+            <Link
+              to="/dashboard/manager/overview"
               className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary/10 bg-slate-100 transition-all hover:bg-slate-200 active:scale-95"
             >
               <AppIcon name="person" size={20} className="text-slate-500" />

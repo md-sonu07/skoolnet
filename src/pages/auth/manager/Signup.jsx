@@ -21,14 +21,19 @@ export default function Signup() {
   const [agreeTerms, setAgreeTerms] = useState(false);
 
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector(selectManagerAuth);
+  const { isAuthenticated, user, roleInfo } = useSelector(selectManagerAuth);
   const { register, isRegistering } = useManagerAuth();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard/manager');
+    if (!isAuthenticated || !user) return;
+
+    // Role-based redirection
+    if (user.is_superuser || user.is_manager) {
+      navigate('/dashboard/manager', { replace: true });
+    } else if (user.is_partner) {
+      navigate('/dashboard/partner', { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -57,9 +62,17 @@ export default function Signup() {
 
     const { password_confirm, ...registerData } = formData;
     try {
-      await register(registerData);
+      const response = await register(registerData);
+      const userData = response.data.user;
+
       toast.success('Welcome! Your account has been created successfully.');
-      navigate('/dashboard/manager');
+      
+      // Navigate to correct dashboard immediately
+      if (userData?.is_manager || userData?.is_superuser) {
+        navigate('/dashboard/manager', { replace: true });
+      } else {
+        navigate('/dashboard/partner', { replace: true });
+      }
     } catch (error) {
       toast.error(getErrorMessage(error, 'Registration failed'));
     }

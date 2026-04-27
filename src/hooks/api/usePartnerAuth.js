@@ -6,36 +6,51 @@ import registerAPI from '../../api/auth/register';
 import logoutAPI from '../../api/auth/logout';
 import { getProfile } from '../../api/auth/profile';
 import { setCredentials, logout as logoutAction, setUser, selectPartnerAuth } from '../../redux/slice/partnerAuthSlice';
+import { setCredentials as setManagerCredentials } from '../../redux/slice/managerAuthSlice';
 import { QUERY_KEYS } from '../../query/queryKeys';
 
 export const usePartnerAuth = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
-  const { token, user: reduxUser } = useSelector(selectPartnerAuth);
+  const { user: reduxUser, roleInfo, isAuthenticated } = useSelector(selectPartnerAuth);
 
-  // Get current user profile
+  // Sync session state across slices if user has dual roles
+  const syncSlices = (data) => {
+    const { user, role_info } = data;
+    if (user?.is_manager || user?.is_superuser) {
+      dispatch(setManagerCredentials({ user, role_info }));
+    }
+    dispatch(setCredentials(data));
+  };
+
+  // Get current user profile — enabled by cookie-based auth
   const meQuery = useQuery({
     queryKey: [QUERY_KEYS.ME, 'partner'],
     queryFn: async () => {
       const response = await getProfile();
       return response.data;
     },
-    enabled: !!token,
+    enabled: isAuthenticated,
   });
 
   // Sync session state with Redux when profile is fetched
   useEffect(() => {
     if (meQuery.data && JSON.stringify(meQuery.data) !== JSON.stringify(reduxUser)) {
-      dispatch(setUser(meQuery.data));
+      syncSlices({ user: meQuery.data, role_info: roleInfo });
     }
   }, [meQuery.data, reduxUser, dispatch]);
 
   // Login Mutation
   const loginMutation = useMutation({
-    mutationFn: (credentials) => loginAPI(credentials),
+    mutationFn: (credentials) => loginAPI({ 
+      ...credentials, 
+      role: 'partner',
+      TYPE: 'PARTNER',
+      panel: 'partner' 
+    }),
     onSuccess: (response) => {
       const data = response.data;
-      dispatch(setCredentials(data));
+      syncSlices(data);
       if (data.user) {
         queryClient.setQueryData([QUERY_KEYS.ME, 'partner'], data.user);
       }
@@ -44,10 +59,15 @@ export const usePartnerAuth = () => {
 
   // Register Mutation
   const registerMutation = useMutation({
-    mutationFn: (userData) => registerAPI(userData),
+    mutationFn: (userData) => registerAPI({
+      ...userData,
+      role: 'partner',
+      TYPE: 'PARTNER',
+      panel: 'partner',
+    }),
     onSuccess: (response) => {
       const data = response.data;
-      dispatch(setCredentials(data));
+      syncSlices(data);
       if (data.user) {
         queryClient.setQueryData([QUERY_KEYS.ME, 'partner'], data.user);
       }
@@ -65,6 +85,7 @@ export const usePartnerAuth = () => {
 
   return {
     user: meQuery.data || reduxUser,
+    roleInfo,
     isLoadingProfile: meQuery.isLoading,
     login: loginMutation.mutateAsync,
     isLoggingIn: loginMutation.isPending,

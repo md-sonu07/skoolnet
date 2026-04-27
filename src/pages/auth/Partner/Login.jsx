@@ -6,24 +6,33 @@ import { selectPartnerAuth } from '../../../redux/slice/partnerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from '../../../utils/errorHelpers';
+import { usePartnersList } from '../../../hooks/api/usePartners';
+import Dropdown from '../../../components/common/Dropdown';
+
 
 export default function PartnerLogin() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    companyName: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector(selectPartnerAuth);
+  const { isAuthenticated, user, roleInfo } = useSelector(selectPartnerAuth);
   const { login, isLoggingIn } = usePartnerAuth();
 
+  // Fetch all registered partner organizations
+  const { data: partners, isLoading: isLoadingPartners } = usePartnersList();
+
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard/partner');
+    if (!isAuthenticated || !user) return;
+
+    if (user.is_partner) {
+      navigate('/dashboard/partner', { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -34,12 +43,30 @@ export default function PartnerLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.companyName) {
+      toast.error('Please select your organization/company');
+      return;
+    }
+
     try {
-      await login({ ...formData, panel: 'partner' });
-      toast.success('Joined Partner Portal!');
-      navigate('/dashboard/partner');
+      toast.dismiss();
+      const response = await login({
+        ...formData,
+        institution_id: formData.companyName
+      });
+
+      if (response?.data?.user) {
+        const userData = response.data.user;
+        toast.success('Partner logged in successfully!');
+
+        if (userData.is_partner) {
+          navigate('/dashboard/partner', { replace: true });
+        }
+      }
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Login failed'));
+      const message = getErrorMessage(error, 'Partner Login failed');
+      toast.error(message);
     }
   };
 
@@ -50,12 +77,29 @@ export default function PartnerLogin() {
           <AppIcon name="partners" size={28} className="text-purple-600" />
         </div>
         <h1 className="text-2xl font-bold text-slate-900">Partner Portal</h1>
-        <p className="text-sm text-slate-500 mt-1">Sign in to manage your schools and coaching</p>
+        <p className="text-sm text-slate-500 mt-1">Sign in to manage your organizations</p>
       </div>
 
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-3">
+          {/* Organization Dropdown */}
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Company Name</label>
+            <div className="relative">
+              <Dropdown
+                value={formData.companyName}
+                onChange={(value) => setFormData({ ...formData, companyName: value })}
+                options={partners?.results?.map(p => ({ value: p.id, label: p.company_name })) || []}
+                placeholder={isLoadingPartners ? 'Loading organizations...' : 'Select your organization'}
+                className="w-full"
+                leftIcon={<AppIcon name="business" size={16} />}
+              />
+            </div>
+
+          </div>
+
+
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">Email</label>
             <div className="relative">
@@ -73,6 +117,7 @@ export default function PartnerLogin() {
               />
             </div>
           </div>
+
 
           <div>
             <div className="flex items-center justify-between mb-1">
@@ -116,8 +161,8 @@ export default function PartnerLogin() {
           </div>
         </div>
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={isLoggingIn}
           className="w-full py-2.5 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
         >

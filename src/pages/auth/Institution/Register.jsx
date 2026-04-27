@@ -25,7 +25,6 @@ export default function Register() {
   const institutionTypes = [
     { value: 'SCHOOL', label: 'School' },
     { value: 'COACHING', label: 'Coaching Center' },
-    { value: 'OTHER', label: 'Other' },
   ];
 
   const navigate = useNavigate();

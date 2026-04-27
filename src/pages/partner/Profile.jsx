@@ -12,7 +12,7 @@ import { formatUserRole } from '../../utils/authHelpers';
 
 export default function PartnerProfile() {
   const [editing, setEditing] = useState(false);
-  const { user, isLoadingProfile } = usePartnerAuth();
+  const { user, roleInfo, isLoadingProfile } = usePartnerAuth();
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -112,7 +112,7 @@ export default function PartnerProfile() {
               </div>
               <div>
                 <p className="text-lg font-bold text-slate-900 capitalize leading-tight">{partnerInfo.name}</p>
-                <p className="text-xs text-primary font-bold capitalize mt-1 mb-1">{formatUserRole(user)}</p>
+                <p className="text-xs text-primary font-bold capitalize mt-1 mb-1">{formatUserRole(user, roleInfo)}</p>
                 <p className="text-sm text-slate-500 font-bold capitalize">{partnerInfo.company}</p>
               </div>
             </div>

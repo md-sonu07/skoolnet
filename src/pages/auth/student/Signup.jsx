@@ -5,6 +5,7 @@ import { useInstitutionsList } from '../../../hooks/api/useInstitutions';
 import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
 import api from '../../../api/axios';
+import Dropdown from '../../../components/common/Dropdown';
 
 export default function StudentSignup() {
   const [institutionType, setInstitutionType] = useState('');
@@ -86,36 +87,34 @@ export default function StudentSignup() {
         {/* Institution Type */}
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1">Institution Type</label>
-          <select
+          <Dropdown
             value={institutionType}
-            onChange={(e) => setInstitutionType(e.target.value)}
-            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-          >
-            <option value="">Select type...</option>
-            <option value="SCHOOL">School</option>
-            <option value="COACHING">Coaching Center</option>
-          </select>
+            onChange={setInstitutionType}
+            options={[
+              { value: 'SCHOOL', label: 'School' },
+              { value: 'COACHING', label: 'Coaching Center' }
+            ]}
+            placeholder="Select type..."
+            className="w-full"
+            leftIcon={<AppIcon name="category" size={16} />}
+          />
         </div>
+
 
         {/* Institution Name */}
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1">Institution Name</label>
-          <select
+          <Dropdown
             value={formData.institution_id}
-            onChange={(e) => handleChange('institution_id', e.target.value)}
+            onChange={(val) => handleChange('institution_id', val)}
+            options={institutions.map(inst => ({ value: inst.id, label: inst.name }))}
             disabled={loadingInstitutions || !institutionType}
-            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:opacity-50"
-          >
-            <option value="">
-              {loadingInstitutions ? 'Loading...' : 'Select institution...'}
-            </option>
-            {institutions.map((inst) => (
-              <option key={inst.id} value={inst.id}>
-                {inst.name}
-              </option>
-            ))}
-          </select>
+            placeholder={loadingInstitutions ? 'Loading...' : 'Select institution...'}
+            className="w-full"
+            leftIcon={<AppIcon name="business" size={16} />}
+          />
         </div>
+
 
         <div className="grid grid-cols-2 gap-3">
           {/* Full Name */}

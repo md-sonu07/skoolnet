@@ -11,7 +11,7 @@ import { formatUserRole } from '../../../utils/authHelpers';
 
 export default function CoachingStudentProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const { user, isLoadingProfile, updateProfile, isUpdatingProfile } = useAuth();
+  const { user, roleInfo, isLoadingProfile, updateProfile, isUpdatingProfile } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -102,7 +102,7 @@ export default function CoachingStudentProfile() {
             </div>
             <h3 className="text-xl font-bold text-slate-900 mb-1 capitalize truncate">{studentData.name}</h3>
             <p className="text-sm font-semibold text-primary mb-1 bg-primary/5 py-1 px-3 rounded-full inline-block">
-              {formatUserRole(user)}
+               {formatUserRole(user, roleInfo)}
             </p>
             <p className="text-xs text-slate-500 mb-3 font-medium">
               {studentData.course} • Batch {studentData.batch}

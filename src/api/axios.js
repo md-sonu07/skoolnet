@@ -11,14 +11,17 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  // ─── COOKIE AUTH: Send HttpOnly cookies with every request ─────────
+  withCredentials: true,
 });
 
 api.interceptors.request.use(
   (config) => {
-    // List of public endpoints that don't need the Authorization header
+    // List of public endpoints that don't need auth context
     const publicEndpoints = [
       '/accounts/login',
       '/accounts/register',
+      '/accounts/signup',
       '/accounts/refresh',
       '/accounts/verify-email',
       '/accounts/password-reset',
@@ -29,15 +32,20 @@ api.interceptors.request.use(
 
     if (!isPublicEndpoint) {
       const state = store.getState();
-      // Try to find any active token in order of priority
-      const token = state.managerAuth?.token || 
-                    state.partnerAuth?.token || 
-                    state.auth?.token || 
-                    localStorage.getItem('access_token');
       
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      // Inject Institution ID header for multi-tenancy
+      // Read from Redux state only (no more localStorage)
+      const institutionId = state.auth?.institutionId || 
+                            state.managerAuth?.roleInfo?.institution_id ||
+                            state.partnerAuth?.roleInfo?.institution_id;
+                            
+      if (institutionId) {
+        config.headers['X-Institution-ID'] = institutionId;
       }
+
+      // ─── NO MORE Authorization header injection ───────────────
+      // Tokens are now sent automatically via HttpOnly cookies.
+      // The browser handles cookie attachment with withCredentials: true.
     }
     return config;
   },
@@ -49,73 +57,41 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     
-    // Handle 401 Unauthorized errors - attempt token refresh
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Handle 401 Unauthorized — attempt cookie-based token refresh
+    // skip refresh for 'auth/me' as it is the initial check
+    if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes('/accounts/auth/me')) {
       originalRequest._retry = true;
+
       
       try {
+        // Cookie-based refresh: no body needed, server reads from HttpOnly cookie
+        const response = await axios.post(
+          `${API_BASE}/accounts/refresh`,
+          {},
+          { withCredentials: true }
+        );
+        
+        const { user, role_info } = response.data;
+        
+        // Determine which Redux slice to update
         const state = store.getState();
-        // Determine which refresh token to use and which slice to update
-        let refreshToken = null;
-        let updateAction = null;
-        let loginPath = '/auth/institution/login';
-
-        if (state.managerAuth?.token) {
-          refreshToken = localStorage.getItem('manager_refresh_token');
-          updateAction = (data) => store.dispatch({ type: 'managerAuth/setCredentials', payload: data });
-          loginPath = '/auth/manager/login';
-        } else if (state.partnerAuth?.token) {
-          refreshToken = localStorage.getItem('partner_refresh_token');
-          updateAction = (data) => store.dispatch({ type: 'partnerAuth/setCredentials', payload: data });
-          loginPath = '/auth/partner/login';
+        if (state.managerAuth?.isAuthenticated) {
+          store.dispatch({ type: 'managerAuth/setCredentials', payload: { user, role_info } });
+        } else if (state.partnerAuth?.isAuthenticated) {
+          store.dispatch({ type: 'partnerAuth/setCredentials', payload: { user, role_info } });
         } else {
-          refreshToken = localStorage.getItem('refresh_token');
-          updateAction = (data) => store.dispatch(setCredentials(data));
+          store.dispatch(setCredentials({ user, role_info }));
         }
         
-        if (refreshToken) {
-          const response = await axios.post(
-            `${API_BASE}/accounts/refresh`,
-            { refresh: refreshToken }
-          );
-          
-          const { access, refresh, user } = response.data;
-          
-          // Update role-specific storage
-          if (state.managerAuth?.token) {
-            localStorage.setItem('manager_access_token', access);
-            localStorage.setItem('manager_refresh_token', refresh);
-          } else if (state.partnerAuth?.token) {
-            localStorage.setItem('partner_access_token', access);
-            localStorage.setItem('partner_refresh_token', refresh);
-          } else {
-            localStorage.setItem('access_token', access);
-            localStorage.setItem('refresh_token', refresh);
-          }
-          
-          // Update Redux state
-          updateAction({ access, refresh, user });
-          
-          // Retry the original request with the new token
-          originalRequest.headers.Authorization = `Bearer ${access}`;
-          return api(originalRequest);
-        }
+        // Retry the original request — new cookie is already set by the server
+        return api(originalRequest);
       } catch (refreshError) {
-        // Refresh failed, clear all tokens and redirect to correct login
-        const keys = [
-          'access_token', 'refresh_token', 'user',
-          'manager_access_token', 'manager_refresh_token', 'manager_user',
-          'partner_access_token', 'partner_refresh_token', 'partner_user'
-        ];
-        keys.forEach(key => localStorage.removeItem(key));
-        
-        // Also clear Redux state for all roles
+        // Refresh failed — clear all Redux state and redirect to login
         store.dispatch({ type: 'auth/logout' });
         store.dispatch({ type: 'managerAuth/logout' });
         store.dispatch({ type: 'partnerAuth/logout' });
 
-        if (!window.location.pathname.includes('/auth/')) {
-          // Determine where to redirect based on the current URL
+        if (window.location.pathname.startsWith('/dashboard')) {
           let redirectPath = '/auth/institution/login';
           if (window.location.pathname.includes('/manager')) redirectPath = '/auth/manager/login';
           else if (window.location.pathname.includes('/partner')) redirectPath = '/auth/partner/login';

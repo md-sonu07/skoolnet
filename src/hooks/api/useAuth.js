@@ -18,16 +18,16 @@ import { QUERY_KEYS } from '../../query/queryKeys';
 export const useAuth = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
-  const { token, user: reduxUser } = useSelector(selectAuth);
+  const { user: reduxUser, roleInfo, isAuthenticated } = useSelector(selectAuth);
 
-  // Get current user profile
+  // Get current user profile — enabled when authenticated (via cookie rehydration)
   const meQuery = useQuery({
     queryKey: [QUERY_KEYS.ME],
     queryFn: async () => {
       const response = await getProfile();
       return response.data;
     },
-    enabled: !!token,
+    enabled: isAuthenticated,
   });
 
   // Sync session state with Redux when profile is fetched
@@ -50,6 +50,7 @@ export const useAuth = () => {
     },
     onSuccess: (response) => {
       const data = response.data;
+      // Tokens are now in HttpOnly cookies — only store user/role in Redux
       dispatch(setCredentials(data));
       if (data.user) {
         queryClient.setQueryData([QUERY_KEYS.ME], data.user);
@@ -74,10 +75,8 @@ export const useAuth = () => {
     mutationFn: (userData) => registerInstitutionAPI(userData),
     onSuccess: (response) => {
       const data = response.data;
-      if (data.access) {
-        dispatch(setCredentials(data));
-        queryClient.setQueryData([QUERY_KEYS.ME], data.user);
-      }
+      dispatch(setCredentials(data));
+      queryClient.setQueryData([QUERY_KEYS.ME], data.user);
     },
   });
 
@@ -101,11 +100,8 @@ export const useAuth = () => {
     },
     onSuccess: (response) => {
       const data = response.data;
-      // CRITICAL FIX: Store tokens properly!
-      if (data.access) {
-        dispatch(setCredentials(data));
-        queryClient.setQueryData([QUERY_KEYS.ME], data.user);
-      }
+      dispatch(setCredentials(data));
+      queryClient.setQueryData([QUERY_KEYS.ME], data.user);
     },
   });
 
@@ -136,14 +132,15 @@ export const useAuth = () => {
     try {
       await logoutMutation.mutateAsync();
     } catch (error) {
-      // Ignore errors like 401 Unauthorized to ensure local cleanup still succeeds without unhandled promise rejections
+      // Ignore errors like 401 Unauthorized to ensure local session clear:
       console.warn('Logout API error, forcing local session clear:', error.message);
     }
   };
 
   return {
     user: meQuery.data || reduxUser,
-    isAuthenticated: !!token,
+    roleInfo,
+    isAuthenticated,
     isLoadingProfile: meQuery.isLoading,
     login: loginMutation.mutateAsync,
     isLoggingIn: loginMutation.isPending,
