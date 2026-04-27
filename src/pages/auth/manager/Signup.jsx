@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useManagerAuth } from '../../../hooks/api/useManagerAuth';
 import { selectManagerAuth } from '../../../redux/slice/managerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
+import SvgIcon from '../../../components/common/SvgIcons';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from '../../../utils/errorHelpers';
 
@@ -66,7 +67,7 @@ export default function Signup() {
       const userData = response.data.user;
 
       toast.success('Welcome! Your account has been created successfully.');
-      
+
       // Navigate to correct dashboard immediately
       if (userData?.is_manager || userData?.is_superuser) {
         navigate('/dashboard/manager', { replace: true });
@@ -91,7 +92,7 @@ export default function Signup() {
 
       <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="space-y-2.5">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">First Name</label>
               <input
@@ -171,64 +172,76 @@ export default function Signup() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Password</label>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                <AppIcon name="lock" size={16} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Password</label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                  <AppIcon name="lock" size={16} />
+                </div>
+                <input
+                  type={showPasswords ? 'text' : 'password'}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  placeholder="Min 8 characters"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPasswords(!showPasswords)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 outline-none cursor-pointer"
+                >
+                  <AppIcon name={showPasswords ? 'visibility_off' : 'visibility'} size={18} />
+                </button>
               </div>
-              <input
-                type={showPasswords ? 'text' : 'password'}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="Min 8 characters"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPasswords(!showPasswords)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 outline-none cursor-pointer"
-              >
-                <AppIcon name={showPasswords ? 'visibility_off' : 'visibility'} size={18} />
-              </button>
             </div>
-          </div>
 
-          <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Confirm Password</label>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                <AppIcon name="lock" size={16} />
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Confirm Password</label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                  <AppIcon name="lock" size={16} />
+                </div>
+                <input
+                  type={showPasswords ? 'text' : 'password'}
+                  name="password_confirm"
+                  value={formData.password_confirm}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  placeholder="Confirm password"
+                  required
+                />
               </div>
-              <input
-                type={showPasswords ? 'text' : 'password'}
-                name="password_confirm"
-                value={formData.password_confirm}
-                onChange={handleChange}
-                className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="Confirm password"
-                required
-              />
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setAgreeTerms(!agreeTerms)}
-            className={`w-10 h-5 rounded-full transition-colors flex items-center ${agreeTerms ? 'bg-primary' : 'bg-slate-200'}`}
-          >
-            <span className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${agreeTerms ? 'translate-x-5' : 'translate-x-0.5'}`} />
-          </button>
-          <span className="text-xs text-slate-500">
-            I agree to the <Link to="/terms" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy" className="text-primary hover:underline">Privacy</Link>
-          </span>
+        <div className="flex items-center pt-2">
+          <label className="flex items-center gap-3 cursor-pointer select-none group">
+            <div className="relative">
+              <input
+                type="checkbox"
+                className="sr-only"
+                checked={agreeTerms}
+                onChange={() => setAgreeTerms(!agreeTerms)}
+              />
+              <div className={`w-5 h-5 rounded border-2 transition-all flex items-center justify-center ${agreeTerms ? 'bg-primary border-primary' : 'bg-white border-slate-300'}`}>
+                {agreeTerms && <span className="text-white text-sm font-bold pb-0.5">🗸</span>}
+              </div>
+            </div>
+            <span className="text-xs font-medium text-slate-500">
+              I agree to the <Link to="/terms" onClick={(e) => e.stopPropagation()} className="text-primary font-medium hover:underline">Terms</Link> and <Link to="/privacy" onClick={(e) => e.stopPropagation()} className="text-primary font-medium hover:underline">Privacy Policy</Link>
+            </span>
+          </label>
         </div>
 
-        <button type="submit" disabled={isRegistering} className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
+        <button 
+          type="submit" 
+          disabled={isRegistering || !agreeTerms} 
+          className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2 transition-all shadow-sm active:scale-[0.98]"
+        >
           {isRegistering ? (
             <AppIcon name="sync" size={16} className="animate-spin" />
           ) : (
@@ -236,29 +249,30 @@ export default function Signup() {
           )}
           {isRegistering ? 'Creating account...' : 'Create account'}
         </button>
+
       </form>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 py-1">
         <div className="flex-1 h-px bg-slate-100"></div>
-        <span className="text-xs text-slate-400">Or continue with</span>
+        <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Or continue with</span>
         <div className="flex-1 h-px bg-slate-100"></div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
-        <button className="py-2.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-2">
-          <AppIcon name="public" size={14} />
-          Google
-        </button>
-        <button className="py-2.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-2">
-          <AppIcon name="code" size={14} />
-          GitHub
+      <div className="grid grid-cols-1 gap-2">
+        <button 
+          type="button"
+          className="w-full py-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-3 bg-white"
+        >
+          <SvgIcon name="google" size={18} />
+          <span>Continue with Google</span>
         </button>
       </div>
 
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-slate-500 pt-2">
         Already have an account?{' '}
-        <Link to="/auth/manager/login" className="text-primary font-medium">Sign in</Link>
+        <Link to="/auth/manager/login" className="text-primary font-semibold hover:underline">Sign in</Link>
       </p>
+
     </div>
   );
 }

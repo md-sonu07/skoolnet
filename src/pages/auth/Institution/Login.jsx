@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppIcon from '../../../components/common/AppIcon';
+import SvgIcon from '../../../components/common/SvgIcons';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../../hooks/api/useAuth';
 import { getErrorMessage } from '../../../utils/errorHelpers';
@@ -46,11 +47,11 @@ export default function InstitutionLogin() {
     // Student Redirection
     if (role === 'STUDENT') {
       navigate(type === 'COACHING' ? '/dashboard/coaching-student/dashboard' : '/dashboard/school-student/profile');
-    } 
+    }
     // Teacher Redirection
     else if (role === 'TEACHER') {
       navigate(type === 'COACHING' ? '/dashboard/coaching/teacher/dashboard' : '/dashboard/school-teacher/dashboard');
-    } 
+    }
     // Institution Admin Redirection
     else if (role === 'ADMIN') {
       navigate(type === 'COACHING' ? '/dashboard/coaching/overview' : '/dashboard/school/overview');
@@ -63,16 +64,16 @@ export default function InstitutionLogin() {
       toast.error('Please fill in all required fields');
       return;
     }
-    
+
     try {
       // Determine institution type for routing to correct backend endpoint
       const selectedInst = institutions.find(i => i.id.toString() === institutionId.toString());
-      
-      await login({ 
-        email, 
-        password, 
+
+      await login({
+        email,
+        password,
         institution_id: institutionId,
-        institution_type: selectedInst?.institution_type 
+        institution_type: selectedInst?.institution_type
       });
       toast.success('Logged in successfully!');
     } catch (error) {
@@ -99,9 +100,9 @@ export default function InstitutionLogin() {
               <Dropdown
                 value={institutionId}
                 onChange={setInstitutionId}
-                options={institutions.map(inst => ({ 
-                  value: inst.id, 
-                  label: `${inst.name} (${inst.institution_type})` 
+                options={institutions.map(inst => ({
+                  value: inst.id,
+                  label: `${inst.name} (${inst.institution_type})`
                 }))}
                 placeholder="Select your institution"
                 className="w-full"
@@ -161,20 +162,23 @@ export default function InstitutionLogin() {
           </div>
 
           {/* Remember Me */}
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
+          <div className="flex justify-between pt-2">
+            <div
               onClick={() => setRememberMe(!rememberMe)}
-              className={`w-10 h-5 rounded-full transition-colors flex items-center ${rememberMe ? 'bg-primary' : 'bg-slate-200'}`}
+              className="flex items-center gap-3 cursor-pointer select-none"
             >
-              <span className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${rememberMe ? 'translate-x-5' : 'translate-x-0.5'}`} />
-            </button>
-            <span className="text-xs text-slate-500">Remember this device</span>
+              <div className={`w-8 h-4.5 rounded-md transition-colors relative ${rememberMe ? 'bg-primary' : 'bg-slate-200'}`}>
+                <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full transition-transform ${rememberMe ? 'translate-x-4' : 'translate-x-0.5'}`} />
+              </div>
+              <span className="text-xs text-slate-500 font-medium">
+                {rememberMe ? 'Saved sessions' : 'Remember this device'}
+              </span>
+            </div>
           </div>
         </div>
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={isLoggingIn}
           className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
         >
@@ -187,26 +191,25 @@ export default function InstitutionLogin() {
         </button>
       </form>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 py-1">
         <div className="flex-1 h-px bg-slate-100"></div>
-        <span className="text-xs text-slate-400">Or</span>
+        <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Or continue with</span>
         <div className="flex-1 h-px bg-slate-100"></div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
-        <button className="py-2.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-2">
-          <AppIcon name="public" size={14} />
-          Google
-        </button>
-        <button className="py-2.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-2">
-          <AppIcon name="code" size={14} />
-          GitHub
+      <div className="grid grid-cols-1 gap-2">
+        <button 
+          type="button"
+          className="w-full py-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-3 bg-white"
+        >
+          <SvgIcon name="google" size={18} />
+          <span>Continue with Google</span>
         </button>
       </div>
 
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-slate-500 pt-2">
         New institution?{' '}
-        <Link to="/auth/institution/register" className="text-primary font-medium">Register here</Link>
+        <Link to="/auth/institution/register" className="text-primary font-semibold hover:underline">Register here</Link>
       </p>
     </div>
   );

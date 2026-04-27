@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { usePartnerAuth } from '../../../hooks/api/usePartnerAuth';
 import { selectPartnerAuth } from '../../../redux/slice/partnerAuthSlice';
 import AppIcon from '../../../components/common/AppIcon';
+import SvgIcon from '../../../components/common/SvgIcons';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from '../../../utils/errorHelpers';
 import { usePartnersList } from '../../../hooks/api/usePartners';
@@ -149,15 +150,18 @@ export default function PartnerLogin() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
+          <div className="flex justify-between pt-2">
+            <div
               onClick={() => setRememberMe(!rememberMe)}
-              className={`w-10 h-5 rounded-full transition-colors flex items-center ${rememberMe ? 'bg-purple-600' : 'bg-slate-200'}`}
+              className="flex items-center gap-3 cursor-pointer select-none"
             >
-              <span className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${rememberMe ? 'translate-x-5' : 'translate-x-0.5'}`} />
-            </button>
-            <span className="text-xs text-slate-500">Remember me</span>
+              <div className={`w-8 h-4.5 rounded-md transition-colors relative ${rememberMe ? 'bg-purple-600' : 'bg-slate-200'}`}>
+                <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full transition-transform ${rememberMe ? 'translate-x-4' : 'translate-x-0.5'}`} />
+              </div>
+              <span className="text-xs text-slate-500 font-medium">
+                {rememberMe ? 'Saved sessions' : 'Remember me'}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -175,26 +179,25 @@ export default function PartnerLogin() {
         </button>
       </form>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 py-1">
         <div className="flex-1 h-px bg-slate-100"></div>
-        <span className="text-xs text-slate-400">Or continue with</span>
+        <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Or continue with</span>
         <div className="flex-1 h-px bg-slate-100"></div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
-        <button className="py-2.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-2">
-          <AppIcon name="public" size={14} />
-          Google
-        </button>
-        <button className="py-2.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-2">
-          <AppIcon name="code" size={14} />
-          GitHub
+      <div className="grid grid-cols-1 gap-2">
+        <button 
+          type="button"
+          className="w-full py-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-3 bg-white"
+        >
+          <SvgIcon name="google" size={18} />
+          <span>Continue with Google</span>
         </button>
       </div>
 
-      <p className="text-center text-xs text-slate-500">
-        Don't have a partner account?{' '}
-        <Link to="/auth/partner/register" className="text-purple-600 font-medium">Register as Partner</Link>
+      <p className="text-center text-xs text-slate-500 pt-2">
+        Don't have an account?{' '}
+        <Link to="/auth/partner/register" className="text-purple-600 font-semibold hover:underline">Register as Partner</Link>
       </p>
     </div>
   );

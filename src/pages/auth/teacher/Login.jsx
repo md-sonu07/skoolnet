@@ -4,6 +4,7 @@ import { useAuth } from '../../../hooks/api/useAuth';
 import { useInstitutionsList } from '../../../hooks/api/useInstitutions';
 import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
+import SvgIcon from '../../../components/common/SvgIcons';
 import Dropdown from '../../../components/common/Dropdown';
 
 export default function TeacherLogin() {
@@ -14,6 +15,7 @@ export default function TeacherLogin() {
     institution_id: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
   const { login, isLoggingIn } = useAuth();
@@ -55,7 +57,7 @@ export default function TeacherLogin() {
         role: 'TEACHER',
       });
       toast.success('Logged in successfully!');
-      
+
       if (institutionType === 'COACHING') {
         navigate('/dashboard/coaching/teacher/dashboard');
       } else {
@@ -125,7 +127,12 @@ export default function TeacherLogin() {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">Password</label>
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-xs font-medium text-slate-600">Password</label>
+            <Link to="/auth/teacher/forgot-password" unsafe_link="true" className="text-xs font-medium text-primary hover:underline">
+              Forgot?
+            </Link>
+          </div>
           <div className="relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
               <AppIcon name="lock" size={16} />
@@ -147,6 +154,20 @@ export default function TeacherLogin() {
             </button>
           </div>
         </div>
+        <div className="flex justify-between pt-2">
+          <div
+            onClick={() => setRememberMe(!rememberMe)}
+            className="flex items-center gap-3 cursor-pointer select-none"
+          >
+            <div className={`w-8 h-4.5 rounded-md transition-colors relative ${rememberMe ? 'bg-primary' : 'bg-slate-200'}`}>
+              <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full transition-transform ${rememberMe ? 'translate-x-4' : 'translate-x-0.5'}`} />
+            </div>
+            <span className="text-xs text-slate-500 font-medium">
+              {rememberMe ? 'Saved sessions' : 'Remember me'}
+            </span>
+          </div>
+        </div>
+
 
         <button
           type="submit"
@@ -158,9 +179,25 @@ export default function TeacherLogin() {
         </button>
       </form>
 
+      <div className="flex items-center gap-3 py-1">
+        <div className="flex-1 h-px bg-slate-100"></div>
+        <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Or continue with</span>
+        <div className="flex-1 h-px bg-slate-100"></div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-2">
+        <button 
+          type="button"
+          className="w-full py-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-3 bg-white"
+        >
+          <SvgIcon name="google" size={18} />
+          <span>Continue with Google</span>
+        </button>
+      </div>
+
       <p className="text-center text-xs text-slate-500 pt-2">
         Don't have an account?{' '}
-        <Link to="/auth/teacher/signup" className="text-primary font-medium">
+        <Link to="/auth/teacher/signup" className="text-primary font-semibold hover:underline">
           Sign up
         </Link>
       </p>

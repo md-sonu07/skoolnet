@@ -14,6 +14,48 @@ const URL_GROUPS = [
     ],
   },
   {
+    title: 'Auth Pages',
+    icon: 'login',
+    links: [
+      {
+        name: 'Manager Auth',
+        subLinks: [
+          { id: 'auth-manager-login', name: 'Login', path: '/auth/manager/login' },
+          { id: 'auth-manager-signup', name: 'Signup', path: '/auth/manager/signup' },
+        ]
+      },
+      {
+        name: 'Partner Auth',
+        subLinks: [
+          { id: 'auth-partner-login', name: 'Login', path: '/auth/partner/login' },
+          { id: 'auth-partner-register', name: 'Register', path: '/auth/partner/register' },
+        ]
+      },
+      {
+        name: 'Institution Auth',
+        subLinks: [
+          { id: 'auth-inst-login', name: 'Login', path: '/auth/institution/login' },
+          { id: 'auth-inst-reg', name: 'Register', path: '/auth/institution/register' },
+        ]
+      },
+      {
+        name: 'Teacher Auth',
+        subLinks: [
+          { id: 'auth-teacher-login', name: 'Login', path: '/auth/teacher/login' },
+          { id: 'auth-teacher-signup', name: 'Signup', path: '/auth/teacher/signup' },
+        ]
+      },
+      {
+        name: 'Student Auth',
+        subLinks: [
+          { id: 'auth-student-login', name: 'Login', path: '/auth/student/login' },
+          { id: 'auth-student-signup', name: 'Signup', path: '/auth/student/signup' },
+        ]
+      }
+
+    ],
+  },
+  {
     title: 'Platform Management (Manager)',
     icon: 'admin_panel_settings',
     links: [
@@ -66,8 +108,8 @@ const URL_GROUPS = [
       { id: 'school-fees', name: 'Fee Management', path: '/dashboard/school/fees' },
       { id: 'school-reports', name: 'Academic Reports', path: '/dashboard/school/reports' },
       { id: 'prof-school', name: 'School Profile', path: '/dashboard/school/profile' },
-      { 
-        name: 'School Auth', 
+      {
+        name: 'School Auth',
         subLinks: [
           { id: 'auth-inst-login', name: 'Login', path: '/auth/institution/login' },
           { id: 'auth-inst-reg', name: 'Register', path: '/auth/institution/register' },
@@ -231,20 +273,18 @@ export default function TempUrls() {
     }
 
     return (
-      <div 
-        className={`flex items-center gap-4 p-3 rounded-xl transition-all border ${
-          completed[link.id] 
-            ? 'bg-emerald-50/50 border-emerald-100 opacity-75' 
-            : 'hover:bg-primary/5 border-transparent hover:border-primary/10'
-        }`}
+      <div
+        className={`flex items-center gap-4 p-3 rounded-xl transition-all border ${completed[link.id]
+          ? 'bg-emerald-50/50 border-emerald-100 opacity-75'
+          : 'hover:bg-primary/5 border-transparent hover:border-primary/10'
+          }`}
       >
         <button
           onClick={() => toggleTask(link.id)}
-          className={`w-6 h-6 rounded-md border flex items-center justify-center shrink-0 transition-all ${
-            completed[link.id]
-              ? 'bg-emerald-500 border-emerald-500 text-white'
-              : 'border-slate-300 bg-white hover:border-primary text-transparent'
-          }`}
+          className={`w-6 h-6 rounded-md border flex items-center justify-center shrink-0 transition-all ${completed[link.id]
+            ? 'bg-emerald-500 border-emerald-500 text-white'
+            : 'border-slate-300 bg-white hover:border-primary text-transparent'
+            }`}
         >
           <AppIcon name="check" size={14} strokeWidth={3} />
         </button>
@@ -255,23 +295,20 @@ export default function TempUrls() {
           rel="noopener noreferrer"
           className="flex-1 flex justify-between items-center group"
         >
-          <span className={`text-sm font-medium transition-colors ${
-            completed[link.id] ? 'text-slate-500 line-through' : 'text-slate-700 group-hover:text-primary'
-          }`}>
+          <span className={`text-sm font-medium transition-colors ${completed[link.id] ? 'text-slate-500 line-through' : 'text-slate-700 group-hover:text-primary'
+            }`}>
             {link.name}
           </span>
           <div className="flex items-center gap-2">
-            <code className={`text-[10px] px-2 py-1 rounded-md transition-colors ${
-              completed[link.id] ? 'bg-slate-100 text-slate-400' : 'bg-slate-100 text-slate-500 group-hover:bg-primary/10 group-hover:text-primary'
-            }`}>
+            <code className={`text-[10px] px-2 py-1 rounded-md transition-colors ${completed[link.id] ? 'bg-slate-100 text-slate-400' : 'bg-slate-100 text-slate-500 group-hover:bg-primary/10 group-hover:text-primary'
+              }`}>
               {link.path}
             </code>
-            <AppIcon 
-              name="open_in_new_tab" 
-              size={14} 
-              className={`transition-colors ${
-                completed[link.id] ? 'text-slate-300' : 'text-slate-300 group-hover:text-primary'
-              }`}
+            <AppIcon
+              name="open_in_new_tab"
+              size={14}
+              className={`transition-colors ${completed[link.id] ? 'text-slate-300' : 'text-slate-300 group-hover:text-primary'
+                }`}
             />
           </div>
         </a>
@@ -298,19 +335,19 @@ export default function TempUrls() {
           </div>
           <h1 className="text-4xl font-extrabold text-slate-900 mb-2">Internal URL Directory</h1>
           <p className="text-slate-600 font-medium">Panel-wise module tracking and navigation.</p>
-          
+
           <div className="mt-6 max-w-xs mx-auto">
             <div className="flex justify-between items-center mb-1 text-xs font-bold text-slate-500 uppercase tracking-tighter">
               <span>Overall Progress</span>
               <span>{progress}%</span>
             </div>
             <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden mb-4">
-              <div 
-                className="h-full bg-primary transition-all duration-500" 
+              <div
+                className="h-full bg-primary transition-all duration-500"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
-            
+
             <button
               onClick={resetTasks}
               className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-500 hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all shadow-sm"
@@ -325,20 +362,19 @@ export default function TempUrls() {
           {URL_GROUPS.map((group, idx) => {
             const { done, total } = getGroupStats(group);
             const isExpanded = expandedGroups[idx];
-            
+
             return (
               <div key={idx} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-all">
-                <div 
+                <div
                   className="p-4 bg-slate-50/80 border-b border-slate-200 flex justify-between items-center cursor-pointer select-none"
                   onClick={() => toggleGroup(idx)}
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                      isExpanded ? 'bg-primary/10 text-primary' : 'bg-slate-100 text-slate-400'
-                    }`}>
-                      <AppIcon 
-                        name={isExpanded ? 'expand_more' : 'chevron_right'} 
-                        size={20} 
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${isExpanded ? 'bg-primary/10 text-primary' : 'bg-slate-100 text-slate-400'
+                      }`}>
+                      <AppIcon
+                        name={isExpanded ? 'expand_more' : 'chevron_right'}
+                        size={20}
                       />
                     </div>
                     <div>
@@ -357,11 +393,10 @@ export default function TempUrls() {
                     </span>
                   </div>
                 </div>
-                
-                <div 
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    isExpanded ? 'max-h-[2000px] opacity-100 p-6' : 'max-h-0 opacity-0'
-                  }`}
+
+                <div
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[2000px] opacity-100 p-6' : 'max-h-0 opacity-0'
+                    }`}
                 >
                   <div className="space-y-2">
                     {group.links.map((link, lIdx) => (

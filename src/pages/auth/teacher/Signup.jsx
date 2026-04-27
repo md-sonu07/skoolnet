@@ -4,6 +4,7 @@ import { useAuth } from '../../../hooks/api/useAuth';
 import { useInstitutionsList } from '../../../hooks/api/useInstitutions';
 import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
+import SvgIcon from '../../../components/common/SvgIcons';
 import Dropdown from '../../../components/common/Dropdown';
 
 export default function TeacherSignup() {
@@ -16,6 +17,7 @@ export default function TeacherSignup() {
     confirmPassword: '',
     institution_id: '',
   });
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const [showPasswords, setShowPasswords] = useState(false);
 
   const navigate = useNavigate();
@@ -39,7 +41,7 @@ export default function TeacherSignup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match');
       return;
@@ -61,9 +63,9 @@ export default function TeacherSignup() {
         role: 'teacher',
         institution_type: institutionType
       });
-      
+
       toast.success('Teacher registered successfully!');
-      
+
       if (institutionType === 'COACHING') {
         navigate('/dashboard/coaching/teacher/dashboard');
       } else {
@@ -85,7 +87,7 @@ export default function TeacherSignup() {
       </div>
 
       <form className="space-y-3" onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Full Name */}
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">Full Name</label>
@@ -172,7 +174,7 @@ export default function TeacherSignup() {
         </div>
 
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Password */}
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">Password</label>
@@ -216,11 +218,29 @@ export default function TeacherSignup() {
             </div>
           </div>
         </div>
+        <div className="flex items-center pt-2">
+          <label className="flex items-center gap-3 cursor-pointer select-none group">
+            <div className="relative">
+              <input
+                type="checkbox"
+                className="sr-only"
+                checked={agreeTerms}
+                onChange={() => setAgreeTerms(!agreeTerms)}
+              />
+              <div className={`w-5 h-5 rounded border-2 transition-all flex items-center justify-center ${agreeTerms ? 'bg-primary border-primary' : 'bg-white border-slate-300'}`}>
+                {agreeTerms && <span className="text-white text-sm font-bold pb-0.5">🗸</span>}
+              </div>
+            </div>
+            <span className="text-xs font-medium text-slate-500">
+              I agree to the <Link to="/terms" onClick={(e) => e.stopPropagation()} className="text-primary font-medium hover:underline">Terms</Link> and <Link to="/privacy" onClick={(e) => e.stopPropagation()} className="text-primary font-medium hover:underline">Privacy Policy</Link>
+            </span>
+          </label>
+        </div>
 
         <button
           type="submit"
-          disabled={isSigningUp}
-          className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+          disabled={isSigningUp || !agreeTerms}
+          className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2 transition-all shadow-sm active:scale-[0.98]"
         >
           {isSigningUp ? (
             <AppIcon name="sync" size={16} className="animate-spin" />
@@ -229,20 +249,30 @@ export default function TeacherSignup() {
           )}
           {isSigningUp ? 'Creating Account...' : 'Create Teacher Account'}
         </button>
+
       </form>
 
-      {/* Divider */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 py-1">
         <div className="flex-1 h-px bg-slate-100"></div>
-        <span className="text-xs text-slate-400">Already have an account?</span>
+        <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Or continue with</span>
         <div className="flex-1 h-px bg-slate-100"></div>
       </div>
 
-      <p className="text-center text-xs text-slate-500">
-        <Link to="/auth/teacher/login" className="text-primary font-medium">
-          Sign in to your account
-        </Link>
+      <div className="grid grid-cols-1 gap-2">
+        <button
+          type="button"
+          className="w-full py-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-3 bg-white"
+        >
+          <SvgIcon name="google" size={18} />
+          <span>Continue with Google</span>
+        </button>
+      </div>
+
+      <p className="text-center text-xs text-slate-500 pt-2">
+        Already have an account?{' '}
+        <Link to="/auth/teacher/login" className="text-primary font-semibold hover:underline">Sign in</Link>
       </p>
+
     </div>
   );
 }
