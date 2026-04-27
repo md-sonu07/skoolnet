@@ -66,7 +66,7 @@ export default function Signup() {
       const response = await register(registerData);
       const userData = response.data.user;
 
-      toast.success('Welcome! Your account has been created successfully.');
+      toast.success('Manager Registered Successfully!');
 
       // Navigate to correct dashboard immediately
       if (userData?.is_manager || userData?.is_superuser) {
@@ -75,7 +75,7 @@ export default function Signup() {
         navigate('/dashboard/partner', { replace: true });
       }
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Registration failed'));
+      toast.error(getErrorMessage(error, 'Manager Registration Failed'));
     }
   };
 

@@ -111,15 +111,15 @@ export default function ManagerProfile() {
         {/* Profile Header Section */}
         <div className="relative mb-12">
           {/* Banner & Profile Info */}
-          <div className="min-h-[200px] w-full bg-slate-50 rounded-3xl relative border border-slate-200/60 p-10 flex items-center overflow-hidden">
+          <div className="min-h-[160px] md:min-h-[200px] w-full bg-slate-50 rounded-3xl relative border border-slate-200/60 p-6 md:p-10 flex items-center overflow-hidden">
             {/* Minimal Natural Pattern */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 0)', backgroundSize: '20px 20px' }} />
 
             {/* Content Container */}
             <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8 w-full">
               {/* Profile Image Wrapper */}
-              <div className="relative group">
-                <div className="w-36 h-36 rounded-3xl bg-white p-1 shadow-sm overflow-hidden border border-slate-100 relative z-10">
+              <div className="relative group mx-auto md:mx-0">
+                <div className="w-28 h-28 md:w-36 md:h-36 rounded-3xl bg-white p-1 shadow-sm overflow-hidden border border-slate-100 relative z-10">
                   <div className="w-full h-full rounded-[1.4rem] overflow-hidden bg-slate-50 relative">
                     {profilePreview ? (
                       <img
@@ -150,9 +150,9 @@ export default function ManagerProfile() {
               {/* Profile Info Summary */}
               <div className="flex-1 pb-2">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                  <div>
-                    <h3 className="text-4xl font-medium text-slate-900 tracking-tight leading-none mb-3">{managerInfo.name}</h3>
-                    <div className="flex flex-wrap items-center gap-3">
+                  <div className="text-center md:text-left">
+                    <h3 className="text-3xl md:text-4xl font-medium text-slate-900 tracking-tight leading-none mb-3 text-nowrap capitalize">{managerInfo.name}</h3>
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
                       <span className="px-3 py-1 bg-primary text-white text-[10px] font-medium rounded-lg uppercase tracking-wider shadow-sm">
                         {managerInfo.role}
                       </span>
@@ -162,30 +162,29 @@ export default function ManagerProfile() {
                       </div>
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-col sm:flex-row items-center justify-center md:justify-end gap-3 w-full md:w-auto mt-4 md:mt-0">
                     {!isEditing ? (
                       <button
                         type="button"
                         onClick={() => setIsEditing(true)}
-                        className="px-6 py-2.5 bg-white text-slate-900 border border-slate-100 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm"
+                        className="w-full md:w-auto px-6 py-2.5 text-nowrap bg-white text-slate-900 border border-slate-100 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm"
                       >
                         <AppIcon name="edit" size={16} />
                         Edit Profile
                       </button>
                     ) : (
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
                         <button
                           type="button"
                           onClick={() => setIsEditing(false)}
-                          className="px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-200 transition-all"
+                          className="w-full sm:w-auto px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-200 transition-all"
                         >
                           Cancel
                         </button>
                         <button
                           type="submit"
                           disabled={isUpdatingProfile}
-                          className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-2"
+                          className="w-full sm:w-auto px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                         >
                           {isUpdatingProfile ? (
                             <AppIcon name="refresh" size={16} className="animate-spin" />
@@ -266,7 +265,7 @@ export default function ManagerProfile() {
             </SectionCard>
 
             <SectionCard title="Performance Status">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10">
                   <p className="text-[10px] text-primary font-medium uppercase tracking-widest mb-1">Status</p>
                   <p className="text-lg font-medium text-slate-900 leading-none">Active</p>

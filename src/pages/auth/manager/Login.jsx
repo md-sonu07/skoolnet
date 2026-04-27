@@ -23,7 +23,6 @@ export default function Login() {
   useEffect(() => {
     if (!isAuthenticated || !user) return;
 
-    // Manager Panel Redirection — accept superusers, managers, and partners
     // Role-based redirection
     if (user.is_superuser || user.is_manager) {
       navigate('/dashboard/manager', { replace: true });
@@ -45,7 +44,7 @@ export default function Login() {
       const response = await login(formData);
       const userData = response.data.user;
 
-      toast.success('Logged in successfully!');
+      toast.success('Manager Logged In Successfully!');
 
       // Navigate to correct dashboard immediately
       if (userData?.is_manager || userData?.is_superuser) {
@@ -54,7 +53,7 @@ export default function Login() {
         navigate('/dashboard/partner', { replace: true });
       }
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Login failed'));
+      toast.error(getErrorMessage(error, 'Manager Login failed'));
     }
   };
 
