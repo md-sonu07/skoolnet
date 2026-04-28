@@ -30,7 +30,7 @@ export default function BrandLogo({
       {(showLabel || panelName) && (
         <div className="flex flex-col justify-center leading-none">
           {showLabel && (
-            <span className={`font-headline text-2xl font-extrabold tracking-tighter ${
+            <span className={`font-headline text-xl font-extrabold tracking-tighter ${
               isLight ? 'text-white' : 'text-primary'
             }`}>
               Skoolnet

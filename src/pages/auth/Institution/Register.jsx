@@ -56,7 +56,7 @@ export default function Register() {
       };
 
       await registerInstitution(payload);
-      toast.success(`${institutionTypes === 'SCHOOL' ? 'School' : 'Coaching'} registered successfully!`);
+      toast.success(`${formData.type === 'SCHOOL' ? 'School' : 'Coaching'} registered successfully!`);
 
       if (formData.type === 'COACHING') {
         navigate('/dashboard/coaching/overview');

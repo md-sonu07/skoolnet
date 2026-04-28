@@ -48,11 +48,25 @@ api.interceptors.request.use(
       let panel = null;
       if (path.includes('/manager')) panel = 'manager';
       else if (path.includes('/partner')) panel = 'partner';
-      else if (path.includes('/auth/school') || path.includes('/dashboard/school')) panel = 'school';
-      else if (path.includes('/auth/coaching') || path.includes('/dashboard/coaching')) panel = 'coaching';
+      else if (path.includes('/school-teacher')) panel = 'school_teacher';
+      else if (path.includes('/school-student')) panel = 'school_student';
+      else if (path.includes('/school')) panel = 'school';
+      else if (path.includes('/coaching-teacher')) panel = 'coaching_teacher';
+      else if (path.includes('/coaching-student')) panel = 'coaching_student';
+      else if (path.includes('/coaching')) panel = 'coaching';
       
       if (panel) {
         config.headers['X-Panel-Context'] = panel;
+      } else {
+        // Fallback to searching for any active panel cookie
+        const panels = ['manager', 'partner', 'school', 'coaching', 'school_teacher', 'school_student', 'coaching_teacher', 'coaching_student'];
+        const activePanel = panels.find(p => 
+          document.cookie.split('; ').some(row => row.startsWith(`skoolnet_${p}_active=true`))
+        );
+        
+        if (activePanel) {
+          config.headers['X-Panel-Context'] = activePanel;
+        }
       }
 
       // ─── NO MORE Authorization header injection ───────────────

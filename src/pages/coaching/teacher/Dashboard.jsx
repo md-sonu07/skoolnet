@@ -1,4 +1,5 @@
 import { useOutletContext } from 'react-router-dom';
+import AppIcon from '../../../components/common/AppIcon';
 import {
   DashboardPage,
   MetricCard,
@@ -14,86 +15,120 @@ export default function CoachingTeacherDashboard() {
   return (
     <DashboardPage
       eyebrow="Teacher dashboard"
-      title={<span>Hi, <span className="capitalize">{userName}</span></span>}
+      title={<span>Welcome back, <span className="capitalize">{userName}</span></span>}
+      description="Here's what's happening with your courses and students today."
     >
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="w-full lg:w-1/3">
-          <MetricCard icon="school" label="My Courses" value="3" change="Active" helper="This semester" className="bg-primary/5 border-primary/20" />
+      <div className="space-y-6">
+        {/* Top Metrics Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <MetricCard 
+            icon="school" 
+            label="My Courses" 
+            value="3" 
+            change="Active" 
+            helper="Current Semester" 
+            className="bg-primary shadow-sm shadow-primary/20"
+            variant="glass"
+          />
+          <MetricCard 
+            icon="group" 
+            label="Total Students" 
+            value="280" 
+            change="+24" 
+            helper="Enrolled" 
+            tone="emerald" 
+          />
+          <MetricCard 
+            icon="monitoring" 
+            label="Attendance" 
+            value="94%" 
+            change="+2%" 
+            helper="Weekly Avg" 
+            tone="amber" 
+          />
+          <MetricCard 
+            icon="folder_open" 
+            label="Pending" 
+            value="5" 
+            change="Assignments" 
+            helper="To Grade" 
+            tone="rose" 
+          />
         </div>
-        
-        <div className="flex-1">
-          <MetricGrid>
-            <MetricCard icon="group" label="Total Students" value="280" change="+20" helper="Across all courses" tone="emerald" />
-            <MetricCard icon="monitoring" label="Attendance" value="94%" change="+2%" helper="Today's average" tone="amber" />
-            <MetricCard icon="folder_open" label="Pending" value="5" change="Assignments" helper="Due this week" tone="rose" />
-          </MetricGrid>
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Schedule Section */}
+          <div className="lg:col-span-2">
+            <SectionCard 
+              title="Today's Schedule" 
+              description="Your upcoming classes for the day"
+              icon="event"
+            >
+              <div className="space-y-3">
+                {[
+                  { time: '09:00 AM', title: 'NEET Physics - Class 11', batch: 'Morning | Batch A', students: 45, status: 'Completed', tone: 'emerald', icon: 'check_circle' },
+                  { time: '11:00 AM', title: 'JEE Physics - Class 12', batch: 'Afternoon | Batch B', students: 38, status: 'Live Now', tone: 'rose', icon: 'activity' },
+                  { time: '02:00 PM', title: 'NEET Physics - Class 12', batch: 'Evening | Batch C', students: 42, status: 'Upcoming', tone: 'blue', icon: 'schedule' },
+                ].map((session, idx) => (
+                  <div key={idx} className="group flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-transparent hover:border-slate-200 hover:bg-white hover:shadow-md transition-all duration-300">
+                    <div className={`w-14 h-14 rounded-xl flex flex-col items-center justify-center font-bold text-[10px] shadow-sm ${
+                      session.status === 'Live Now' ? 'bg-rose-500 text-white animate-pulse' : 'bg-white text-slate-900 border border-slate-100'
+                    }`}>
+                      <span>{session.time.split(' ')[0]}</span>
+                      <span className="opacity-70">{session.time.split(' ')[1]}</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <p className="font-bold text-slate-900">{session.title}</p>
+                        {session.status === 'Live Now' && (
+                          <span className="flex h-2 w-2 rounded-full bg-rose-500 animate-ping"></span>
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-500 font-medium">{session.batch} • {session.students} students</p>
+                    </div>
+                    <StatusBadge tone={session.tone}>
+                      <div className="flex items-center gap-1.5">
+                        <AppIcon name={session.icon} size={12} />
+                        {session.status}
+                      </div>
+                    </StatusBadge>
+                  </div>
+                ))}
+              </div>
+            </SectionCard>
+          </div>
+
+          {/* Activity Section */}
+          <div className="lg:col-span-1">
+            <SectionCard title="Recent Activity" description="Latest updates" icon="history">
+              <div className="space-y-4">
+                {[
+                  { title: 'Assignment submitted', desc: '32 students from Class 11-A', time: '2h ago', icon: 'upload', tone: 'blue' },
+                  { title: 'Attendance marked', desc: 'Class 12-B attendance complete', time: '4h ago', icon: 'check_circle', tone: 'emerald' },
+                  { title: 'New Note Uploaded', desc: 'Chapter 5: Electromagnetism', time: 'Yesterday', icon: 'description', tone: 'amber' },
+                  { title: 'Quiz Results Out', desc: 'Average score: 78%', time: '2 days ago', icon: 'grade', tone: 'purple' },
+                ].map((activity, idx) => (
+                  <div key={idx} className="flex gap-4 group">
+                    <div className="relative flex flex-col items-center">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform bg-${activity.tone}-50 text-${activity.tone}-600`}>
+                        <AppIcon name={activity.icon} size={16} />
+                      </div>
+                      {idx !== 3 && <div className="w-px h-full bg-slate-100 mt-2"></div>}
+                    </div>
+                    <div className="pb-6">
+                      <p className="text-sm font-bold text-slate-900 leading-tight">{activity.title}</p>
+                      <p className="text-xs text-slate-500 mt-1">{activity.desc}</p>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-2 inline-block">{activity.time}</span>
+                    </div>
+                  </div>
+                ))}
+                <button className="w-full py-2.5 text-xs font-bold text-slate-500 hover:text-primary hover:bg-primary/5 rounded-xl transition-all border border-slate-100 mt-2">
+                  View All Activity
+                </button>
+              </div>
+            </SectionCard>
+          </div>
         </div>
-      </div>
-
-      <div className="grid gap-6 xl:grid-cols-2">
-        <SectionCard title="Today's Schedule" description="Your classes for today">
-          <div className="space-y-4">
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50">
-              <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-                <span className="text-blue-600 font-bold">9:00</span>
-              </div>
-              <div className="flex-1">
-                <p className="font-semibold text-slate-900">NEET Physics - Class 11</p>
-                <p className="text-sm text-slate-600">Batch: Morning | 45 students</p>
-              </div>
-              <StatusBadge tone="emerald">Completed</StatusBadge>
-            </div>
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50">
-              <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
-                <span className="text-amber-600 font-bold">11:00</span>
-              </div>
-              <div className="flex-1">
-                <p className="font-semibold text-slate-900">JEE Physics - Class 12</p>
-                <p className="text-sm text-slate-600">Batch: Evening | 38 students</p>
-              </div>
-              <StatusBadge tone="amber">Upcoming</StatusBadge>
-            </div>
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50">
-              <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-                <span className="text-purple-600 font-bold">2:00</span>
-              </div>
-              <div className="flex-1">
-                <p className="font-semibold text-slate-900">NEET Physics - Class 12</p>
-                <p className="text-sm text-slate-600">Batch: Morning | 42 students</p>
-              </div>
-              <StatusBadge tone="blue">Scheduled</StatusBadge>
-            </div>
-          </div>
-        </SectionCard>
-
-        <SectionCard title="Recent Activities" description="Latest updates">
-          <div className="space-y-4 text-sm text-slate-600">
-            <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50">
-              <div className="w-2 h-2 mt-2 rounded-full bg-emerald-500"></div>
-              <div>
-                <p className="font-medium text-slate-900">Assignment submitted</p>
-                <p className="text-xs">32 students submitted Physics assignment</p>
-                <p className="text-xs text-slate-400 mt-1">2 hours ago</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50">
-              <div className="w-2 h-2 mt-2 rounded-full bg-blue-500"></div>
-              <div>
-                <p className="font-medium text-slate-900">Attendance marked</p>
-                <p className="text-xs">Daily attendance completed for all classes</p>
-                <p className="text-xs text-slate-400 mt-1">4 hours ago</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50">
-              <div className="w-2 h-2 mt-2 rounded-full bg-amber-500"></div>
-              <div>
-                <p className="font-medium text-slate-900">Notes uploaded</p>
-                <p className="text-xs">Chapter 5 notes shared with NEET Class 11</p>
-                <p className="text-xs text-slate-400 mt-1">Yesterday</p>
-              </div>
-            </div>
-          </div>
-        </SectionCard>
       </div>
     </DashboardPage>
   );

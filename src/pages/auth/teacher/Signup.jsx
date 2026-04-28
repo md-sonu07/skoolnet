@@ -68,7 +68,7 @@ export default function TeacherSignup() {
       toast.success('Teacher registered successfully!');
 
       if (institutionType === 'COACHING') {
-        navigate('/dashboard/coaching/teacher/dashboard');
+        navigate('/dashboard/coaching-teacher/dashboard');
       } else {
         navigate('/dashboard/school-teacher/dashboard');
       }
@@ -109,7 +109,7 @@ export default function TeacherSignup() {
 
           {/* Phone */}
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Phone</label>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Phone Number</label>
             <div className="relative">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                 <AppIcon name="phone" size={16} />
@@ -119,7 +119,7 @@ export default function TeacherSignup() {
                 value={formData.phone}
                 onChange={(e) => handleChange('phone', e.target.value)}
                 className="w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="Optional"
+                placeholder="+91 98765 43210"
               />
             </div>
           </div>

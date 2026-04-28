@@ -387,7 +387,7 @@ export default function CoachingTeachers() {
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1">
                         <Link
-                          to={`/dashboard/coaching/teacher/${teacher.slug}/dashboard`}
+                          to={`/dashboard/coaching-teacher/dashboard`}
                           target="_blank"
                           className="p-2 rounded hover:bg-slate-100 transition-colors text-blue-600 hover:text-blue-700"
                           title="View Dashboard (New Tab)"

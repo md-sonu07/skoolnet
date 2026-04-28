@@ -41,7 +41,11 @@ export default function ProtectedRoute({ role, allowedType, requiredRole }) {
       ? '/auth/manager/login' 
       : role === 'partner'
         ? '/auth/partner/login'
-        : '/auth/institution/login';
+        : role === 'teacher'
+          ? '/auth/teacher/login'
+          : role === 'student'
+            ? '/auth/student/login'
+            : '/auth/institution/login';
     
     return <Navigate to={loginPath} state={{ from: location }} replace />;
   }

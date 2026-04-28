@@ -60,7 +60,7 @@ export default function TeacherLogin() {
       toast.success('Logged in successfully!');
 
       if (institutionType === 'COACHING') {
-        navigate('/dashboard/coaching/teacher/dashboard');
+        navigate('/dashboard/coaching-teacher/dashboard');
       } else {
         navigate('/dashboard/school-teacher/dashboard');
       }

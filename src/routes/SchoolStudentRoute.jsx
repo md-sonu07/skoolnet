@@ -13,19 +13,23 @@ const SchoolStudentFees = lazy(() => import('../pages/school/student/Payments'))
 const SchoolStudentNotices = lazy(() => import('../pages/school/student/Notices'));
 const SchoolStudentMessages = lazy(() => import('../pages/school/student/Messages'));
 
+import ProtectedRoute from '../components/auth/ProtectedRoute';
+
 const SchoolStudentRoutes = () => (
-  <Route path="/dashboard/school-student" element={<StudentLayout />}>
-    <Route index element={<Navigate to="dashboard" replace />} />
-    <Route path="dashboard" element={<SchoolStudentDashboard />} />
-    <Route path="profile" element={<SchoolStudentProfile />} />
-    <Route path="attendance" element={<SchoolStudentAttendance />} />
-    <Route path="assignments" element={<SchoolStudentAssignments />} />
-    <Route path="notes" element={<SchoolStudentNotes />} />
-    <Route path="results" element={<SchoolStudentResults />} />
-    <Route path="timetable" element={<SchoolStudentTimetable />} />
-    <Route path="fees" element={<SchoolStudentFees />} />
-    <Route path="notices" element={<SchoolStudentNotices />} />
-    <Route path="messages" element={<SchoolStudentMessages />} />
+  <Route element={<ProtectedRoute role="student" allowedType="SCHOOL" requiredRole="STUDENT" />}>
+    <Route path="/dashboard/school-student" element={<StudentLayout />}>
+      <Route index element={<Navigate to="dashboard" replace />} />
+      <Route path="dashboard" element={<SchoolStudentDashboard />} />
+      <Route path="profile" element={<SchoolStudentProfile />} />
+      <Route path="attendance" element={<SchoolStudentAttendance />} />
+      <Route path="assignments" element={<SchoolStudentAssignments />} />
+      <Route path="notes" element={<SchoolStudentNotes />} />
+      <Route path="results" element={<SchoolStudentResults />} />
+      <Route path="timetable" element={<SchoolStudentTimetable />} />
+      <Route path="fees" element={<SchoolStudentFees />} />
+      <Route path="notices" element={<SchoolStudentNotices />} />
+      <Route path="messages" element={<SchoolStudentMessages />} />
+    </Route>
   </Route>
 );
 

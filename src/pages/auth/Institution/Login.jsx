@@ -54,16 +54,9 @@ export default function InstitutionLogin() {
 
     const { role, institution_type: type } = roleInfo;
 
-    // Student Redirection
-    if (role === 'STUDENT') {
-      navigate(type === 'COACHING' ? '/dashboard/coaching-student/dashboard' : '/dashboard/school-student/profile');
-    }
-    // Teacher Redirection
-    else if (role === 'TEACHER') {
-      navigate(type === 'COACHING' ? '/dashboard/coaching/teacher/dashboard' : '/dashboard/school-teacher/dashboard');
-    }
-    // Institution Admin Redirection
-    else if (role === 'ADMIN') {
+    // ONLY auto-redirect if the user is an ADMIN (matching this login page)
+    // Teachers and Students can still access this page to login as Admin
+    if (role === 'ADMIN') {
       navigate(type === 'COACHING' ? '/dashboard/coaching/overview' : '/dashboard/school/overview');
     }
   }, [isAuthenticated, roleInfo, user, navigate]);
@@ -82,7 +75,7 @@ export default function InstitutionLogin() {
         institution_id: institutionId,
         institution_type: institutionType
       });
-      toast.success('Logged in successfully!');
+      toast.success(`${institutionType === 'SCHOOL' ? 'School' : 'Coaching'} logged in successfully!`);
     } catch (error) {
       toast.error(getErrorMessage(error, 'Login failed. Please check your credentials.'));
     }

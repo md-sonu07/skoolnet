@@ -135,6 +135,9 @@ import {
 const iconMap = {
   add: Plus,
   activity: SquareActivity,
+  sensors: SquareActivity,
+  upload_file: Upload,
+  done_all: CheckCircle2,
   analytics: BarChart3,
   calendar_today: CalendarDays,
   arrow_forward: ArrowRight,

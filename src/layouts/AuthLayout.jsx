@@ -1,8 +1,20 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import AppIcon from '../components/common/AppIcon';
 import BrandLogo from '../components/common/BrandLogo';
 
 export default function AuthLayout() {
+  const location = useLocation();
+  const path = location.pathname;
+
+  const getPanelName = () => {
+    if (path.includes('/auth/manager/')) return 'Manager Auth';
+    if (path.includes('/auth/partner/')) return 'Partner Auth';
+    if (path.includes('/auth/institution/')) return 'Institution Auth';
+    if (path.includes('/auth/teacher/')) return 'Teacher Auth';
+    if (path.includes('/auth/student/')) return 'Student Auth';
+    return 'Authentication';
+  };
+
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 md:p-6 lg:p-8">
       {/* Main Container */}
@@ -15,7 +27,7 @@ export default function AuthLayout() {
             
             {/* Brand - Top Left */}
             <div className="relative z-10">
-              <BrandLogo variant="light" panelName="Management Platform" />
+              <BrandLogo variant="light" panelName={getPanelName()} />
             </div>
 
             {/* Content */}

@@ -43,7 +43,7 @@ export default function CoachingTeacherSidebar({ badge, title, navItems, teacher
         {navItems.map(item => (
           <NavLink
             key={item.to}
-            to={`/dashboard/coaching/teacher/${teacherId}/${item.to}`}
+            to={`/dashboard/coaching-teacher/${item.to}`}
             className={({ isActive }) =>
               [
                 'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-150 ease-out border',
