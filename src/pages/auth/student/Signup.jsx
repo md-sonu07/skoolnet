@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
 import SvgIcon from '../../../components/common/SvgIcons';
 import Dropdown from '../../../components/common/Dropdown';
+import { getErrorMessage } from '../../../utils/errorHelpers';
 
 export default function StudentSignup() {
   const [institutionType, setInstitutionType] = useState('');
@@ -70,7 +71,7 @@ export default function StudentSignup() {
         : '/dashboard/school-student/profile';
       navigate(redirectPath);
     } catch (error) {
-      toast.error(error.message || 'Registration failed. Please try again.');
+      toast.error(getErrorMessage(error, 'Registration failed. Please try again.'));
     }
   };
 

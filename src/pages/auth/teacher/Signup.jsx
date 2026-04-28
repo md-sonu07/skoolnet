@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
 import SvgIcon from '../../../components/common/SvgIcons';
 import Dropdown from '../../../components/common/Dropdown';
+import { getErrorMessage } from '../../../utils/errorHelpers';
 
 export default function TeacherSignup() {
   const [institutionType, setInstitutionType] = useState('');
@@ -72,7 +73,7 @@ export default function TeacherSignup() {
         navigate('/dashboard/school-teacher/dashboard');
       }
     } catch (error) {
-      toast.error(error.message || 'Registration failed. Please try again.');
+      toast.error(getErrorMessage(error, 'Registration failed. Please try again.'));
     }
   };
 

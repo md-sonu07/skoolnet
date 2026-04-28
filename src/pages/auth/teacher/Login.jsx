@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
 import SvgIcon from '../../../components/common/SvgIcons';
 import Dropdown from '../../../components/common/Dropdown';
+import { getErrorMessage } from '../../../utils/errorHelpers';
 
 export default function TeacherLogin() {
   const [institutionType, setInstitutionType] = useState('');
@@ -22,7 +23,7 @@ export default function TeacherLogin() {
 
   // Fetch institutions using React Query hook
   const { data: institutionsData, isLoading: loadingInstitutions } = useInstitutionsList(
-    institutionType ? { type: institutionType, page_size: 100 } : null
+    institutionType ? { type: institutionType, page_size: 100, signup: 'true' } : null
   );
 
   const institutions = institutionsData?.results || institutionsData || [];
@@ -64,7 +65,7 @@ export default function TeacherLogin() {
         navigate('/dashboard/school-teacher/dashboard');
       }
     } catch (error) {
-      toast.error(error.message || 'Login failed. Please check your credentials.');
+      toast.error(getErrorMessage(error, 'Login failed. Please check your credentials.'));
     }
   };
 

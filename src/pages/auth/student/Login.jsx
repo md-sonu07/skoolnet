@@ -5,8 +5,8 @@ import { useInstitutionsList } from '../../../hooks/api/useInstitutions';
 import toast from 'react-hot-toast';
 import AppIcon from '../../../components/common/AppIcon';
 import SvgIcon from '../../../components/common/SvgIcons';
-import api from '../../../api/axios';
 import Dropdown from '../../../components/common/Dropdown';
+import { getErrorMessage } from '../../../utils/errorHelpers';
 
 export default function StudentLogin() {
   const [institutionType, setInstitutionType] = useState('');
@@ -23,7 +23,7 @@ export default function StudentLogin() {
 
   // Fetch institutions using React Query hook
   const { data: institutionsData, isLoading: loadingInstitutions } = useInstitutionsList(
-    institutionType ? { type: institutionType, page_size: 100 } : null
+    institutionType ? { type: institutionType, page_size: 100, signup: 'true' } : null
   );
 
   const institutions = institutionsData?.results || institutionsData || [];
@@ -65,7 +65,7 @@ export default function StudentLogin() {
         navigate('/dashboard/school-student/profile');
       }
     } catch (error) {
-      toast.error(error.message || 'Login failed. Please check your credentials.');
+      toast.error(getErrorMessage(error, 'Login failed. Please check your credentials.'));
     }
   };
 
