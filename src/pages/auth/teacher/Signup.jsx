@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/api/useAuth';
 import { useInstitutionsList } from '../../../hooks/api/useInstitutions';
@@ -31,10 +31,10 @@ export default function TeacherSignup() {
 
   const institutions = institutionsData?.results || institutionsData || [];
 
-  // Reset institution selection if type changes
-  useEffect(() => {
+  const handleInstitutionTypeChange = (val) => {
+    setInstitutionType(val);
     setFormData(prev => ({ ...prev, institution_id: '' }));
-  }, [institutionType]);
+  };
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -148,7 +148,7 @@ export default function TeacherSignup() {
           <label className="block text-xs font-medium text-slate-600 mb-1">Institution Type</label>
           <Dropdown
             value={institutionType}
-            onChange={setInstitutionType}
+            onChange={handleInstitutionTypeChange}
             options={[
               { value: 'SCHOOL', label: 'School' },
               { value: 'COACHING', label: 'Coaching' }

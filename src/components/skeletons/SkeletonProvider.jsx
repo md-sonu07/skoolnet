@@ -1,9 +1,5 @@
-import React, { createContext, useContext } from 'react';
-
-const SkeletonContext = createContext({
-  theme: 'light',
-  animation: 'pulse',
-});
+import React from 'react';
+import { SkeletonContext } from './SkeletonContext';
 
 export function SkeletonProvider({ children, theme = 'light', animation = 'pulse' }) {
   return (
@@ -12,5 +8,3 @@ export function SkeletonProvider({ children, theme = 'light', animation = 'pulse
     </SkeletonContext.Provider>
   );
 }
-
-export const useSkeleton = () => useContext(SkeletonContext);

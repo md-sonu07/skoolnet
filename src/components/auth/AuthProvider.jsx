@@ -70,7 +70,7 @@ export default function AuthProvider({ children }) {
         } else {
           _markAllNotRehydrating();
         }
-      } catch (error) {
+      } catch {
         // 401 or no cookies — user is not authenticated
         _markAllNotRehydrating();
       } finally {

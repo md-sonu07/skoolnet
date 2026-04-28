@@ -17,7 +17,7 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
-  const { isAuthenticated, user, roleInfo } = useSelector(selectManagerAuth);
+  const { isAuthenticated, user } = useSelector(selectManagerAuth);
   const { login, isLoggingIn } = useManagerAuth();
 
   useEffect(() => {

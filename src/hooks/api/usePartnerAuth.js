@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import loginAPI from '../../api/auth/login';
 import registerAPI from '../../api/auth/register';
 import logoutAPI from '../../api/auth/logout';
 import { getProfile } from '../../api/auth/profile';
-import { setCredentials, logout as logoutAction, setUser, selectPartnerAuth } from '../../redux/slice/partnerAuthSlice';
+import { setCredentials, logout as logoutAction, selectPartnerAuth } from '../../redux/slice/partnerAuthSlice';
 import { setCredentials as setManagerCredentials } from '../../redux/slice/managerAuthSlice';
 import { QUERY_KEYS } from '../../query/queryKeys';
 
@@ -15,13 +15,13 @@ export const usePartnerAuth = () => {
   const { user: reduxUser, roleInfo, isAuthenticated } = useSelector(selectPartnerAuth);
 
   // Sync session state across slices if user has dual roles
-  const syncSlices = (data) => {
+  const syncSlices = useCallback((data) => {
     const { user, role_info } = data;
     if (user?.is_manager || user?.is_superuser) {
       dispatch(setManagerCredentials({ user, role_info }));
     }
     dispatch(setCredentials(data));
-  };
+  }, [dispatch]);
 
   // Get current user profile — enabled by cookie-based auth
   const meQuery = useQuery({
@@ -38,7 +38,7 @@ export const usePartnerAuth = () => {
     if (meQuery.data && JSON.stringify(meQuery.data) !== JSON.stringify(reduxUser)) {
       syncSlices({ user: meQuery.data, role_info: roleInfo });
     }
-  }, [meQuery.data, reduxUser, dispatch]);
+  }, [meQuery.data, reduxUser, roleInfo, syncSlices]);
 
   // Login Mutation
   const loginMutation = useMutation({

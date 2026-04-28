@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   DashboardPage,
   SectionCard,
@@ -14,8 +13,6 @@ const attendanceData = [
 ];
 
 export default function CoachingTeacherAttendance() {
-  const [selectedCourse, setSelectedCourse] = useState('all');
-
   return (
     <DashboardPage
       eyebrow="Academic"

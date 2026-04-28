@@ -5,8 +5,6 @@ import BrandLogo from '../../../common/BrandLogo';
 export default function CoachingStudentTopbar({ 
   userName = 'Student', 
   userRole = 'Course',
-  title = 'Skoolnet',
-  userAvatar = '', 
   searchPlaceholder = 'Search...', 
   quickActions = [] 
 }) {

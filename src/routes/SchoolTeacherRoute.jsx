@@ -15,7 +15,7 @@ const SchoolTeacherNotices = lazy(() => import('../pages/school/teacher/Notices'
 const SchoolTeacherMessages = lazy(() => import('../pages/school/teacher/Messages'));
 const SchoolTeacherProfile = lazy(() => import('../pages/school/teacher/Profile'));
 
-const schoolTeacherRoutes = (
+const SchoolTeacherRoutes = () => (
   <Route element={<ProtectedRoute role="teacher" allowedType="SCHOOL" requiredRole="TEACHER" />}>
     <Route path="/dashboard/school-teacher" element={<TeacherLayout />}>
       <Route index element={<Navigate to="dashboard" replace />} />
@@ -33,4 +33,4 @@ const schoolTeacherRoutes = (
   </Route>
 );
 
-export default schoolTeacherRoutes;
+export default SchoolTeacherRoutes;

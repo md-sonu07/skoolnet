@@ -1,11 +1,6 @@
 import AppIcon from './AppIcon';
 
-const metricTones = {
-  amber: 'from-amber-100 to-orange-50 text-amber-700',
-  blue: 'from-blue-100 to-cyan-50 text-blue-700',
-  emerald: 'from-emerald-100 to-teal-50 text-emerald-700',
-  rose: 'from-rose-100 to-pink-50 text-rose-700',
-};
+
 
 const badgeTones = {
   amber: 'bg-amber-100 text-amber-700',

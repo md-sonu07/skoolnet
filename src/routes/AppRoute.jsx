@@ -8,7 +8,7 @@ const Pricing = lazy(() => import('../pages/landing/Pricing'));
 const Services = lazy(() => import('../pages/landing/Services'));
 const TempUrls = lazy(() => import('../pages/dev/TempUrls'));
 
-const appRoutes = (
+const AppRoutes = () => (
   <>
     <Route path="/" element={<Home />} />
     <Route path="/about" element={<About />} />
@@ -20,4 +20,4 @@ const appRoutes = (
   </>
 );
 
-export default appRoutes;
+export default AppRoutes;

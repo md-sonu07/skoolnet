@@ -23,14 +23,6 @@ export default function CoachingNotices() {
     ));
   };
 
-  const getTone = (type) => {
-    switch(type) {
-      case 'important': return 'blue';
-      case 'warning': return 'amber';
-      case 'success': return 'emerald';
-      default: return 'slate';
-    }
-  };
 
   const getIcon = (type) => {
     switch(type) {
@@ -46,7 +38,7 @@ export default function CoachingNotices() {
   return (
     <DashboardPage
       eyebrow="Notifications"
-      title="Notices & Announcements"
+      title={`Notices & Announcements ${unreadCount > 0 ? `(${unreadCount} New)` : ''}`}
     >
       <SectionCard title={`All Notices (${noticesList.length})`} description="Latest updates from your coaching">
         <div className="space-y-3">

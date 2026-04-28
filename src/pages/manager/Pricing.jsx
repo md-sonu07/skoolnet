@@ -92,7 +92,6 @@ export default function Pricing() {
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [showAddModal, setShowAddModal] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const itemsPerPage = 10;
 
@@ -121,7 +120,7 @@ export default function Pricing() {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = () => {
       if (activeDropdown) {
         setActiveDropdown(null);
       }
@@ -155,7 +154,6 @@ export default function Pricing() {
             type="button" 
             className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:opacity-90 transition-all flex items-center gap-2"
             onClick={() => {
-              setShowAddModal(true);
               toast.success('Custom Plan modal opened');
             }}
           >
@@ -236,8 +234,8 @@ export default function Pricing() {
             paginatedPlans.map((plan) => (
               <div key={plan.id} className={`group relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-primary/30 ${
                 plan.type === 'custom' 
-                  ? 'border-purple-200 bg-gradient-to-br from-purple-50/50 to-white hover:border-purple-300' 
-                  : 'border-slate-200 bg-gradient-to-br from-slate-50/50 to-white hover:border-slate-300'
+                  ? 'border-purple-200 bg-linear-to-br from-purple-50/50 to-white hover:border-purple-300' 
+                  : 'border-slate-200 bg-linear-to-br from-slate-50/50 to-white hover:border-slate-300'
               }`}>
                 {/* Background decoration */}
                 <div className={`absolute top-0 right-0 w-32 h-32 rounded-full opacity-10 ${
@@ -249,8 +247,8 @@ export default function Pricing() {
                   <div className="flex items-center gap-3 mb-4">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                       plan.type === 'custom' 
-                        ? 'bg-gradient-to-br from-purple-500 to-purple-600' 
-                        : 'bg-gradient-to-br from-primary to-primary/80'
+                        ? 'bg-linear-to-br from-purple-500 to-purple-600' 
+                        : 'bg-linear-to-br from-primary to-primary/80'
                     } border border-white/20 shadow-sm`}>
                       <AppIcon name={plan.type === 'custom' ? 'star' : 'payments'} size={20} className="text-white" />
                     </div>
@@ -318,8 +316,8 @@ export default function Pricing() {
                   <div className="flex gap-2">
                     <button className={`flex-1 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
                       plan.type === 'custom'
-                        ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white border border-purple-400/20'
-                        : 'bg-gradient-to-r from-primary to-primary/80 text-white border border-primary-light/20'
+                        ? 'bg-linear-to-r from-purple-500 to-purple-600 text-white border border-purple-400/20'
+                        : 'bg-linear-to-r from-primary to-primary/80 text-white border border-primary-light/20'
                     }`}>
                       Apply Now
                     </button>

@@ -18,7 +18,7 @@ const StudentLogin = lazy(() => import('../pages/auth/student/Login'));
 const PartnerLogin = lazy(() => import('../pages/auth/Partner/Login'));
 const PartnerRegister = lazy(() => import('../pages/auth/Partner/Register'));
 
-const authRoutes = (
+const AuthRoutes = () => (
   <Route path="/auth" element={<AuthLayout />}>
     {/* Manager (Platform Admin) */}
     <Route path="manager/login" element={<Login />} />
@@ -42,4 +42,4 @@ const authRoutes = (
   </Route>
 );
 
-export default authRoutes;
+export default AuthRoutes;

@@ -21,7 +21,7 @@ export default function PartnerLogin() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
-  const { isAuthenticated, user, roleInfo } = useSelector(selectPartnerAuth);
+  const { isAuthenticated, user } = useSelector(selectPartnerAuth);
   const { login, isLoggingIn } = usePartnerAuth();
 
   // Fetch all registered partner organizations

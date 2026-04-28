@@ -97,7 +97,7 @@ api.interceptors.response.use(
         
         // Retry the original request — new cookie is already set by the server
         return api(originalRequest);
-      } catch (refreshError) {
+      } catch {
         // Refresh failed — clear all Redux state and redirect to login
         store.dispatch({ type: 'auth/logout' });
         store.dispatch({ type: 'managerAuth/logout' });

@@ -12,7 +12,7 @@ import CoachingStudentNotices from '../pages/coaching/student/Notices';
 import CoachingStudentMessages from '../pages/coaching/student/Messages';
 import CoachingStudentProfile from '../pages/coaching/student/Profile';
 
-const coachingStudentRoutes = (
+const CoachingStudentRoutes = () => (
   <Route path="/dashboard/coaching-student" element={<CoachingStudentLayout />}>
     <Route index element={<Navigate to="dashboard" replace />} />
     <Route path="dashboard" element={<CoachingStudentDashboard />} />
@@ -29,4 +29,4 @@ const coachingStudentRoutes = (
   </Route>
 );
 
-export default coachingStudentRoutes;
+export default CoachingStudentRoutes;

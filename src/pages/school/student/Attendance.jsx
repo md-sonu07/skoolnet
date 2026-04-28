@@ -1,4 +1,4 @@
-import { useState } from 'react';
+
 import {
   DashboardPage,
   SectionCard,
@@ -27,7 +27,7 @@ const attendanceRecords = [
 ];
 
 export default function StudentAttendance() {
-  const [selectedMonth, setSelectedMonth] = useState('January 2024');
+
 
   const totalDays = attendanceRecords.length;
   const presentDays = attendanceRecords.filter(r => r.status === 'present').length;

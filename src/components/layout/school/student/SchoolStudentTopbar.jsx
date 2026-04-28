@@ -5,8 +5,6 @@ import BrandLogo from '../../../common/BrandLogo';
 export default function StudentTopbar({ 
   userName = 'Student', 
   userRole = 'Class',
-  title = 'Skoolnet',
-  userAvatar = '', 
   searchPlaceholder = 'Search...', 
   quickActions = [] 
 }) {

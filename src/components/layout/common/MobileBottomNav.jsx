@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, useLocation, useParams } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import AppIcon from '../../common/AppIcon';
 
 export default function MobileBottomNav({ onOpenSidebar, navItems = [], mainNavItems = [] }) {

@@ -14,7 +14,7 @@ export const useAcademics = () => {
 
   const createAcademicYear = useMutation({
     mutationFn: (data) => academicsAPI.createAcademicYear(data),
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ACADEMIC_YEARS] });
     },
   });

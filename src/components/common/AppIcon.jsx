@@ -281,7 +281,6 @@ const iconMap = {
   work: Briefcase,
   sync: RefreshCw,
   login: LogIn,
-  visibility: Eye,
   visibility_off: EyeOff,
   person_add: UserPlus,
   public: Globe,
@@ -297,11 +296,7 @@ const iconMap = {
   handshake: Handshake,
   auto_stories: BookOpen,
   expand_more: ChevronDown,
-  chevron_right: ChevronRight,
-  folder_open: FolderOpen,
   open_in_new_tab: ExternalLink,
-  check: Check,
-  sync: RefreshCw,
 };
 
 export default function AppIcon({ name, className, strokeWidth = 2, ...props }) {

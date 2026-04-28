@@ -5,8 +5,6 @@ import BrandLogo from '../../common/BrandLogo';
 export default function ManagerTopbar({ 
   userName = 'User', 
   userRole = 'Manager',
-  title = 'Skoolnet',
-  userAvatar = '', 
   searchPlaceholder = 'Search...', 
   quickActions = [] 
 }) {

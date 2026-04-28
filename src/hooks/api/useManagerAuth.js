@@ -1,11 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { managerAuthAPI } from '../../api/auth/manager';
 import { setCredentials, logout as logoutAction, setUser, selectManagerAuth } from '../../redux/slice/managerAuthSlice';
 import { setCredentials as setPartnerCredentials } from '../../redux/slice/partnerAuthSlice';
 import { QUERY_KEYS } from '../../query/queryKeys';
-import { getErrorMessage } from '../../utils/errorHelpers';
 import toast from 'react-hot-toast';
 
 export const useManagerAuth = () => {
@@ -14,13 +13,13 @@ export const useManagerAuth = () => {
   const { user: reduxUser, isAuthenticated } = useSelector(selectManagerAuth);
 
   // Sync session state across slices if user has dual roles
-  const syncSlices = (data) => {
+  const syncSlices = useCallback((data) => {
     const { user, role_info } = data;
     dispatch(setCredentials(data));
     if (user?.is_partner) {
       dispatch(setPartnerCredentials({ user, role_info }));
     }
-  };
+  }, [dispatch]);
 
   // Get current user profile — enabled by cookie-based auth
   const meQuery = useQuery({
@@ -37,7 +36,7 @@ export const useManagerAuth = () => {
     if (meQuery.data && JSON.stringify(meQuery.data) !== JSON.stringify(reduxUser)) {
       syncSlices({ user: meQuery.data, role_info: null });
     }
-  }, [meQuery.data, reduxUser, dispatch]);
+  }, [meQuery.data, reduxUser, syncSlices]);
 
   // Login Mutation
   const loginMutation = useMutation({
@@ -54,7 +53,7 @@ export const useManagerAuth = () => {
         queryClient.setQueryData([QUERY_KEYS.ME], data.user);
       }
     },
-    onError: (error) => {
+    onError: () => {
       // Errors are handled by the component using mutateAsync and try/catch
     },
   });
@@ -74,7 +73,7 @@ export const useManagerAuth = () => {
         queryClient.setQueryData([QUERY_KEYS.ME], data.user);
       }
     },
-    onError: (error) => {
+    onError: () => {
       // Errors are handled by the component using mutateAsync and try/catch
     },
   });
@@ -97,7 +96,7 @@ export const useManagerAuth = () => {
       queryClient.setQueryData([QUERY_KEYS.ME], data);
       toast.success('Profile updated successfully');
     },
-    onError: (error) => {
+    onError: () => {
       // Errors are handled by the component
     },
   });

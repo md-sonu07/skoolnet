@@ -13,7 +13,7 @@ import CoachingTeacherProfile from '../pages/coaching/teacher/Profile';
 
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 
-const coachingTeacherRoutes = (
+const CoachingTeacherRoutes = () => (
   <Route element={<ProtectedRoute role="teacher" allowedType="COACHING" requiredRole="TEACHER" />}>
     <Route path="/dashboard/coaching-teacher" element={<CoachingTeacherLayout />}>
       <Route index element={<Navigate to="dashboard" replace />} />
@@ -33,4 +33,4 @@ const coachingTeacherRoutes = (
   </Route>
 );
 
-export default coachingTeacherRoutes;
+export default CoachingTeacherRoutes;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AppIcon from '../../components/common/AppIcon';
 import {
   DashboardPage,
@@ -10,39 +10,20 @@ import { ProfileSkeleton } from '../../components/common/Skeleton';
 import toast from 'react-hot-toast';
 import { formatUserRole } from '../../utils/authHelpers';
 
-export default function PartnerProfile() {
+function ProfileForm({ user, roleInfo }) {
   const [editing, setEditing] = useState(false);
-  const { user, roleInfo, isLoadingProfile } = usePartnerAuth();
   const [formData, setFormData] = useState({
-    name: '',
-    company: '',
-    email: '',
-    phone: '',
-    address: '',
-    id: '',
-    since: '',
-    status: '',
-    tier: '',
-    isVerified: false
+    name: user.full_name || user.username || '',
+    company: user.partner?.company_name || '',
+    email: user.email || '',
+    phone: user.phone || '',
+    address: user.address || '',
+    id: user.partner?.id ? `PRT-${user.partner.id.substring(0, 8).toUpperCase()}` : '',
+    since: user.created_at?.split('T')[0] || '',
+    status: user.is_active ? 'Active' : 'Inactive',
+    tier: user.partner?.tier || 'Silver',
+    isVerified: user.partner?.is_verified || false,
   });
-
-  // Sync with user data when it arrives
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        name: user.full_name || user.username || '',
-        company: user.partner?.company_name || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        address: user.address || '',
-        id: user.partner?.id ? `PRT-${user.partner.id.substring(0, 8).toUpperCase()}` : '',
-        since: user.created_at?.split('T')[0] || '',
-        status: user.is_active ? 'Active' : 'Inactive',
-        tier: user.partner?.tier || 'Silver',
-        isVerified: user.partner?.is_verified || false,
-      });
-    }
-  }, [user]);
 
   const partnerInfo = {
     name: formData.name || 'Not Set',
@@ -56,10 +37,6 @@ export default function PartnerProfile() {
     tier: formData.tier || 'Silver',
     isVerified: formData.isVerified
   };
-
-  if (isLoadingProfile && !user) {
-    return <ProfileSkeleton />;
-  }
 
   const handleInputChange = (e, field) => {
     setFormData(prev => ({ ...prev, [field]: e.target.value }));
@@ -92,118 +69,113 @@ export default function PartnerProfile() {
         setEditing(false);
         toast.success('Profile updated successfully!');
       }
-    } catch (error) {
-      console.error('Update failed:', error);
+    } catch {
       toast.error('Failed to update profile. Please try again.');
     }
   };
 
   return (
-    <DashboardPage
-      eyebrow="Partner Dashboard"
-      title="Profile"
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <SectionCard title="Profile Overview" description="Your core identity">
-          <div className="text-left">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-sm shrink-0">
-                <AppIcon name="person" size={32} className="text-primary" />
-              </div>
-              <div>
-                <p className="text-lg font-bold text-slate-900 capitalize leading-tight">{partnerInfo.name}</p>
-                <p className="text-xs text-primary font-bold capitalize mt-1 mb-1">{formatUserRole(user, roleInfo)}</p>
-                <p className="text-sm text-slate-500 font-bold capitalize">{partnerInfo.company}</p>
-              </div>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <SectionCard title="Profile Overview" description="Your core identity">
+        <div className="text-left">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-sm shrink-0">
+              <AppIcon name="person" size={32} className="text-primary" />
             </div>
-
-            <div className="space-y-3 mb-6">
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                <AppIcon name="mail" size={18} className="text-slate-400" />
-                <div className="overflow-hidden">
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Email Address</p>
-                  <p className="text-sm font-medium text-slate-700 truncate">{partnerInfo.email || 'Not Set'}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                <AppIcon name="phone" size={18} className="text-slate-400" />
-                <div>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Phone Number</p>
-                  <p className="text-sm font-medium text-slate-700">{partnerInfo.phone}</p>
-                </div>
-              </div>
+            <div>
+              <p className="text-lg font-bold text-slate-900 capitalize leading-tight">{partnerInfo.name}</p>
+              <p className="text-xs text-primary font-bold capitalize mt-1 mb-1">{formatUserRole(user, roleInfo)}</p>
+              <p className="text-sm text-slate-500 font-bold capitalize">{partnerInfo.company}</p>
             </div>
-
-            <button className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
-              <AppIcon name="photo_camera" size={16} />
-              Change Photo
-            </button>
           </div>
-        </SectionCard>
 
-        <div className="lg:col-span-2 space-y-6">
-          <SectionCard title="Personal Information" description="Your profile details">
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange(e, 'name')}
-                    disabled={!editing}
-                    placeholder="Enter full name"
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50 capitalize"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Company Name</label>
-                  <input
-                    type="text"
-                    value={formData.company}
-                    onChange={(e) => handleInputChange(e, 'company')}
-                    disabled={!editing}
-                    placeholder="Enter company name"
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50 capitalize"
-                  />
-                </div>
+          <div className="space-y-3 mb-6">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <AppIcon name="mail" size={18} className="text-slate-400" />
+              <div className="overflow-hidden">
+                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Email Address</p>
+                <p className="text-sm font-medium text-slate-700 truncate">{partnerInfo.email || 'Not Set'}</p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange(e, 'email')}
-                    disabled={true} // Email should usually be read-only in profile
-                    placeholder="Enter email address"
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange(e, 'phone')}
-                    disabled={!editing}
-                    placeholder="Enter phone number"
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
-                  />
-                </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <AppIcon name="phone" size={18} className="text-slate-400" />
+              <div>
+                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Phone Number</p>
+                <p className="text-sm font-medium text-slate-700">{partnerInfo.phone}</p>
+              </div>
+            </div>
+          </div>
+
+          <button className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+            <AppIcon name="photo_camera" size={16} />
+            Change Photo
+          </button>
+        </div>
+      </SectionCard>
+
+      <div className="lg:col-span-2 space-y-6">
+        <SectionCard title="Personal Information" description="Your profile details">
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange(e, 'name')}
+                  disabled={!editing}
+                  placeholder="Enter full name"
+                  className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50 capitalize"
+                />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
-                <textarea
-                  value={formData.address}
-                  onChange={(e) => handleInputChange(e, 'address')}
+                <label className="block text-sm font-medium text-slate-700 mb-1">Company Name</label>
+                <input
+                  type="text"
+                  value={formData.company}
+                  onChange={(e) => handleInputChange(e, 'company')}
                   disabled={!editing}
-                  rows={2}
-                  placeholder="Enter shop/office address"
+                  placeholder="Enter company name"
+                  className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50 capitalize"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  disabled={true}
+                  placeholder="Enter email address"
                   className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
                 />
               </div>
-              {editing && (
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange(e, 'phone')}
+                  disabled={!editing}
+                  placeholder="Enter phone number"
+                  className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
+              <textarea
+                value={formData.address}
+                onChange={(e) => handleInputChange(e, 'address')}
+                disabled={!editing}
+                rows={2}
+                placeholder="Enter shop/office address"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
+              />
+            </div>
+            <div className="flex gap-3">
+              {editing ? (
                 <button
                   onClick={handleSave}
                   className="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2"
@@ -211,8 +183,7 @@ export default function PartnerProfile() {
                   <AppIcon name="save" size={16} />
                   Save Changes
                 </button>
-              )}
-              {!editing && (
+              ) : (
                 <button
                   onClick={() => setEditing(true)}
                   className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm flex items-center gap-2"
@@ -222,55 +193,77 @@ export default function PartnerProfile() {
                 </button>
               )}
             </div>
-          </SectionCard>
-        </div>
-      </div>
-      <SectionCard title="Partnership Details" description="Your partnership information">
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
-            <div className="p-4 rounded-xl bg-slate-50">
-              <p className="text-xs text-slate-500 mb-1">Partner ID</p>
-              <p className="font-semibold text-slate-900">{partnerInfo.id}</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-50">
-              <p className="text-xs text-slate-500 mb-1">Partner Since</p>
-              <p className="font-semibold text-slate-900">{partnerInfo.since}</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-50">
-              <p className="text-xs text-slate-500 mb-1">Partner Type</p>
-              <p className="font-semibold text-slate-900">Education Partner</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-50">
-              <p className="text-xs text-slate-500 mb-1">Status</p>
-              <span className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${partnerInfo.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
-                {partnerInfo.status}
-              </span>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-50">
-              <p className="text-xs text-slate-500 mb-1">Partner Tier</p>
-              <span className="inline-flex items-center gap-1 rounded-md bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700 uppercase tracking-wider">
-                {partnerInfo.tier}
-              </span>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-50">
-              <p className="text-xs text-slate-500 mb-1">Verification</p>
-              <div className="flex items-center gap-1.5">
-                {partnerInfo.isVerified ? (
-                  <div className="flex items-center gap-1 text-emerald-600">
-                    <AppIcon name="verified" size={14} />
-                    <span className="text-xs font-bold">Verified Partner</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-1 text-amber-600">
-                    <AppIcon name="info" size={14} />
-                    <span className="text-xs font-bold">Pending Review</span>
-                  </div>
-                )}
+          </div>
+        </SectionCard>
+
+        <SectionCard title="Partnership Details" description="Your partnership information">
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
+              <div className="p-4 rounded-xl bg-slate-50">
+                <p className="text-xs text-slate-500 mb-1">Partner ID</p>
+                <p className="font-semibold text-slate-900">{partnerInfo.id}</p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50">
+                <p className="text-xs text-slate-500 mb-1">Partner Since</p>
+                <p className="font-semibold text-slate-900">{partnerInfo.since}</p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50">
+                <p className="text-xs text-slate-500 mb-1">Partner Type</p>
+                <p className="font-semibold text-slate-900">Education Partner</p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50">
+                <p className="text-xs text-slate-500 mb-1">Status</p>
+                <span className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${partnerInfo.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                  {partnerInfo.status}
+                </span>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50">
+                <p className="text-xs text-slate-500 mb-1">Partner Tier</p>
+                <span className="inline-flex items-center gap-1 rounded-md bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700 uppercase tracking-wider">
+                  {partnerInfo.tier}
+                </span>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-50">
+                <p className="text-xs text-slate-500 mb-1">Verification</p>
+                <div className="flex items-center gap-1.5">
+                  {partnerInfo.isVerified ? (
+                    <div className="flex items-center gap-1 text-emerald-600">
+                      <AppIcon name="verified" size={14} />
+                      <span className="text-xs font-bold">Verified Partner</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1 text-amber-600">
+                      <AppIcon name="info" size={14} />
+                      <span className="text-xs font-bold">Pending Review</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </SectionCard>
+        </SectionCard>
+      </div>
+    </div>
+  );
+}
+
+export default function PartnerProfile() {
+  const { user, roleInfo, isLoadingProfile } = usePartnerAuth();
+
+  if (isLoadingProfile && !user) {
+    return (
+      <DashboardPage eyebrow="Partner Dashboard" title="Profile">
+        <ProfileSkeleton />
+      </DashboardPage>
+    );
+  }
+
+  return (
+    <DashboardPage
+      eyebrow="Partner Dashboard"
+      title="Profile"
+    >
+      <ProfileForm user={user} roleInfo={roleInfo} key={user.id} />
     </DashboardPage>
   );
 }

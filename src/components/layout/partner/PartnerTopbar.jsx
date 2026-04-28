@@ -5,8 +5,6 @@ import BrandLogo from '../../common/BrandLogo';
 export default function PartnerTopbar({ 
   userName = 'User', 
   userRole = 'Partner',
-  title = 'Skoolnet',
-  userAvatar = '', 
   searchPlaceholder = 'Search...', 
   quickActions = [] 
 }) {

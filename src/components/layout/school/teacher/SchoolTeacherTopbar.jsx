@@ -5,7 +5,6 @@ import BrandLogo from '../../../common/BrandLogo';
 export default function TeacherTopbar({ 
   userName = 'User', 
   userRole = 'Teacher',
-  title = 'Skoolnet',
   userAvatar = 'https://ui-avatars.com/api/?name=User&background=6366f1&color=fff&size=128', 
   searchPlaceholder = 'Search...', 
   quickActions = [] 

@@ -22,7 +22,7 @@ export default function Signup() {
   const [agreeTerms, setAgreeTerms] = useState(false);
 
   const navigate = useNavigate();
-  const { isAuthenticated, user, roleInfo } = useSelector(selectManagerAuth);
+  const { isAuthenticated, user } = useSelector(selectManagerAuth);
   const { register, isRegistering } = useManagerAuth();
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function Signup() {
       return;
     }
 
-    const { password_confirm, ...registerData } = formData;
+    const { password_confirm: _, ...registerData } = formData;
     try {
       const response = await register(registerData);
       const userData = response.data.user;

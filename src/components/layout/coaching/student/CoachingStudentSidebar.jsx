@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectManagerAuth } from '../../../../redux/slice/managerAuthSlice';
 import AppIcon from '../../../common/AppIcon';
 
-export default function CoachingStudentSidebar({ badge, title, navItems, studentId, onClose, userRole, onLogout }) {
+export default function CoachingStudentSidebar({ badge, title, navItems, onClose, userRole, onLogout }) {
   const { isAuthenticated: isManager } = useSelector(selectManagerAuth);
 
   const handleLogout = (e) => {

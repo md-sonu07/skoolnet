@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import SiteLayout from '../../layouts/SiteLayout';
@@ -14,15 +14,6 @@ const Contact = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState('');
-  const [focusedField, setFocusedField] = useState('');
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,12 +23,10 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitStatus('');
     
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
-      setSubmitStatus('success');
       setFormData({
         firstName: '',
         lastName: '',
@@ -46,27 +35,12 @@ const Contact = () => {
         subject: '',
         message: ''
       });
-      
-      // Clear success message after 5 seconds
-      setTimeout(() => setSubmitStatus(''), 5000);
     }, 2000);
-  };
-
-  const clearForm = () => {
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      company: '',
-      subject: '',
-      message: ''
-    });
-    setSubmitStatus('');
   };
 
   return (
     <SiteLayout>
-      <main className="min-h-screen -mt-16 bg-gradient-to-br from-surface via-surface-container to-surface">
+      <main className="min-h-screen -mt-16 bg-linear-to-br from-surface via-surface-container to-surface">
         {/* Hero Section */}
         <section className="relative overflow-hidden">
           {/* Animated Background Elements */}
@@ -77,7 +51,7 @@ const Contact = () => {
           </div>
           
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/10"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-primary/5 via-transparent to-primary/10"></div>
           
           {/* Main Content */}
           <div className="relative mx-auto max-w-7xl px-6 py-20 lg:py-32">
@@ -349,7 +323,7 @@ const Contact = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="bg-gradient-to-br from-primary to-primary/90 rounded-2xl shadow-lg p-8 text-white">
+              <div className="bg-linear-to-br from-primary to-primary/90 rounded-2xl shadow-lg p-8 text-white">
                 <h3 className="text-2xl font-headline font-bold mb-4">
                   Need Quick Help?
                 </h3>
@@ -385,7 +359,7 @@ const Contact = () => {
               className="w-full h-full rounded-xl"
               title="Silicon Valley Office Location Map"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
           </div>
           
           {/* Map Overlay Content */}

@@ -17,7 +17,7 @@ const PartnerProfile = lazy(() => import('../pages/partner/Profile'));
 
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 
-const partnerRoutes = (
+const PartnerRoutes = () => (
   <Route element={<ProtectedRoute role="partner" />}>
     <Route path="/dashboard/partner" element={<PartnerLayout />}>
     <Route index element={<Navigate to="overview" replace />} />
@@ -43,4 +43,4 @@ const partnerRoutes = (
   </Route>
 );
 
-export default partnerRoutes;
+export default PartnerRoutes;

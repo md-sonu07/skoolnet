@@ -13,7 +13,7 @@ const SchoolStudentFees = lazy(() => import('../pages/school/student/Payments'))
 const SchoolStudentNotices = lazy(() => import('../pages/school/student/Notices'));
 const SchoolStudentMessages = lazy(() => import('../pages/school/student/Messages'));
 
-const schoolStudentRoutes = (
+const SchoolStudentRoutes = () => (
   <Route path="/dashboard/school-student" element={<StudentLayout />}>
     <Route index element={<Navigate to="dashboard" replace />} />
     <Route path="dashboard" element={<SchoolStudentDashboard />} />
@@ -29,4 +29,4 @@ const schoolStudentRoutes = (
   </Route>
 );
 
-export default schoolStudentRoutes;
+export default SchoolStudentRoutes;

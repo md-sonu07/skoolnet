@@ -21,7 +21,7 @@ export default function PartnerRegister() {
     const [showPasswords, setShowPasswords] = useState(false);
 
     const navigate = useNavigate();
-    const { isAuthenticated, user, roleInfo } = useSelector(selectPartnerAuth);
+    const { isAuthenticated, user } = useSelector(selectPartnerAuth);
     const { register, isRegistering } = usePartnerAuth();
 
     useEffect(() => {
@@ -52,7 +52,7 @@ export default function PartnerRegister() {
             return;
         }
 
-        const { confirmPassword, agreeTerms, ...registerData } = formData;
+        const { confirmPassword: _, agreeTerms: __, ...registerData } = formData;
         try {
             const response = await register(registerData);
             const userData = response.data.user;

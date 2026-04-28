@@ -2,7 +2,7 @@
 // Optimized for tree-shaking and performance
 
 export { SkeletonProvider } from './SkeletonProvider';
-export { useSkeleton } from './SkeletonProvider';
+export { useSkeleton } from './SkeletonContext';
 
 // Base
 export { Skeleton } from './base/Skeleton';

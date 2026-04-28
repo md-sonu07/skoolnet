@@ -1,15 +1,15 @@
 import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import appRoutes from './routes/AppRoute';
-import authRoutes from './routes/AuthRoute';
-import coachingRoutes from './routes/CoachingRoute';
-import coachingTeacherRoutes from './routes/CoachingTeacherRoute';
-import coachingStudentRoutes from './routes/CoachingStudentRoute';
-import managerRoutes from './routes/ManagerRoute';
-import partnerRoutes from './routes/PartnerRoute';
-import schoolRoutes from './routes/SchoolRoute';
-import schoolTeacherRoutes from './routes/SchoolTeacherRoute';
-import schoolStudentRoutes from './routes/SchoolStudentRoute';
+import AppRoutes from './routes/AppRoute';
+import AuthRoutes from './routes/AuthRoute';
+import CoachingRoutes from './routes/CoachingRoute';
+import CoachingTeacherRoutes from './routes/CoachingTeacherRoute';
+import CoachingStudentRoutes from './routes/CoachingStudentRoute';
+import ManagerRoutes from './routes/ManagerRoute';
+import PartnerRoutes from './routes/PartnerRoute';
+import SchoolRoutes from './routes/SchoolRoute';
+import SchoolTeacherRoutes from './routes/SchoolTeacherRoute';
+import SchoolStudentRoutes from './routes/SchoolStudentRoute';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -17,16 +17,16 @@ function App() {
     <>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
-        {appRoutes}
-        {authRoutes}
-        {managerRoutes}
-        {partnerRoutes}
-        {schoolRoutes}
-        {schoolTeacherRoutes}
-        {schoolStudentRoutes}
-        {coachingRoutes}
-        {coachingTeacherRoutes}
-        {coachingStudentRoutes}
+        {AppRoutes()}
+        {AuthRoutes()}
+        {ManagerRoutes()}
+        {PartnerRoutes()}
+        {SchoolRoutes()}
+        {SchoolTeacherRoutes()}
+        {SchoolStudentRoutes()}
+        {CoachingRoutes()}
+        {CoachingTeacherRoutes()}
+        {CoachingStudentRoutes()}
         
         {/* 404 Catch-all */}
         <Route path="*" element={<NotFound />} />

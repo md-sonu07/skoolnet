@@ -353,7 +353,7 @@ const About = () => (
           {/* Vertical line */}
           <div className="absolute left-5 top-0 bottom-0 w-px bg-outline-variant/50" />
 
-          {TIMELINE.map((item, i) => (
+          {TIMELINE.map((item) => (
             <div key={item.year} className="relative flex gap-8 pb-10 last:pb-0">
               {/* Dot */}
               <div className="relative z-10 w-10 h-10 rounded-xl bg-white border-2 border-primary/30 flex items-center justify-center shrink-0 shadow-sm">

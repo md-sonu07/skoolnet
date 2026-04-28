@@ -21,7 +21,7 @@ const Teachers = lazy(() => import('../pages/coaching/Teachers'));
 const Batches = lazy(() => import('../pages/coaching/Batches'));
 const Reports = lazy(() => import('../pages/coaching/Reports'));
 
-const coachingRoutes = (
+const CoachingRoutes = () => (
   <Route element={<ProtectedRoute allowedType="COACHING" />}>
     <Route path="/dashboard/coaching" element={<CoachingLayout />}>
       <Route index element={<Navigate to="overview" replace />} />
@@ -46,4 +46,4 @@ const coachingRoutes = (
   </Route>
 );
 
-export default coachingRoutes;
+export default CoachingRoutes;

@@ -18,7 +18,7 @@ const Settings = lazy(() => import('../pages/manager/Settings'));
 const Schools = lazy(() => import('../pages/manager/Schools'));
 const Users = lazy(() => import('../pages/manager/Users'));
 
-const managerRoutes = (
+const ManagerRoutes = () => (
   <Route element={<ProtectedRoute role="manager" />}>
     <Route path="/dashboard/manager" element={<ManagerLayout />}>
       <Route index element={<Navigate to="overview" replace />} />
@@ -46,4 +46,4 @@ const managerRoutes = (
   </Route>
 );
 
-export default managerRoutes;
+export default ManagerRoutes;

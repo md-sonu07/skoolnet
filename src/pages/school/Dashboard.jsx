@@ -9,7 +9,7 @@ import { useAuth } from '../../hooks/api/useAuth';
 import { DashboardSkeleton } from '../../components/common/Skeleton';
 
 export default function SchoolOverview() {
-  const { schoolName, adminName } = useOutletContext();
+  const { schoolName } = useOutletContext();
   const { isLoadingProfile } = useAuth();
 
   if (isLoadingProfile) {

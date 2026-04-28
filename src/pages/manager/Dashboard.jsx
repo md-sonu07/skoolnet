@@ -23,7 +23,7 @@ const systemHealth = [
 ];
 
 export default function ManagerOverview() {
-  const { platformName, adminName } = useOutletContext();
+  const { platformName } = useOutletContext();
   const { isLoadingProfile } = useManagerAuth();
 
   if (isLoadingProfile) {
