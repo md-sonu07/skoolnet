@@ -9,36 +9,38 @@ import {
   SectionCard,
   StatusBadge,
 } from '../../components/common/DashboardPrimitives';
-
-const feeStats = [
-  { icon: 'payments', label: 'Total Fee Collected', value: '₹45.2L', change: '+₹8.4L', helper: 'This month', tone: 'emerald' },
-  { icon: 'receipt_long', label: 'Total Outstanding', value: '₹2.4L', change: '-₹0.6L', helper: 'Pending', tone: 'rose' },
-  { icon: 'group', label: 'Students Paid', value: '1,156', change: '+89', helper: '90%', tone: 'blue' },
-  { icon: 'warning', label: 'Overdue', value: '47', change: '-12', helper: 'Cases', tone: 'amber' },
-  { icon: 'savings', label: 'Concessions', value: '₹1.2L', change: '+₹0.3L', helper: 'Approved', tone: 'purple' },
-  { icon: 'account_balance', label: 'Refunds', value: '₹0.4L', change: '+₹0.1L', helper: 'Processed', tone: 'slate' },
-];
-
-const fees = [
-  { id: 1, invoiceNo: 'INV-2024-001', studentName: 'Aarav Sharma', class: 'Class 10-A', father: 'Rajesh Sharma', feeType: 'Tuition Fee', amount: 45000, paid: 45000, dueDate: '2024-01-15', paidDate: '2024-01-10', status: 'paid', paymentMode: 'Online' },
-  { id: 2, invoiceNo: 'INV-2024-002', studentName: 'Priya Singh', class: 'Class 10-A', father: 'Ajay Singh', feeType: 'Tuition Fee', amount: 45000, paid: 45000, dueDate: '2024-01-15', paidDate: '2024-01-12', status: 'paid', paymentMode: 'UPI' },
-  { id: 3, invoiceNo: 'INV-2024-003', studentName: 'Rahul Verma', class: 'Class 9-B', father: 'Sunil Verma', feeType: 'Tuition Fee', amount: 42000, paid: 0, dueDate: '2024-01-15', paidDate: '-', status: 'unpaid', paymentMode: '-' },
-  { id: 4, invoiceNo: 'INV-2024-004', studentName: 'Sneha Gupta', class: 'Class 10-B', father: 'Raj Gupta', feeType: 'Tuition Fee', amount: 45000, paid: 25000, dueDate: '2024-01-15', paidDate: '2024-01-08', status: 'partial', paymentMode: 'Cash' },
-  { id: 5, invoiceNo: 'INV-2024-005', studentName: 'Kunal Patel', class: 'Class 11-A', father: 'Anil Patel', feeType: ' Tuition Fee', amount: 50000, paid: 50000, dueDate: '2024-01-20', paidDate: '2024-01-18', status: 'paid', paymentMode: 'Bank Transfer' },
-  { id: 6, invoiceNo: 'INV-2024-006', studentName: 'Ananya Reddy', class: 'Class 9-A', father: 'Kiran Reddy', feeType: 'Tuition Fee', amount: 42000, paid: 42000, dueDate: '2024-01-15', paidDate: '2024-01-14', status: 'paid', paymentMode: 'Online' },
-  { id: 7, invoiceNo: 'INV-2024-007', studentName: 'Vikram Joshi', class: 'Class 12-A', father: 'Mohan Joshi', feeType: 'Tuition Fee', amount: 55000, paid: 0, dueDate: '2024-01-15', paidDate: '-', status: 'unpaid', paymentMode: '-' },
-  { id: 8, invoiceNo: 'INV-2024-008', studentName: 'Meera Nair', class: 'Class 10-A', father: 'Gopal Nair', feeType: 'Transport Fee', amount: 12000, paid: 12000, dueDate: '2024-01-15', paidDate: '2024-01-05', status: 'paid', paymentMode: 'UPI' },
-  { id: 9, invoiceNo: 'INV-2024-009', studentName: 'Dev Sharma', class: 'Class 9-A', father: 'Kapil Sharma', feeType: 'Tuition Fee', amount: 42000, paid: 42000, dueDate: '2024-01-15', paidDate: '2024-01-11', status: 'paid', paymentMode: 'Online' },
-  { id: 10, invoiceNo: 'INV-2024-010', studentName: 'Neha Kapoor', class: 'Class 10-B', father: 'Raj Kapoor', feeType: 'Annual Fee', amount: 8000, paid: 0, dueDate: '2024-01-20', paidDate: '-', status: 'unpaid', paymentMode: '-' },
-];
+import { useFeePayments } from '../../hooks/api/useOperations';
+import { useAuth } from '../../hooks/api/useAuth';
 
 export default function Fees() {
+  const { authState } = useAuth();
+  const institutionId = authState?.roleInfo?.institution_id;
+  
+  const { data: feePaymentsData = [], isLoading } = useFeePayments(institutionId);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [classFilter, setClassFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [feeTypeFilter, setFeeTypeFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const fees = useMemo(() => {
+    return feePaymentsData.map(fp => ({
+      id: fp.id,
+      invoiceNo: fp.invoice_number || `INV-${fp.id}`,
+      studentName: `${fp.membership?.user?.first_name} ${fp.membership?.user?.last_name}`.trim() || fp.membership?.user?.email,
+      class: 'Class 10-A', // Ideally from membership -> enrollments
+      father: '-',
+      feeType: fp.fee_structure?.name || 'Tuition Fee',
+      amount: parseFloat(fp.amount_due) || 0,
+      paid: parseFloat(fp.amount_paid) || 0,
+      dueDate: new Date(fp.due_date).toISOString().split('T')[0],
+      paidDate: fp.paid_date ? new Date(fp.paid_date).toISOString().split('T')[0] : '-',
+      status: fp.status.toLowerCase(),
+      paymentMode: fp.payment_mode || '-',
+    }));
+  }, [feePaymentsData]);
 
   const filteredFees = useMemo(() => {
     return fees.filter(fee => {
@@ -50,7 +52,7 @@ export default function Fees() {
       const matchesFeeType = feeTypeFilter === 'all' || fee.feeType === feeTypeFilter;
       return matchesSearch && matchesClass && matchesStatus && matchesFeeType;
     });
-  }, [searchTerm, classFilter, statusFilter, feeTypeFilter]);
+  }, [fees, searchTerm, classFilter, statusFilter, feeTypeFilter]);
 
   const paginatedFees = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -70,8 +72,8 @@ export default function Fees() {
   const statusOptions = [
     { value: 'all', label: 'All Status' },
     { value: 'paid', label: 'Paid' },
-    { value: 'unpaid', label: 'Unpaid' },
-    { value: 'partial', label: 'Partial' },
+    { value: 'pending', label: 'Pending' },
+    { value: 'overdue', label: 'Overdue' },
   ];
 
   const feeTypeOptions = [
@@ -84,8 +86,8 @@ export default function Fees() {
   const getStatusTone = (status) => {
     switch(status) {
       case 'paid': return 'emerald';
-      case 'unpaid': return 'rose';
-      case 'partial': return 'amber';
+      case 'pending': return 'amber';
+      case 'overdue': return 'rose';
       default: return 'slate';
     }
   };
@@ -93,6 +95,16 @@ export default function Fees() {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
   };
+
+  const totalCollected = fees.reduce((sum, f) => sum + f.paid, 0);
+  const totalOutstanding = fees.reduce((sum, f) => sum + Math.max(0, f.amount - f.paid), 0);
+
+  const feeStats = [
+    { icon: 'payments', label: 'Total Fee Collected', value: formatCurrency(totalCollected), change: '+₹0', helper: 'This month', tone: 'emerald' },
+    { icon: 'receipt_long', label: 'Total Outstanding', value: formatCurrency(totalOutstanding), change: '-₹0', helper: 'Pending', tone: 'rose' },
+    { icon: 'group', label: 'Students Paid', value: fees.filter(f => f.status === 'paid').length.toString(), change: '+0', helper: 'Paid', tone: 'blue' },
+    { icon: 'warning', label: 'Overdue', value: fees.filter(f => f.status === 'overdue').length.toString(), change: '-0', helper: 'Cases', tone: 'amber' },
+  ];
 
   return (
     <DashboardPage
@@ -162,7 +174,13 @@ export default function Fees() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {paginatedFees.length === 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="9" className="py-8 text-center text-slate-500">
+                    Loading fee payments...
+                  </td>
+                </tr>
+              ) : paginatedFees.length === 0 ? (
                 <tr>
                   <td colSpan="9" className="py-8 text-center text-slate-500">
                     No fees found.

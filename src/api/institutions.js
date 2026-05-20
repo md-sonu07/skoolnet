@@ -15,7 +15,7 @@ export const institutionsAPI = {
   deleteInstitution: (id) => api.delete(`/institutions/${id}`),
   
   // Membership
-  getMemberships: (institutionId) => api.get(`/institutions/memberships/?institution=${institutionId}`),
+  getMemberships: (params) => api.get('/institutions/memberships/', { params }),
   getMembership: (id) => api.get(`/institutions/memberships/${id}`),
   addMembership: (data) => api.post('/institutions/memberships', data),
   updateMembership: (id, data) => api.patch(`/institutions/memberships/${id}`, data),

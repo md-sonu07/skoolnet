@@ -9,48 +9,7 @@ import {
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
 
-const partnerCoaching = [
-  {
-    id: 1,
-    name: 'TechCoach Institute',
-    address: 'Connaught Place, Delhi',
-    students: 180,
-    courses: 12,
-    status: 'active',
-    joinedDate: '2023-07-10',
-    revenue: '₹95K',
-  },
-  {
-    id: 2,
-    name: 'Excel Coaching Center',
-    address: 'Lajpat Nagar, Delhi',
-    students: 145,
-    courses: 8,
-    status: 'active',
-    joinedDate: '2023-09-15',
-    revenue: '₹72K',
-  },
-  {
-    id: 3,
-    name: 'Career Path Academy',
-    address: 'Dwarka, Delhi',
-    students: 90,
-    courses: 6,
-    status: 'active',
-    joinedDate: '2024-01-20',
-    revenue: '₹48K',
-  },
-  {
-    id: 4,
-    name: 'Bright Future Classes',
-    address: 'Rohini, Delhi',
-    students: 65,
-    courses: 5,
-    status: 'pending',
-    joinedDate: '2024-03-05',
-    revenue: '₹32K',
-  },
-];
+import { useInstitutionsList } from '../../hooks/api/useInstitutions';
 
 const coachingStats = [
   { label: 'Total Coaching', value: '3', change: '+1', helper: 'Active centers', tone: 'purple' },
@@ -65,15 +24,21 @@ export default function PartnerCoaching() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  const { data: coachingData = [], isLoading } = useInstitutionsList({ type: 'COACHING' });
+
   const filteredCoaching = useMemo(() => {
-    return partnerCoaching.filter(center => {
-      const matchesSearch = center.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           center.address.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'all' || center.status === statusFilter;
+    return coachingData.filter(center => {
+      const name = center.name || '';
+      const address = center.address || '';
+      const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           address.toLowerCase().includes(searchTerm.toLowerCase());
+                           
+      const isApproved = center.is_approved ? 'active' : 'pending';
+      const matchesStatus = statusFilter === 'all' || isApproved === statusFilter;
       
       return matchesSearch && matchesStatus;
     });
-  }, [searchTerm, statusFilter]);
+  }, [coachingData, searchTerm, statusFilter]);
 
   const paginatedCoaching = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -181,25 +146,27 @@ export default function PartnerCoaching() {
                       </div>
                     </td>
                     <td className="py-3 px-3">
-                      <p className="font-medium text-sm text-slate-900">{center.students}</p>
+                      <p className="font-medium text-sm text-slate-900">{center.students || 0}</p>
                     </td>
                     <td className="py-3 px-3">
-                      <p className="text-sm text-slate-600">{center.courses}</p>
+                      <p className="text-sm text-slate-600">{center.courses || 0}</p>
                     </td>
                     <td className="py-3 px-3">
-                      <p className="font-semibold text-sm text-slate-900">{center.revenue}</p>
+                      <p className="font-semibold text-sm text-slate-900">{center.revenue || 'N/A'}</p>
                     </td>
                     <td className="py-3 px-3">
-                      <p className="text-sm text-slate-600">{center.joinedDate}</p>
+                      <p className="text-sm text-slate-600">
+                        {center.created_at ? new Date(center.created_at).toLocaleDateString() : 'N/A'}
+                      </p>
                     </td>
                     <td className="py-3 px-3">
                       <div className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${
-                        center.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                        center.is_approved ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                       }`}>
                         <div className={`w-2 h-2 rounded-full ${
-                          center.status === 'active' ? 'bg-emerald-500' : 'bg-amber-500'
+                          center.is_approved ? 'bg-emerald-500' : 'bg-amber-500'
                         }`} />
-                        <span className="capitalize">{center.status}</span>
+                        <span className="capitalize">{center.is_approved ? 'active' : 'pending'}</span>
                       </div>
                     </td>
                     <td className="py-3 px-3">

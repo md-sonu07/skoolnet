@@ -46,7 +46,15 @@ export default function PartnerSettings() {
                   className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 />
               </div>
-              <button 
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Website</label>
+                <input
+                  type="url"
+                  defaultValue="https://example.com"
+                  className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                />
+              </div>
+              <button
                 onClick={() => toast.success('Account settings updated successfully')}
                 className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-primary/20 transition-all"
               >
@@ -73,13 +81,11 @@ export default function PartnerSettings() {
                       setNotifications({ ...notifications, [item.key]: newState });
                       toast.success(`${item.label} ${newState ? 'enabled' : 'disabled'}`);
                     }}
-                    className={`w-12 h-6 rounded-full transition-colors ${
-                      notifications[item.key] ? 'bg-primary' : 'bg-slate-200'
-                    }`}
+                    className={`w-12 h-6 rounded-full transition-colors ${notifications[item.key] ? 'bg-primary' : 'bg-slate-200'
+                      }`}
                   >
-                    <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                      notifications[item.key] ? 'translate-x-6' : 'translate-x-0.5'
-                    }`} />
+                    <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${notifications[item.key] ? 'translate-x-6' : 'translate-x-0.5'
+                      }`} />
                   </button>
                 </div>
               ))}
@@ -90,7 +96,7 @@ export default function PartnerSettings() {
         <div className="space-y-6">
           <SectionCard title="Security" description="Manage your security settings">
             <div className="space-y-4">
-              <button 
+              <button
                 onClick={() => toast.success('Password reset link sent to your email')}
                 className="w-full p-4 rounded-xl border border-slate-200 text-left hover:border-primary/30 transition-colors"
               >
@@ -102,7 +108,7 @@ export default function PartnerSettings() {
                   </div>
                 </div>
               </button>
-              <button 
+              <button
                 onClick={() => toast.success('Opening Two-Factor Authentication setup...')}
                 className="w-full p-4 rounded-xl border border-slate-200 text-left hover:border-primary/30 transition-colors"
               >
@@ -118,7 +124,7 @@ export default function PartnerSettings() {
           </SectionCard>
 
           <SectionCard title="Danger Zone" description="Irreversible actions">
-            <button 
+            <button
               onClick={() => toast.error('Account deletion requested. Please contact support for confirmation.')}
               className="w-full px-4 py-2.5 border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-all"
             >

@@ -9,35 +9,32 @@ import {
   SectionCard,
   StatusBadge,
 } from '../../components/common/DashboardPrimitives';
-
-const attendanceStats = [
-  { icon: 'monitoring', label: "Today's Attendance", value: '94.8%', change: '+1.1%', helper: 'Whole school', tone: 'blue' },
-  { icon: 'group', label: 'Absent Today', value: '67', change: '-9', helper: 'Needs follow-up', tone: 'amber' },
-  { icon: 'how_to_reg', label: 'Teachers Present', value: '84/86', change: '2 on leave', helper: 'Faculty', tone: 'emerald' },
-  { icon: 'notifications', label: 'Parent Alerts', value: '31', change: 'Sent', helper: 'Before noon', tone: 'rose' },
-  { icon: 'event', label: 'On Time', value: '89%', change: '+3%', helper: 'Arrivals', tone: 'green' },
-  { icon: 'warning', label: 'Late Arrivals', value: '11', change: '-4', helper: 'Minor issues', tone: 'purple' },
-];
-
-const students = [
-  { id: 1, name: 'Aarav Sharma', rollNo: '001', class: 'Class 10-A', status: 'present', time: '07:55 AM', remarks: '' },
-  { id: 2, name: 'Priya Singh', rollNo: '002', class: 'Class 10-A', status: 'present', time: '07:58 AM', remarks: '' },
-  { id: 3, name: 'Rahul Verma', rollNo: '003', class: 'Class 10-A', status: 'absent', time: '-', remarks: 'Uninformed' },
-  { id: 4, name: 'Sneha Gupta', rollNo: '004', class: 'Class 10-A', status: 'present', time: '08:02 AM', remarks: 'Late' },
-  { id: 5, name: 'Kunal Patel', rollNo: '005', class: 'Class 10-A', status: 'present', time: '07:52 AM', remarks: '' },
-  { id: 6, name: 'Ananya Reddy', rollNo: '006', class: 'Class 10-A', status: 'absent', time: '-', remarks: 'Medical leave' },
-  { id: 7, name: 'Vikram Joshi', rollNo: '007', class: 'Class 10-A', status: 'present', time: '08:00 AM', remarks: '' },
-  { id: 8, name: 'Meera Nair', rollNo: '008', class: 'Class 10-A', status: 'present', time: '07:45 AM', remarks: '' },
-  { id: 9, name: 'Dev Sharma', rollNo: '009', class: 'Class 10-A', status: 'late', time: '08:15 AM', remarks: '5 min late' },
-  { id: 10, name: 'Neha Kapoor', rollNo: '010', class: 'Class 10-A', status: 'present', time: '07:50 AM', remarks: '' },
-];
+import { useAttendance } from '../../hooks/api/useOperations';
+import { useAuth } from '../../hooks/api/useAuth';
 
 export default function AttendanceOverview() {
+  const { authState } = useAuth();
+  const institutionId = authState?.roleInfo?.institution_id;
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-  const [classFilter, setClassFilter] = useState('Class 10-A');
+  
+  const { data: attendanceData = [], isLoading } = useAttendance(institutionId, selectedDate);
+
+  const [classFilter, setClassFilter] = useState('all');
   const [attendanceFilter, setAttendanceFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const students = useMemo(() => {
+    return attendanceData.map(att => ({
+      id: att.id,
+      name: `${att.membership?.user?.first_name} ${att.membership?.user?.last_name}`.trim() || att.membership?.user?.email,
+      rollNo: `RN${att.membership?.id.toString().padStart(3, '0')}`, // Mocked Roll No
+      class: 'Class 10-A', // Ideally from membership -> enrollments -> batch
+      status: att.status.toLowerCase(),
+      time: new Date(att.marked_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      remarks: att.remarks || '',
+    }));
+  }, [attendanceData]);
 
   const filteredStudents = useMemo(() => {
     return students.filter(student => {
@@ -45,7 +42,7 @@ export default function AttendanceOverview() {
       const matchesAttendance = attendanceFilter === 'all' || student.status === attendanceFilter;
       return matchesClass && matchesAttendance;
     });
-  }, [classFilter, attendanceFilter]);
+  }, [students, classFilter, attendanceFilter]);
 
   const paginatedStudents = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -53,6 +50,7 @@ export default function AttendanceOverview() {
   }, [filteredStudents, currentPage, itemsPerPage]);
 
   const classOptions = [
+    { value: 'all', label: 'All Classes' },
     { value: 'Class 10-A', label: 'Class 10-A' },
     { value: 'Class 10-B', label: 'Class 10-B' },
     { value: 'Class 9-A', label: 'Class 9-A' },
@@ -71,6 +69,12 @@ export default function AttendanceOverview() {
   const presentCount = students.filter(s => s.status === 'present').length;
   const absentCount = students.filter(s => s.status === 'absent').length;
   const lateCount = students.filter(s => s.status === 'late').length;
+
+  const attendanceStats = [
+    { icon: 'monitoring', label: "Today's Attendance", value: students.length > 0 ? `${Math.round((presentCount / students.length) * 100)}%` : '0%', change: '+0%', helper: 'Whole school', tone: 'blue' },
+    { icon: 'group', label: 'Absent Today', value: absentCount.toString(), change: '0', helper: 'Needs follow-up', tone: 'amber' },
+    { icon: 'warning', label: 'Late Arrivals', value: lateCount.toString(), change: '0', helper: 'Minor issues', tone: 'purple' },
+  ];
 
   return (
     <DashboardPage
@@ -149,7 +153,13 @@ export default function AttendanceOverview() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {paginatedStudents.length === 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="7" className="py-8 text-center text-slate-500">
+                    Loading attendance...
+                  </td>
+                </tr>
+              ) : paginatedStudents.length === 0 ? (
                 <tr>
                   <td colSpan="7" className="py-8 text-center text-slate-500">
                     No students found.

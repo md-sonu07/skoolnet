@@ -3,6 +3,10 @@ import { NavLink } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
+import { usePartnersList } from '../../hooks/api/usePartners';
+import InitialsAvatar from '../../components/common/InitialsAvatar';
+import ActionMenu from '../../components/common/ActionMenu';
+import { DashboardSkeleton } from '../../components/common/Skeleton';
 import {
   DashboardPage,
   MetricCard,
@@ -98,6 +102,7 @@ const partners = [
 ];
 
 export default function Partners() {
+  const { data: partnersData, isLoading } = usePartnersList();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -105,16 +110,17 @@ export default function Partners() {
   const itemsPerPage = 10;
 
   const filteredPartners = useMemo(() => {
-    return partners.filter(partner => {
-      const matchesSearch = partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           partner.contact.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           partner.email.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'all' || partner.status === statusFilter;
-      const matchesType = typeFilter === 'all' || partner.type === typeFilter;
+    if (!partnersData) return [];
+    return partnersData.filter(partner => {
+      const matchesSearch = partner.company_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           partner.owner?.email?.toLowerCase().includes(searchTerm.toLowerCase());
+      const status = partner.is_verified ? 'verified' : 'unverified';
+      const matchesStatus = statusFilter === 'all' || status === statusFilter;
+      // Ignoring type for now since we don't have it on backend
       
-      return matchesSearch && matchesStatus && matchesType;
+      return matchesSearch && matchesStatus;
     });
-  }, [searchTerm, statusFilter, typeFilter]);
+  }, [partnersData, searchTerm, statusFilter, typeFilter]);
 
   const paginatedPartners = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -130,8 +136,8 @@ export default function Partners() {
 
   const statusOptions = [
     { value: 'all', label: 'All Status' },
-    { value: 'active', label: 'Active' },
-    { value: 'pending', label: 'Pending' },
+    { value: 'verified', label: 'Verified' },
+    { value: 'unverified', label: 'Unverified' },
   ];
 
   const typeOptions = [
@@ -141,6 +147,10 @@ export default function Partners() {
     { value: 'Finance', label: 'Finance' },
     { value: 'Consulting', label: 'Consulting' },
   ];
+
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
 
   return (
     <DashboardPage
@@ -185,34 +195,38 @@ export default function Partners() {
 
       <SectionCard title="Quick Access" description="Click on a partner to access their dashboard">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {partners.map((partner) => (
+          {partnersData?.slice(0, 5).map((partner) => (
             <NavLink
               key={partner.id}
               to={`/dashboard/partner/overview?partner=${partner.id}`}
               className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:shadow-lg transition-all group"
             >
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
-                <AppIcon name="partners" size={24} className="text-primary" />
+                {partner.logo ? (
+                  <img src={partner.logo} alt={partner.company_name} className="w-full h-full object-cover rounded-xl" />
+                ) : (
+                  <AppIcon name="handshake" size={24} className="text-primary" />
+                )}
               </div>
-              <h3 className="font-semibold text-sm text-slate-900 mb-1 truncate">{partner.name}</h3>
+              <h3 className="font-semibold text-sm text-slate-900 mb-1 truncate">{partner.company_name}</h3>
               <div className="flex items-center gap-3 text-xs text-slate-500 mb-2">
                 <span className="flex items-center gap-1">
                   <AppIcon name="school" size={12} />
-                  {partner.schools} schools
+                  -- schools
                 </span>
                 <span className="flex items-center gap-1">
                   <AppIcon name="group" size={12} />
-                  {partner.students}
+                  --
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-medium ${
-                  partner.status === 'online' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-700'
+                  partner.is_verified ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                 }`}>
                   <div className={`w-1.5 h-1.5 rounded-full ${
-                    partner.status === 'online' ? 'bg-emerald-500' : 'bg-gray-500'
+                    partner.is_verified ? 'bg-emerald-500' : 'bg-amber-500'
                   }`} />
-                  {partner.status}
+                  {partner.is_verified ? 'Verified' : 'Unverified'}
                 </span>
                 <span className="text-xs text-primary font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   Open <AppIcon name="arrow_forward" size={12} />
@@ -257,7 +271,7 @@ export default function Partners() {
             <thead>
               <tr className="border-b border-slate-200">
                 <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Partner</th>
-                <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Schools</th>
+                <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Plan</th>
                 <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Students</th>
                 <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Revenue</th>
                 <th className="text-left py-2 px-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
@@ -276,58 +290,57 @@ export default function Partners() {
                 paginatedPartners.map((partner) => (
                   <tr key={partner.id} className="hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-3">
-                      <div>
-                        <p className="font-semibold text-sm text-slate-900">{partner.name}</p>
-                        <p className="text-xs text-slate-500">Joined: {partner.joinDate}</p>
+                      <div className="flex items-center gap-3">
+                        {partner.logo ? (
+                          <img src={partner.logo} alt={partner.company_name} className="w-10 h-10 object-cover rounded-xl" />
+                        ) : (
+                          <InitialsAvatar name={partner.company_name} size={40} />
+                        )}
+                        <div>
+                          <p className="font-semibold text-sm text-slate-900">{partner.company_name}</p>
+                          <p className="text-xs text-slate-500 truncate max-w-[200px]">{partner.website || 'No website'}</p>
+                        </div>
                       </div>
                     </td>
                     <td className="py-3 px-3">
-                      <div className="flex items-center gap-1.5">
-                        <AppIcon name="school" size={14} className="text-blue-500" />
-                        <p className="font-medium text-sm text-slate-900">{partner.schools}</p>
+                      <div className="inline-flex items-center gap-1.5 rounded bg-blue-50 text-blue-700 px-2 py-1 text-xs font-medium">
+                        <AppIcon name="diamond" size={14} />
+                        {partner.tier}
                       </div>
                     </td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-1.5">
                         <AppIcon name="group" size={14} className="text-purple-500" />
-                        <p className="font-medium text-sm text-slate-900">{partner.students}</p>
+                        <p className="font-medium text-sm text-slate-900">--</p>
                       </div>
                     </td>
                     <td className="py-3 px-3">
-                      <p className="font-semibold text-sm text-slate-900">{partner.revenue}</p>
+                      <p className="font-semibold text-sm text-slate-900">--</p>
                     </td>
                     <td className="py-3 px-3">
                       <div className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${
-                        partner.status === 'online' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-700'
+                        partner.is_verified ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                       }`}>
                         <div className={`w-2 h-2 rounded-full ${
-                          partner.status === 'online' ? 'bg-emerald-500' : 'bg-gray-500'
+                          partner.is_verified ? 'bg-emerald-500' : 'bg-amber-500'
                         }`} />
-                        <span className="capitalize">{partner.status}</span>
+                        <span className="capitalize">{partner.is_verified ? 'Verified' : 'Unverified'}</span>
                       </div>
                     </td>
                     <td className="py-3 px-3">
                       <div>
-                        <p className="font-medium text-sm text-slate-900">{partner.contact}</p>
-                        <p className="text-xs text-slate-500 truncate max-w-[150px]">{partner.email}</p>
+                        <p className="font-medium text-sm text-slate-900">{partner.owner?.full_name || 'N/A'}</p>
+                        <p className="text-xs text-slate-500 truncate max-w-[150px]">{partner.owner?.email || 'N/A'}</p>
                       </div>
                     </td>
-                    <td className="py-3 px-3">
-                      <div className="flex items-center gap-1">
-                        <NavLink
-                          to={`/dashboard/partner/overview?partner=${partner.id}`}
-                          className="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-medium hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-1"
-                        >
-                          <AppIcon name="dashboard" size={12} />
-                          Dashboard
-                        </NavLink>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors">
-                          <AppIcon name="visibility" size={14} className="text-slate-600" />
-                        </button>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors">
-                          <AppIcon name="edit" size={14} className="text-slate-600" />
-                        </button>
-                      </div>
+                    <td className="py-3 px-3 text-right">
+                      <ActionMenu
+                        actions={[
+                          { label: 'View Dashboard', icon: 'dashboard', onClick: () => {} },
+                          { label: 'Edit', icon: 'edit', onClick: () => {} },
+                          { label: 'Deactivate', icon: 'block', onClick: () => {}, danger: true },
+                        ]}
+                      />
                     </td>
                   </tr>
                 ))

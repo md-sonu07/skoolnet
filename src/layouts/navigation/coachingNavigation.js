@@ -21,7 +21,7 @@ export const coachingHeader = {
   userName: 'Center Admin',
   title: 'Skoolnet',
   userRole: 'Apex Coaching Center',
-  userAvatar: 'https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff&size=128',
+  userAvatar: null,
   searchPlaceholder: 'Search students, courses, or payments...',
   quickActions: [
     { icon: 'notifications', to: 'notices' },

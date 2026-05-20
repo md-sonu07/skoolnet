@@ -9,58 +9,7 @@ import {
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
 
-const partnerSchools = [
-  {
-    id: 1,
-    name: 'Delhi Public School',
-    address: 'Nehru Place, New Delhi',
-    students: 450,
-    teachers: 28,
-    status: 'active',
-    joinedDate: '2023-06-15',
-    revenue: '₹1.2L',
-  },
-  {
-    id: 2,
-    name: "St. Mary's Academy",
-    address: 'Civil Lines, Delhi',
-    students: 320,
-    teachers: 22,
-    status: 'active',
-    joinedDate: '2023-08-20',
-    revenue: '₹85K',
-  },
-  {
-    id: 3,
-    name: 'Ryan International School',
-    address: 'Vasant Kunj, Delhi',
-    students: 280,
-    teachers: 18,
-    status: 'active',
-    joinedDate: '2024-01-10',
-    revenue: '₹72K',
-  },
-  {
-    id: 4,
-    name: 'Presidency School',
-    address: 'Mayur Vihar, Delhi',
-    students: 150,
-    teachers: 12,
-    status: 'pending',
-    joinedDate: '2024-03-01',
-    revenue: '₹45K',
-  },
-  {
-    id: 5,
-    name: 'Spring Dale College',
-    address: 'Rajouri Garden, Delhi',
-    students: 47,
-    teachers: 8,
-    status: 'active',
-    joinedDate: '2024-02-15',
-    revenue: '₹38K',
-  },
-];
+import { useInstitutionsList } from '../../hooks/api/useInstitutions';
 
 const schoolStats = [
   { label: 'Total Schools', value: '5', change: '+2', helper: 'This year', tone: 'blue' },
@@ -75,15 +24,21 @@ export default function PartnerSchools() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  const { data: schoolsData = [], isLoading } = useInstitutionsList({ type: 'SCHOOL' });
+
   const filteredSchools = useMemo(() => {
-    return partnerSchools.filter(school => {
-      const matchesSearch = school.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           school.address.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'all' || school.status === statusFilter;
+    return schoolsData.filter(school => {
+      const name = school.name || '';
+      const address = school.address || '';
+      const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           address.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const isApproved = school.is_approved ? 'active' : 'pending';
+      const matchesStatus = statusFilter === 'all' || isApproved === statusFilter;
       
       return matchesSearch && matchesStatus;
     });
-  }, [searchTerm, statusFilter]);
+  }, [schoolsData, searchTerm, statusFilter]);
 
   const paginatedSchools = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -191,25 +146,27 @@ export default function PartnerSchools() {
                       </div>
                     </td>
                     <td className="py-3 px-3">
-                      <p className="font-medium text-sm text-slate-900">{school.students}</p>
+                      <p className="font-medium text-sm text-slate-900">{school.students || 0}</p>
                     </td>
                     <td className="py-3 px-3">
-                      <p className="text-sm text-slate-600">{school.teachers}</p>
+                      <p className="text-sm text-slate-600">{school.teachers || 0}</p>
                     </td>
                     <td className="py-3 px-3">
-                      <p className="font-semibold text-sm text-slate-900">{school.revenue}</p>
+                      <p className="font-semibold text-sm text-slate-900">{school.revenue || 'N/A'}</p>
                     </td>
                     <td className="py-3 px-3">
-                      <p className="text-sm text-slate-600">{school.joinedDate}</p>
+                      <p className="text-sm text-slate-600">
+                        {school.created_at ? new Date(school.created_at).toLocaleDateString() : 'N/A'}
+                      </p>
                     </td>
                     <td className="py-3 px-3">
                       <div className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${
-                        school.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                        school.is_approved ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                       }`}>
                         <div className={`w-2 h-2 rounded-full ${
-                          school.status === 'active' ? 'bg-emerald-500' : 'bg-amber-500'
+                          school.is_approved ? 'bg-emerald-500' : 'bg-amber-500'
                         }`} />
-                        <span className="capitalize">{school.status}</span>
+                        <span className="capitalize">{school.is_approved ? 'active' : 'pending'}</span>
                       </div>
                     </td>
                     <td className="py-3 px-3">

@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
@@ -10,33 +10,36 @@ import {
   SectionCard,
   StatusBadge,
 } from '../../components/common/DashboardPrimitives';
-
-const teacherStats = [
-  { icon: 'how_to_reg', label: 'Total Teachers', value: '86', change: '+4', helper: 'This month', tone: 'blue' },
-  { icon: 'school', label: 'Subject Coverage', value: '100%', change: 'None', helper: 'Full coverage', tone: 'emerald' },
-  { icon: 'monitoring', label: 'Observations', value: '11', change: 'This week', helper: 'Pending', tone: 'amber' },
-  { icon: 'notifications', label: 'Policy Updates', value: '3', change: 'Awaiting', helper: 'Sign-off', tone: 'rose' },
-  { icon: 'check_circle', label: 'Active', value: '82', change: '+2', helper: 'Currently teaching', tone: 'green' },
-  { icon: 'event', label: 'On Leave', value: '4', change: '1 urgent', helper: 'Approved', tone: 'purple' },
-];
-
-const teachers = [
-  { id: 1, name: 'Dr. Rajesh Kumar', empNo: 'EMP001', subject: 'Mathematics', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43201', email: 'rajesh@school.com', classes: 'Class 10-A, 10-B', status: 'active', joinDate: '2020-06-15', slug: 'rajesh-kumar' },
-  { id: 2, name: 'Ms. Priya Sharma', empNo: 'EMP002', subject: 'Physics', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43202', email: 'priya@school.com', classes: 'Class 11-A, 12-A', status: 'active', joinDate: '2019-08-20', slug: 'priya-sharma' },
-  { id: 3, name: 'Mr. Amit Singh', empNo: 'EMP003', subject: 'Chemistry', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43203', email: 'amit@school.com', classes: 'Class 11-B, 12-B', status: 'active', joinDate: '2021-01-10', slug: 'amit-singh' },
-  { id: 4, name: 'Ms. Sneha Gupta', empNo: 'EMP004', subject: 'English', qualification: 'M.A, B.Ed', phone: '+91 98765 43204', email: 'sneha@school.com', classes: 'Class 9-A, 10-A', status: 'active', joinDate: '2020-03-22', slug: 'sneha-gupta' },
-  { id: 5, name: 'Mr. Vikram Patel', empNo: 'EMP005', subject: 'Biology', qualification: 'M.Sc, B.Ed', phone: '+91 98765 43205', email: 'vikram@school.com', classes: 'Class 10-B, 11-A', status: 'active', joinDate: '2022-07-05', slug: 'vikram-patel' },
-  { id: 6, name: 'Ms. Ananya Reddy', empNo: 'EMP006', subject: 'History', qualification: 'M.A, B.Ed', phone: '+91 98765 43206', email: 'ananya@school.com', classes: 'Class 9-A, 9-B', status: 'active', joinDate: '2021-09-15', slug: 'ananya-reddy' },
-  { id: 7, name: 'Mr. Rahul Verma', empNo: 'EMP007', subject: 'Geography', qualification: 'M.A, B.Ed', phone: '+91 98765 43207', email: 'rahul@school.com', classes: 'Class 10-A, 12-A', status: 'on_leave', joinDate: '2020-11-08', slug: 'rahul-verma' },
-  { id: 8, name: 'Ms. Meera Nair', empNo: 'EMP008', subject: 'Computer Science', qualification: 'M.Tech, B.Ed', phone: '+91 98765 43208', email: 'meera@school.com', classes: 'Class 11-A, 12-A', status: 'active', joinDate: '2023-01-20', slug: 'meera-nair' },
-];
+import { useMemberships } from '../../hooks/api/useInstitutions';
+import { useAuth } from '../../hooks/api/useAuth';
 
 export default function TeacherManagement() {
+  const { authState } = useAuth();
+  const institutionId = authState?.roleInfo?.institution_id;
+  const { data: teachersData = [], isLoading } = useMemberships(institutionId, 'TEACHER');
+
   const [searchTerm, setSearchTerm] = useState('');
   const [subjectFilter, setSubjectFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  // Format API data to match frontend requirements
+  const teachers = useMemo(() => {
+    return teachersData.map(membership => ({
+      id: membership.id,
+      name: `${membership.user.first_name} ${membership.user.last_name}`.trim() || membership.user.email,
+      empNo: `EMP${membership.id.toString().padStart(3, '0')}`, // Mocked Employee Number
+      subject: 'General', // Replace with actual subject info if available
+      qualification: 'B.Ed', // Replace with actual qualification
+      phone: membership.user.phone || 'N/A',
+      email: membership.user.email,
+      classes: 'Class 10-A', // Mocked assigned classes
+      status: membership.is_active ? 'active' : 'inactive',
+      joinDate: membership.joined_at,
+      slug: membership.id.toString(), // Mocked slug
+    }));
+  }, [teachersData]);
 
   const filteredTeachers = useMemo(() => {
     return teachers.filter(teacher => {
@@ -47,7 +50,7 @@ export default function TeacherManagement() {
       const matchesStatus = statusFilter === 'all' || teacher.status === statusFilter;
       return matchesSearch && matchesSubject && matchesStatus;
     });
-  }, [searchTerm, subjectFilter, statusFilter]);
+  }, [teachers, searchTerm, subjectFilter, statusFilter]);
 
   const paginatedTeachers = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -56,6 +59,7 @@ export default function TeacherManagement() {
 
   const subjectOptions = [
     { value: 'all', label: 'All Subjects' },
+    { value: 'General', label: 'General' },
     { value: 'Mathematics', label: 'Mathematics' },
     { value: 'Physics', label: 'Physics' },
     { value: 'Chemistry', label: 'Chemistry' },
@@ -71,6 +75,12 @@ export default function TeacherManagement() {
     { value: 'active', label: 'Active' },
     { value: 'on_leave', label: 'On Leave' },
     { value: 'inactive', label: 'Inactive' },
+  ];
+
+  const teacherStats = [
+    { icon: 'how_to_reg', label: 'Total Teachers', value: teachers.length.toString(), change: '+0', helper: 'This month', tone: 'blue' },
+    { icon: 'school', label: 'Subject Coverage', value: '100%', change: 'None', helper: 'Full coverage', tone: 'emerald' },
+    { icon: 'check_circle', label: 'Active', value: teachers.filter(t => t.status === 'active').length.toString(), change: '0', helper: 'Currently teaching', tone: 'green' },
   ];
 
   return (
@@ -138,7 +148,13 @@ export default function TeacherManagement() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {paginatedTeachers.length === 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="7" className="py-8 text-center text-slate-500">
+                    Loading teachers...
+                  </td>
+                </tr>
+              ) : paginatedTeachers.length === 0 ? (
                 <tr>
                   <td colSpan="7" className="py-8 text-center text-slate-500">
                     No teachers found matching your criteria.

@@ -9,36 +9,34 @@ import {
   SectionCard,
   StatusBadge,
 } from '../../components/common/DashboardPrimitives';
-
-const noticeStats = [
-  { icon: 'campaign', label: 'Total Notices', value: '47', change: '+5', helper: 'This month', tone: 'blue' },
-  { icon: 'publish', label: 'Published', value: '38', change: '+3', helper: 'Active', tone: 'emerald' },
-  { icon: 'schedule', label: 'Scheduled', value: '6', change: '2 pending', helper: 'Future', tone: 'amber' },
-  { icon: 'drafts', label: 'Drafts', value: '3', change: '-', helper: 'In progress', tone: 'slate' },
-  { icon: 'groups', label: 'Audience', value: '3', change: 'Groups', helper: 'Targeted', tone: 'purple' },
-  { icon: 'visibility', label: 'Views', value: '2.4K', change: '+320', helper: 'Total', tone: 'rose' },
-];
-
-const notices = [
-  { id: 1, title: 'Annual Day Celebration', audience: 'All Students', postedBy: 'Principal', date: '2024-01-25', status: 'published', priority: 'high', views: 450 },
-  { id: 2, title: 'Exam Schedule - Final Term', audience: 'Class 9-12', postedBy: 'Academic Head', date: '2024-01-24', status: 'published', priority: 'high', views: 820 },
-  { id: 3, title: 'Parent Teacher Meeting', audience: 'All Parents', postedBy: 'Admin Office', date: '2024-01-23', status: 'published', priority: 'medium', views: 320 },
-  { id: 4, title: 'Holiday Notice - Republic Day', audience: 'All', postedBy: 'Admin Office', date: '2024-01-22', status: 'published', priority: 'high', views: 1100 },
-  { id: 5, title: 'Sports Day Registration', audience: 'Class 6-10', postedBy: 'Sports Director', date: '2024-01-28', status: 'scheduled', priority: 'medium', views: 0 },
-  { id: 6, title: 'Library Book Return Deadline', audience: 'All Students', postedBy: 'Librarian', date: '2024-01-20', status: 'published', priority: 'low', views: 280 },
-  { id: 7, title: 'Fee Payment Reminder', audience: 'Parents', postedBy: 'Finance', date: '2024-01-18', status: 'published', priority: 'medium', views: 520 },
-  { id: 8, title: 'Science Exhibition', audience: 'Class 11-12', postedBy: 'Science HOD', date: '2024-02-05', status: 'scheduled', priority: 'medium', views: 0 },
-  { id: 9, title: 'New Uniform Supplier', audience: 'All Parents', postedBy: 'Admin Office', date: '2024-01-15', status: 'draft', priority: 'low', views: 0 },
-  { id: 10, title: 'Transport Route Changes', audience: 'Transport Users', postedBy: 'Transport Manager', date: '2024-01-30', status: 'scheduled', priority: 'high', views: 0 },
-];
+import { useNoticesList } from '../../hooks/api/useOperations';
+import { useAuth } from '../../hooks/api/useAuth';
 
 export default function Notices() {
+  const { authState } = useAuth();
+  const institutionId = authState?.roleInfo?.institution_id;
+  
+  const { data: noticesData = [], isLoading } = useNoticesList(institutionId);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [audienceFilter, setAudienceFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const notices = useMemo(() => {
+    return noticesData.map(notice => ({
+      id: notice.id,
+      title: notice.title,
+      audience: notice.for_batch ? `Batch: ${notice.for_batch.name}` : 'All',
+      postedBy: notice.published_by ? `${notice.published_by.user.first_name} ${notice.published_by.user.last_name}`.trim() || notice.published_by.user.email : 'System',
+      date: new Date(notice.published_at).toISOString().split('T')[0],
+      status: (notice.expires_at && new Date(notice.expires_at) < new Date()) ? 'expired' : 'published',
+      priority: 'medium', // Priority not in Notice model
+      views: 0, // Views not in Notice model
+    }));
+  }, [noticesData]);
 
   const filteredNotices = useMemo(() => {
     return notices.filter(notice => {
@@ -49,7 +47,7 @@ export default function Notices() {
       const matchesPriority = priorityFilter === 'all' || notice.priority === priorityFilter;
       return matchesSearch && matchesAudience && matchesStatus && matchesPriority;
     });
-  }, [searchTerm, audienceFilter, statusFilter, priorityFilter]);
+  }, [notices, searchTerm, audienceFilter, statusFilter, priorityFilter]);
 
   const paginatedNotices = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -59,20 +57,12 @@ export default function Notices() {
   const audienceOptions = [
     { value: 'all', label: 'All Audience' },
     { value: 'All', label: 'All' },
-    { value: 'All Students', label: 'All Students' },
-    { value: 'All Parents', label: 'All Parents' },
-    { value: 'Class 9-12', label: 'Class 9-12' },
-    { value: 'Class 6-10', label: 'Class 6-10' },
-    { value: 'Class 11-12', label: 'Class 11-12' },
-    { value: 'Parents', label: 'Parents' },
-    { value: 'Transport Users', label: 'Transport Users' },
   ];
 
   const statusOptions = [
     { value: 'all', label: 'All Status' },
     { value: 'published', label: 'Published' },
-    { value: 'scheduled', label: 'Scheduled' },
-    { value: 'draft', label: 'Draft' },
+    { value: 'expired', label: 'Expired' },
   ];
 
   const priorityOptions = [
@@ -85,8 +75,7 @@ export default function Notices() {
   const getStatusTone = (status) => {
     switch(status) {
       case 'published': return 'emerald';
-      case 'scheduled': return 'amber';
-      case 'draft': return 'slate';
+      case 'expired': return 'slate';
       default: return 'slate';
     }
   };
@@ -99,6 +88,12 @@ export default function Notices() {
       default: return 'slate';
     }
   };
+
+  const noticeStats = [
+    { icon: 'campaign', label: 'Total Notices', value: notices.length.toString(), change: '+0', helper: 'This month', tone: 'blue' },
+    { icon: 'publish', label: 'Published', value: notices.filter(n => n.status === 'published').length.toString(), change: '+0', helper: 'Active', tone: 'emerald' },
+    { icon: 'schedule', label: 'Expired', value: notices.filter(n => n.status === 'expired').length.toString(), change: '0', helper: 'Past', tone: 'slate' },
+  ];
 
   return (
     <DashboardPage
@@ -167,7 +162,13 @@ export default function Notices() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {paginatedNotices.length === 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="8" className="py-8 text-center text-slate-500">
+                    Loading notices...
+                  </td>
+                </tr>
+              ) : paginatedNotices.length === 0 ? (
                 <tr>
                   <td colSpan="8" className="py-8 text-center text-slate-500">
                     No notices found.

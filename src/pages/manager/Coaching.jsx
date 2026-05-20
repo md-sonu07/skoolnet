@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import AppIcon from '../../components/common/AppIcon';
 import Dropdown from '../../components/common/Dropdown';
 import Pagination from '../../components/common/Pagination';
+import { useInstitutionsList } from '../../hooks/api/useInstitutions';
+import InitialsAvatar from '../../components/common/InitialsAvatar';
+import ActionMenu from '../../components/common/ActionMenu';
+import { DashboardSkeleton } from '../../components/common/Skeleton';
 import {
   DashboardPage,
   MetricCard,
@@ -93,6 +97,7 @@ const coachingCenters = [
 ];
 
 export default function Coaching() {
+  const { data: coachingData, isLoading } = useInstitutionsList({ type: 'COACHING' });
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [subscriptionFilter, setSubscriptionFilter] = useState('all');
@@ -100,16 +105,17 @@ export default function Coaching() {
   const itemsPerPage = 10;
 
   const filteredCenters = useMemo(() => {
-    return coachingCenters.filter(center => {
+    if (!coachingData) return [];
+    return coachingData.filter(center => {
       const matchesSearch = center.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           center.owner.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           center.email.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'all' || center.status === statusFilter;
-      const matchesSubscription = subscriptionFilter === 'all' || center.subscription === subscriptionFilter;
+                           (center.email && center.email.toLowerCase().includes(searchTerm.toLowerCase()));
+      const status = center.is_active ? 'active' : 'pending';
+      const matchesStatus = statusFilter === 'all' || status === statusFilter;
+      // Ignoring subscription filter for now as we don't have it on backend yet
       
-      return matchesSearch && matchesStatus && matchesSubscription;
+      return matchesSearch && matchesStatus;
     });
-  }, [searchTerm, statusFilter, subscriptionFilter]);
+  }, [coachingData, searchTerm, statusFilter, subscriptionFilter]);
 
   const paginatedCenters = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -135,6 +141,10 @@ export default function Coaching() {
     { value: 'Premium', label: 'Premium' },
     { value: 'Basic', label: 'Basic' },
   ];
+
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
 
   return (
     <DashboardPage
@@ -232,22 +242,25 @@ export default function Coaching() {
                       {(currentPage - 1) * itemsPerPage + index + 1}
                     </td>
                     <td className="py-3 px-3">
-                      <div>
-                        <p className="font-semibold text-sm text-slate-900">{center.name}</p>
-                        <p className="text-xs text-slate-500 truncate max-w-50">{center.address}</p>
+                      <div className="flex items-center gap-3">
+                        <InitialsAvatar name={center.name} size={36} />
+                        <div>
+                          <p className="font-semibold text-sm text-slate-900">{center.name}</p>
+                          <p className="text-xs text-slate-500 truncate max-w-[200px]">{center.address || 'No address provided'}</p>
+                        </div>
                       </div>
                     </td>
                     <td className="py-3 px-3">
                       <div>
-                        <p className="font-medium text-sm text-slate-900">{center.owner}</p>
-                        <p className="text-xs text-slate-500 truncate max-w-50">{center.email}</p>
-                        <p className="text-xs text-slate-900">{center.phone}</p>
+                        <p className="font-medium text-sm text-slate-900">{center.partner?.company_name || 'No Partner'}</p>
+                        <p className="text-xs text-slate-500 truncate max-w-50">{center.email || 'N/A'}</p>
+                        <p className="text-xs text-slate-900">{center.phone || 'N/A'}</p>
                       </div>
                     </td>
                     <td className="py-3 px-3">
                       <div>
-                        <p className="font-semibold text-sm text-slate-900">{center.students}</p>
-                        <p className="text-xs text-slate-500">{center.batches} batches</p>
+                        <p className="font-semibold text-sm text-slate-900">--</p>
+                        <p className="text-xs text-slate-500">-- batches</p>
                       </div>
                     </td>
                     <td className="py-3 px-3">
@@ -265,36 +278,24 @@ export default function Coaching() {
                           {center.subscription}
                         </div>
                         <div className={`inline-flex items-center capitalize gap-1 rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ${
-                          center.status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                          center.is_active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
                           'bg-amber-50 text-amber-700 border border-amber-200'
                         }`}>
                           <AppIcon name={
-                            center.status === 'active' ? 'check_circle' : 'pending'
+                            center.is_active ? 'check_circle' : 'pending'
                           } size={10} />
-                          {center.status}
+                          {center.is_active ? 'Active' : 'Pending'}
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-3">
-                      <div className="flex items-center gap-1">
-                        <Link 
-                          to={`/dashboard/coaching`}
-                          target="_blank"
-                          className="p-2 rounded hover:bg-slate-100 transition-colors text-blue-600 hover:text-blue-700"
-                          title="Open Coaching Dashboard"
-                        >
-                          <AppIcon name="open_in_new" size={14} />
-                        </Link>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors">
-                          <AppIcon name="visibility" size={14} className="text-slate-600" />
-                        </button>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors">
-                          <AppIcon name="edit" size={14} className="text-slate-600" />
-                        </button>
-                        <button className="p-2 rounded hover:bg-slate-100 transition-colors hidden sm:block">
-                          <AppIcon name="more_vert" size={14} className="text-slate-600" />
-                        </button>
-                      </div>
+                    <td className="py-3 px-3 text-right">
+                      <ActionMenu
+                        actions={[
+                          { label: 'View Profile', icon: 'visibility', onClick: () => {} },
+                          { label: 'Edit', icon: 'edit', onClick: () => {} },
+                          { label: 'Deactivate', icon: 'block', onClick: () => {}, danger: true },
+                        ]}
+                      />
                     </td>
                   </tr>
                 ))

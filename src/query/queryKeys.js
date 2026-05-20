@@ -2,7 +2,7 @@ export const QUERY_KEYS = {
   // Auth
   ME: 'me',
   PARTNERS_LIST: 'partners_list',
-
+  MANAGER_DASHBOARD: 'manager_dashboard',
   
   // Academics
   ACADEMIC_YEARS: 'academic_years',
@@ -19,4 +19,10 @@ export const QUERY_KEYS = {
   
   // Profile
   PROFILE: 'profile',
+
+  // Operations
+  NOTICES: 'notices',
+
+  // Landing
+  LANDING_PRICING: 'landing_pricing',
 };

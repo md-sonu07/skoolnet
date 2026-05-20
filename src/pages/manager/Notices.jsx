@@ -5,6 +5,8 @@ import {
   SectionCard,
   StatusBadge,
 } from '../../components/common/DashboardPrimitives';
+import { useNoticesList } from '../../hooks/api/useOperations';
+import { DashboardSkeleton } from '../../components/common/Skeleton';
 
 const initialNotices = [
   { id: 1, title: 'System Maintenance Scheduled', message: 'Platform maintenance scheduled for April 15, 2026 from 2:00 AM to 6:00 AM IST.', type: 'important', read: false, date: '2026-04-13' },
@@ -15,13 +17,26 @@ const initialNotices = [
 ];
 
 export default function ManagerNotices() {
-  const [notices, setNotices] = useState(initialNotices);
+  const { data: noticesData, isLoading } = useNoticesList();
+  // For UI testing we can keep a local state of read notices, but in real app
+  // this should be tracked per user via an API call.
+  const [readNotices, setReadNotices] = useState(new Set());
   
   const markAsRead = (id) => {
-    setNotices(notices.map(n => n.id === id ? {...n, read: true} : n));
+    setReadNotices(prev => {
+      const newSet = new Set(prev);
+      newSet.add(id);
+      return newSet;
+    });
   };
+
+  const notices = noticesData || [];
   
-  const unreadCount = notices.filter(n => !n.read).length;
+  const unreadCount = notices.filter(n => !readNotices.has(n.id)).length;
+
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
   
   return (
     <DashboardPage
@@ -38,13 +53,19 @@ export default function ManagerNotices() {
     >
       <SectionCard title="All Notices" description={`${unreadCount} unread notifications`}>
         <div className="space-y-3">
-          {notices.map((notice) => (
+          {notices.length === 0 ? (
+            <div className="text-center py-8 text-slate-500">
+              No notices found.
+            </div>
+          ) : notices.map((notice) => {
+            const isRead = readNotices.has(notice.id);
+            return (
             <div 
               key={notice.id}
               onClick={() => markAsRead(notice.id)}
               className={`
                 flex items-start gap-4 p-4 rounded-xl border transition-all cursor-pointer
-                ${notice.read 
+                ${isRead 
                   ? 'bg-white border-slate-100 hover:bg-slate-50' 
                   : 'bg-blue-50 border-blue-200 hover:bg-blue-100'
                 }
@@ -72,18 +93,28 @@ export default function ManagerNotices() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <h4 className="font-semibold text-slate-900">{notice.title}</h4>
-                  {!notice.read && <div className="w-2 h-2 bg-blue-500 rounded-full" />}
+                  {!isRead && <div className="w-2 h-2 bg-blue-500 rounded-full" />}
                 </div>
-                <p className="text-sm text-slate-600 mt-1">{notice.message}</p>
-                <p className="text-xs text-slate-400 mt-2">{notice.date}</p>
+                <p className="text-sm text-slate-600 mt-1">{notice.content}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <p className="text-xs text-slate-400">
+                    {new Date(notice.published_at).toLocaleDateString()}
+                  </p>
+                  {notice.institution && (
+                    <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                      {notice.institution.name}
+                    </span>
+                  )}
+                </div>
               </div>
-              {!notice.read && (
+              {!isRead && (
                 <button className="p-2 hover:bg-white rounded-lg transition-all">
                   <AppIcon name="check" size={16} className="text-blue-600" />
                 </button>
               )}
             </div>
-          ))}
+            );
+          })}
         </div>
       </SectionCard>
     </DashboardPage>

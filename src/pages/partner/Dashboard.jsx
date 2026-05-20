@@ -9,26 +9,18 @@ import {
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
 
-const partnerStats = [
-  { label: 'My Schools', value: '5', change: '+2', helper: 'Active schools', tone: 'blue' },
-  { label: 'My Coaching', value: '3', change: '+1', helper: 'Active centers', tone: 'purple' },
-  { label: 'Total Students', value: '1,247', change: '+156', helper: 'Enrolled', tone: 'emerald' },
-  { label: 'Revenue', value: '₹4.2L', change: '+18%', helper: 'This month', tone: 'amber' },
-];
-
-const recentActivities = [
-  { id: 1, type: 'school', name: 'Delhi Public School', action: 'New student enrolled', time: '2 hours ago' },
-  { id: 2, type: 'coaching', name: 'TechCoach Institute', action: 'Batch started', time: '5 hours ago' },
-  { id: 3, type: 'school', name: 'St. Mary\'s Academy', action: 'Fee payment received', time: '1 day ago' },
-  { id: 4, type: 'coaching', name: 'Excel Coaching Center', action: 'New course added', time: '2 days ago' },
-];
+import { usePartnerDashboardMetrics } from '../../hooks/api/usePartners';
 
 export default function PartnerDashboard() {
   const { isLoadingProfile } = usePartnerAuth();
+  const { data: dashboardData, isLoading: isLoadingMetrics } = usePartnerDashboardMetrics();
 
-  if (isLoadingProfile) {
+  if (isLoadingProfile || isLoadingMetrics) {
     return <DashboardSkeleton />;
   }
+
+  const metrics = dashboardData?.metrics || [];
+  const activities = dashboardData?.recent_activities || [];
 
   return (
     <DashboardPage
@@ -48,48 +40,44 @@ export default function PartnerDashboard() {
       }
     >
       <MetricGrid>
-        {partnerStats.map((stat, index) => {
-          const icons = {
-            'My Schools': 'school',
-            'My Coaching': 'rocket_launch',
-            'Total Students': 'group',
-            'Revenue': 'payments',
-          };
-          return (
-            <MetricCard
-              key={index}
-              icon={icons[stat.label] || 'analytics'}
-              label={stat.label}
-              value={stat.value}
-              change={stat.change}
-              helper={stat.helper}
-              tone={stat.tone}
-            />
-          );
-        })}
+        {metrics.map((stat, index) => (
+          <MetricCard
+            key={index}
+            icon={stat.icon || 'analytics'}
+            label={stat.label}
+            value={stat.value}
+            change={stat.change}
+            helper={stat.helper}
+            tone={stat.tone}
+          />
+        ))}
       </MetricGrid>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <SectionCard title="Recent Activity" description="Latest updates from your schools and coaching centers">
           <div className="space-y-4">
-            {recentActivities.map((activity) => (
-              <div key={activity.id} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                  activity.type === 'school' ? 'bg-blue-100' : 'bg-purple-100'
-                }`}>
-                  <AppIcon 
-                    name={activity.type === 'school' ? 'school' : 'rocket_launch'} 
-                    size={20} 
-                    className={activity.type === 'school' ? 'text-blue-600' : 'text-purple-600'} 
-                  />
+            {activities.length > 0 ? (
+              activities.map((activity) => (
+                <div key={activity.id} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                    activity.type === 'school' ? 'bg-blue-100' : 'bg-purple-100'
+                  }`}>
+                    <AppIcon 
+                      name={activity.type === 'school' ? 'school' : 'rocket_launch'} 
+                      size={20} 
+                      className={activity.type === 'school' ? 'text-blue-600' : 'text-purple-600'} 
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-sm text-slate-900">{activity.name}</p>
+                    <p className="text-xs text-slate-500">{activity.action}</p>
+                  </div>
+                  <p className="text-xs text-slate-400">{activity.time}</p>
                 </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm text-slate-900">{activity.name}</p>
-                  <p className="text-xs text-slate-500">{activity.action}</p>
-                </div>
-                <p className="text-xs text-slate-400">{activity.time}</p>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-sm text-slate-500 text-center py-4">No recent activity</p>
+            )}
           </div>
         </SectionCard>
 

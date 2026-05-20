@@ -7,12 +7,15 @@ import {
 } from '../../components/common/DashboardPrimitives';
 import { useAuth } from '../../hooks/api/useAuth';
 import { DashboardSkeleton } from '../../components/common/Skeleton';
+import { useSchoolDashboardMetrics } from '../../hooks/api/useSchool';
+import AppIcon from '../../components/common/AppIcon';
 
 export default function SchoolOverview() {
   const { schoolName } = useOutletContext();
   const { isLoadingProfile } = useAuth();
+  const { data: dashboardData, isLoading: isLoadingMetrics } = useSchoolDashboardMetrics();
 
-  if (isLoadingProfile) {
+  if (isLoadingProfile || isLoadingMetrics) {
     return (
       <DashboardPage eyebrow="School dashboard" title="Overview">
         <DashboardSkeleton />
@@ -20,24 +23,55 @@ export default function SchoolOverview() {
     );
   }
   
+  const metrics = dashboardData?.metrics || [];
+  const activities = dashboardData?.recent_activities || [];
+
   return (
     <DashboardPage
       eyebrow="School dashboard"
       title={`${schoolName || 'Overview'}`}
     >
       <MetricGrid>
-        <MetricCard icon="group" label="Enrolled students" value="1,284" change="+72 this session" helper="All classes combined" />
-        <MetricCard icon="how_to_reg" label="Teachers active" value="86" change="4 new this month" helper="Teaching and support staff" tone="emerald" />
-        <MetricCard icon="monitoring" label="Attendance today" value="94.8%" change="+1.1%" helper="Compared with last week" tone="amber" />
-        <MetricCard icon="notifications" label="Parent notices" value="7" change="2 pending approval" helper="Communication queue" tone="rose" />
+        {metrics.map((stat, i) => (
+          <MetricCard
+            key={i}
+            icon={stat.icon}
+            label={stat.label}
+            value={stat.value}
+            change={stat.change}
+            helper={stat.helper}
+            tone={stat.tone}
+          />
+        ))}
       </MetricGrid>
 
-      <div className="grid gap-6 xl:grid-cols-2">
-        <SectionCard title="Today’s priorities" description="What the school team should watch first">
-          <div className="space-y-4 text-sm text-slate-600">
-            <p className="rounded-2xl bg-slate-50 p-4">Finalize transport updates for the new route expansion.</p>
-            <p className="rounded-2xl bg-slate-50 p-4">Review class 9 admissions documents pending parent verification.</p>
-            <p className="rounded-2xl bg-slate-50 p-4">Share attendance summary with department heads by 4 PM.</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <SectionCard title="Recent Activity" description="Latest updates from your school">
+          <div className="space-y-4">
+            {activities.length > 0 ? (
+              activities.map((activity) => (
+                <div key={activity.id} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                    activity.type === 'system' ? 'bg-blue-100' : 'bg-purple-100'
+                  }`}>
+                    <AppIcon 
+                      name={activity.type === 'system' ? 'settings' : 'notifications'} 
+                      size={20} 
+                      className={activity.type === 'system' ? 'text-blue-600' : 'text-purple-600'} 
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-sm text-slate-900">{activity.name}</p>
+                    <p className="text-xs text-slate-500">{activity.action}</p>
+                  </div>
+                  <p className="text-xs text-slate-400">{activity.time}</p>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-sm text-slate-500">No recent activity</p>
+              </div>
+            )}
           </div>
         </SectionCard>
 

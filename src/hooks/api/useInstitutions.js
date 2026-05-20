@@ -5,7 +5,7 @@ import { QUERY_KEYS } from '../../query/queryKeys';
 // --- Institutions ---
 export const useInstitutionsList = (params) => useQuery({
   queryKey: [QUERY_KEYS.INSTITUTIONS, params],
-  queryFn: () => institutionsAPI.getInstitutions(params).then(res => res.data),
+  queryFn: () => institutionsAPI.getInstitutions(params).then(res => res.data.results || res.data),
 });
 
 export const useInstitutionDetail = (id) => useQuery({
@@ -36,8 +36,8 @@ export const useUpdateInstitution = () => {
 };
 
 // --- Memberships ---
-export const useMemberships = (institutionId) => useQuery({
-  queryKey: [QUERY_KEYS.ENROLLMENTS, institutionId, 'memberships'],
-  queryFn: () => institutionsAPI.getMemberships(institutionId).then(res => res.data),
+export const useMemberships = (institutionId, role) => useQuery({
+  queryKey: [QUERY_KEYS.ENROLLMENTS, institutionId, 'memberships', role],
+  queryFn: () => institutionsAPI.getMemberships({ institution: institutionId, role }).then(res => res.data.results || res.data),
   enabled: !!institutionId,
 });

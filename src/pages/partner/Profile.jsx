@@ -18,6 +18,7 @@ function ProfileForm({ user, roleInfo }) {
     email: user.email || '',
     phone: user.phone || '',
     address: user.address || '',
+    website: user.partner?.website || '',
     id: user.partner?.id ? `PRT-${user.partner.id.substring(0, 8).toUpperCase()}` : '',
     since: user.created_at?.split('T')[0] || '',
     status: user.is_active ? 'Active' : 'Inactive',
@@ -31,6 +32,7 @@ function ProfileForm({ user, roleInfo }) {
     email: formData.email || 'Not Set',
     phone: formData.phone || 'Not Set',
     address: formData.address || 'Not Set',
+    website: formData.website || 'Not Set',
     id: formData.id || 'Not Set',
     since: formData.since || 'Not Set',
     status: formData.status || 'Inactive',
@@ -53,7 +55,8 @@ function ProfileForm({ user, roleInfo }) {
         last_name: lastName,
         phone: formData.phone,
         address: formData.address,
-        company_name: formData.company
+        company_name: formData.company,
+        website: formData.website
       };
 
       const response = await updateProfile(updateData);
@@ -65,6 +68,7 @@ function ProfileForm({ user, roleInfo }) {
           company: response.data.partner?.company_name || '',
           phone: response.data.phone || '',
           address: response.data.address || '',
+          website: response.data.partner?.website || '',
         }));
         setEditing(false);
         toast.success('Profile updated successfully!');
@@ -104,6 +108,15 @@ function ProfileForm({ user, roleInfo }) {
                 <p className="text-sm font-medium text-slate-700">{partnerInfo.phone}</p>
               </div>
             </div>
+            {partnerInfo.website !== 'Not Set' && (
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <AppIcon name="language" size={18} className="text-slate-400" />
+                <div className="overflow-hidden">
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Website</p>
+                  <p className="text-sm font-medium text-slate-700 truncate">{partnerInfo.website}</p>
+                </div>
+              </div>
+            )}
           </div>
 
           <button className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
@@ -171,6 +184,17 @@ function ProfileForm({ user, roleInfo }) {
                 disabled={!editing}
                 rows={2}
                 placeholder="Enter shop/office address"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Website</label>
+              <input
+                type="url"
+                value={formData.website}
+                onChange={(e) => handleInputChange(e, 'website')}
+                disabled={!editing}
+                placeholder="https://example.com"
                 className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-slate-50"
               />
             </div>

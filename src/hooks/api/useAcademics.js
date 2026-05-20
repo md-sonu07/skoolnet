@@ -8,7 +8,7 @@ export const useAcademics = () => {
   // --- Academic Years ---
   const useAcademicYears = (institutionId) => useQuery({
     queryKey: [QUERY_KEYS.ACADEMIC_YEARS, institutionId],
-    queryFn: () => academicsAPI.getAcademicYears(institutionId).then(res => res.data),
+    queryFn: () => academicsAPI.getAcademicYears(institutionId).then(res => res.data.results || res.data),
     enabled: !!institutionId,
   });
 
@@ -22,7 +22,7 @@ export const useAcademics = () => {
   // --- Courses ---
   const useCourses = (institutionId) => useQuery({
     queryKey: [QUERY_KEYS.COURSES, institutionId],
-    queryFn: () => academicsAPI.getCourses(institutionId).then(res => res.data),
+    queryFn: () => academicsAPI.getCourses(institutionId).then(res => res.data.results || res.data),
     enabled: !!institutionId,
   });
 
@@ -36,7 +36,7 @@ export const useAcademics = () => {
   // --- Batches ---
   const useBatches = (institutionId, courseId) => useQuery({
     queryKey: [QUERY_KEYS.BATCHES, institutionId, courseId],
-    queryFn: () => academicsAPI.getBatches(institutionId, courseId).then(res => res.data),
+    queryFn: () => academicsAPI.getBatches(institutionId, courseId).then(res => res.data.results || res.data),
     enabled: !!institutionId,
   });
 
@@ -50,7 +50,7 @@ export const useAcademics = () => {
   // --- Enrollments ---
   const useEnrollments = (institutionId, membershipId) => useQuery({
     queryKey: [QUERY_KEYS.ENROLLMENTS, institutionId, membershipId],
-    queryFn: () => academicsAPI.getEnrollments(institutionId, membershipId).then(res => res.data),
+    queryFn: () => academicsAPI.getEnrollments(institutionId, membershipId).then(res => res.data.results || res.data),
     enabled: !!institutionId,
   });
 

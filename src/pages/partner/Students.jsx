@@ -9,13 +9,8 @@ import {
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
 
-const students = [
-  { id: 1, name: 'Aditi Sharma', school: 'Delhi Public School', class: 'Class 10-A', parent: 'Rajesh Sharma', phone: '+91 98765 43210', status: 'active' },
-  { id: 2, name: 'Rahul Verma', school: 'St. Mary\'s Academy', class: 'Class 12-B', parent: 'Anil Verma', phone: '+91 98765 43211', status: 'active' },
-  { id: 3, name: 'Priya Singh', school: 'Ryan International', class: 'Class 9-C', parent: 'Ajay Singh', phone: '+91 98765 43212', status: 'active' },
-  { id: 4, name: 'Arjun Patel', school: 'TechCoach Institute', class: 'JEE Batch', parent: 'Bharat Patel', phone: '+91 98765 43213', status: 'active' },
-  { id: 5, name: 'Sneha Gupta', school: 'Delhi Public School', class: 'Class 11-A', parent: 'Raj Gupta', phone: '+91 98765 43214', status: 'inactive' },
-];
+import { usePartnerStudents } from '../../hooks/api/usePartners';
+import { useInstitutionsList } from '../../hooks/api/useInstitutions';
 
 const studentStats = [
   { label: 'Total Students', value: '1,247', change: '+156', helper: 'Across all schools', tone: 'blue' },
@@ -30,15 +25,22 @@ export default function PartnerStudents() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  const { data: studentsData = [], isLoading: isLoadingStudents } = usePartnerStudents();
+  const { data: institutions = [], isLoading: isLoadingInstitutions } = useInstitutionsList();
+
   const filteredStudents = useMemo(() => {
-    return students.filter(student => {
-      const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           student.parent.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesSchool = schoolFilter === 'all' || student.school === schoolFilter;
+    return studentsData.filter(student => {
+      const studentName = (student.user?.full_name || student.user?.email || '').toLowerCase();
+      const institutionName = (student.institution?.name || '').toLowerCase();
+      
+      const matchesSearch = studentName.includes(searchTerm.toLowerCase());
+      
+      // Use ID for filtering instead of name if we are using the dropdown values
+      const matchesSchool = schoolFilter === 'all' || student.institution?.id.toString() === schoolFilter;
       
       return matchesSearch && matchesSchool;
     });
-  }, [searchTerm, schoolFilter]);
+  }, [studentsData, searchTerm, schoolFilter]);
 
   const paginatedStudents = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -48,13 +50,13 @@ export default function PartnerStudents() {
 
   const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
 
-  const schoolOptions = [
-    { value: 'all', label: 'All Schools' },
-    { value: 'Delhi Public School', label: 'Delhi Public School' },
-    { value: "St. Mary's Academy", label: "St. Mary's Academy" },
-    { value: 'Ryan International', label: 'Ryan International' },
-    { value: 'TechCoach Institute', label: 'TechCoach Institute' },
-  ];
+  const schoolOptions = useMemo(() => {
+    const options = [{ value: 'all', label: 'All Institutions' }];
+    institutions.forEach(inst => {
+      options.push({ value: inst.id.toString(), label: inst.name || 'Unnamed Institution' });
+    });
+    return options;
+  }, [institutions]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -121,40 +123,50 @@ export default function PartnerStudents() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {paginatedStudents.map((student) => (
-                <tr key={student.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="py-3 px-3">
-                    <p className="font-semibold text-sm text-slate-900">{student.name}</p>
-                    <p className="text-xs text-slate-500">{student.phone}</p>
-                  </td>
-                  <td className="py-3 px-3">
-                    <p className="text-sm text-slate-700">{student.school}</p>
-                  </td>
-                  <td className="py-3 px-3">
-                    <p className="text-sm text-slate-600">{student.class}</p>
-                  </td>
-                  <td className="py-3 px-3">
-                    <p className="text-sm text-slate-600">{student.parent}</p>
-                  </td>
-                  <td className="py-3 px-3">
-                    <div className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${
-                      student.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-700'
-                    }`}>
-                      <span className="capitalize">{student.status}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 px-3">
-                    <div className="flex items-center gap-1">
-                      <button className="p-2 rounded hover:bg-slate-100 transition-colors">
-                        <AppIcon name="visibility" size={14} className="text-slate-600" />
-                      </button>
-                      <button className="p-2 rounded hover:bg-slate-100 transition-colors">
-                        <AppIcon name="message" size={14} className="text-slate-600" />
-                      </button>
-                    </div>
+              {paginatedStudents.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="py-8 text-center text-slate-500">
+                    No students found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                paginatedStudents.map((student) => (
+                  <tr key={student.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="py-3 px-3">
+                      <p className="font-semibold text-sm text-slate-900">{student.user?.full_name || student.user?.email || 'N/A'}</p>
+                      <p className="text-xs text-slate-500">{student.phone_number || 'No Phone'}</p>
+                    </td>
+                    <td className="py-3 px-3">
+                      <p className="text-sm text-slate-700">{student.institution?.name || 'N/A'}</p>
+                    </td>
+                    <td className="py-3 px-3">
+                      <p className="text-sm text-slate-600">{student.enrollment_no || 'N/A'}</p>
+                    </td>
+                    <td className="py-3 px-3">
+                      <p className="text-sm text-slate-600">
+                        {student.date_of_birth ? new Date(student.date_of_birth).toLocaleDateString() : 'N/A'}
+                      </p>
+                    </td>
+                    <td className="py-3 px-3">
+                      <div className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ${
+                        student.user?.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-700'
+                      }`}>
+                        <span className="capitalize">{student.user?.is_active ? 'active' : 'inactive'}</span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-3">
+                      <div className="flex items-center gap-1">
+                        <button className="p-2 rounded hover:bg-slate-100 transition-colors">
+                          <AppIcon name="visibility" size={14} className="text-slate-600" />
+                        </button>
+                        <button className="p-2 rounded hover:bg-slate-100 transition-colors">
+                          <AppIcon name="message" size={14} className="text-slate-600" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

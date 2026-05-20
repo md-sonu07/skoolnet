@@ -4,71 +4,26 @@ import {
   DashboardPage,
   SectionCard,
 } from '../../components/common/DashboardPrimitives';
+import { usePricingPlans } from '../../hooks/api/useLanding';
+import { DashboardSkeleton } from '../../components/common/Skeleton';
 
 /* Global Pricing Management Component */
 const GlobalPricing = () => {
-  const [plans, setPlans] = useState([
-    {
-      id: 'basic',
-      title: 'Basic',
-      subtitle: 'Small Coaching Centres',
-      monthlyPrice: 49,
-      yearlyPrice: 39,
-      description: 'Everything you need to digitise a small institute and get up and running in hours.',
-      features: [
-        'Up to 50 Students',
-        'Course Management',
-        'Basic Attendance',
-        'Email Support',
-        'Basic Analytics',
-      ],
-      missing: ['Custom Branding', 'Priority Support', 'API Access'],
-      primary: false,
-      cta: 'Get Started',
-    },
-    {
-      id: 'pro',
-      title: 'Pro',
-      subtitle: 'Growing Schools',
-      monthlyPrice: 199,
-      yearlyPrice: 159,
-      description: 'Advanced features for scaling educational institutions with multiple branches.',
-      features: [
-        'Up to 500 Students',
-        'Advanced Course Management',
-        'Biometric Attendance',
-        'Priority Support',
-        'Advanced Analytics',
-        'Custom Branding',
-        'Mobile App Access',
-      ],
-      missing: ['API Access', 'White Label', 'Dedicated Account Manager'],
-      primary: true,
-      cta: 'Most Popular',
-    },
-    {
-      id: 'enterprise',
-      title: 'Enterprise',
-      subtitle: 'Large Institutions',
-      monthlyPrice: 499,
-      yearlyPrice: 399,
-      description: 'Complete solution for large educational groups with custom requirements.',
-      features: [
-        'Unlimited Students',
-        'Multi-Branch Management',
-        'Advanced Attendance Systems',
-        '24/7 Phone Support',
-        'Custom Analytics',
-        'White Label Solution',
-        'API Access',
-        'Dedicated Account Manager',
-        'Custom Integrations',
-      ],
-      missing: [],
-      primary: false,
-      cta: 'Contact Sales',
-    },
-  ]);
+  const { data: serverPlans, isLoading } = usePricingPlans();
+  
+  // Transform server plans to UI format
+  const plans = serverPlans ? serverPlans.map(p => ({
+    id: p.id,
+    title: p.name,
+    subtitle: '',
+    monthlyPrice: p.price,
+    yearlyPrice: p.price,
+    description: p.description,
+    features: p.features ? p.features.split('\n') : [],
+    missing: [],
+    primary: p.is_featured,
+    cta: p.is_featured ? 'Most Popular' : 'Get Started',
+  })) : [];
 
   const [editingPlan, setEditingPlan] = useState(null);
   const [billingCycle, setBillingCycle] = useState('monthly');
@@ -124,6 +79,10 @@ const GlobalPricing = () => {
     const newFeatures = editingPlan.features.filter((_, i) => i !== index);
     setEditingPlan({ ...editingPlan, features: newFeatures });
   };
+
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
 
   return (
     <DashboardPage

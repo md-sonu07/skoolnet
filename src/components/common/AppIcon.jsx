@@ -130,6 +130,8 @@ import {
   Badge,
   Handshake,
   Camera,
+  ToggleRight,
+  Unlock,
 } from 'lucide-react';
 
 const iconMap = {
@@ -300,6 +302,8 @@ const iconMap = {
   auto_stories: BookOpen,
   expand_more: ChevronDown,
   open_in_new_tab: ExternalLink,
+  lock_reset: Unlock,
+  toggle_on: ToggleRight,
 };
 
 export default function AppIcon({ name, className, strokeWidth = 2, ...props }) {

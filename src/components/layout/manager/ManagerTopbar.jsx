@@ -1,10 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import AppIcon from '../../common/AppIcon';
 import BrandLogo from '../../common/BrandLogo';
+import InitialsAvatar from '../../common/InitialsAvatar';
 
 export default function ManagerTopbar({ 
   userName = 'User', 
   userRole = 'Manager',
+  userAvatar = null,
   searchPlaceholder = 'Search...', 
   quickActions = [] 
 }) {
@@ -51,9 +53,11 @@ export default function ManagerTopbar({
             <p className="text-xs font-bold text-on-surface capitalize">{userName}</p>
             <p className="text-[10px] text-on-surface-variant font-medium">{userRole}</p>
           </div>
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-200 flex items-center justify-center">
-            <AppIcon name="person" size={20} className="text-slate-500" />
-          </div>
+          <InitialsAvatar
+            src={userAvatar}
+            name={userName}
+            className="w-8 h-8 md:w-10 md:h-10 border-2 border-white shadow-sm text-sm"
+          />
         </NavLink>
       </div>
     </header>

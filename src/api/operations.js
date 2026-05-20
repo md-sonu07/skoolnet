@@ -30,8 +30,11 @@ export const operationsAPI = {
   
   // Notice
   getNotices: (institutionId, batchId) => {
-    let url = `/operations/notices/?institution=${institutionId}`;
-    if (batchId) url += `&for_batch=${batchId}`;
+    let url = '/operations/notices/';
+    const params = new URLSearchParams();
+    if (institutionId) params.append('institution', institutionId);
+    if (batchId) params.append('for_batch', batchId);
+    if (params.toString()) url += `?${params.toString()}`;
     return api.get(url);
   },
   getNotice: (id) => api.get(`/operations/notices/${id}`),

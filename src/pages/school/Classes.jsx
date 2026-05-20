@@ -9,29 +9,32 @@ import {
   SectionCard,
   StatusBadge,
 } from '../../components/common/DashboardPrimitives';
-
-const classStats = [
-  { icon: 'school', label: 'Total Classes', value: '12', change: 'Stable', helper: 'Active', tone: 'blue' },
-  { icon: 'group', label: 'Total Sections', value: '24', change: '+2', helper: 'From last year', tone: 'emerald' },
-  { icon: 'people', label: 'Students', value: '1,284', change: '+72', helper: 'Enrolled', tone: 'purple' },
-  { icon: 'how_to_reg', label: 'Class Teachers', value: '12', change: 'Full', helper: 'Assigned', tone: 'green' },
-];
-
-const classes = [
-  { id: 1, name: 'Class 10-A', section: 'A', classTeacher: 'Ms. Priya Sharma', students: 42, subjects: 5, status: 'active', room: 'Room 101' },
-  { id: 2, name: 'Class 10-B', section: 'B', classTeacher: 'Ms. Sneha Gupta', students: 38, subjects: 5, status: 'active', room: 'Room 102' },
-  { id: 3, name: 'Class 9-A', section: 'A', classTeacher: 'Mr. Rahul Verma', students: 45, subjects: 6, status: 'active', room: 'Room 103' },
-  { id: 4, name: 'Class 9-B', section: 'B', classTeacher: 'Unassigned', students: 40, subjects: 6, status: 'active', room: 'Room 104' },
-  { id: 5, name: 'Class 11-A', section: 'A', classTeacher: 'Mr. Vikram Patel', students: 35, subjects: 5, status: 'active', room: 'Room 201' },
-  { id: 6, name: 'Class 11-B', section: 'B', classTeacher: 'Ms. Ananya Reddy', students: 32, subjects: 5, status: 'active', room: 'Room 202' },
-  { id: 7, name: 'Class 12-A', section: 'A', classTeacher: 'Dr. Rajesh Kumar', students: 30, subjects: 5, status: 'active', room: 'Room 301' },
-];
+import { useAcademics } from '../../hooks/api/useAcademics';
+import { useAuth } from '../../hooks/api/useAuth';
 
 export default function ClassManagement() {
+  const { authState } = useAuth();
+  const institutionId = authState?.roleInfo?.institution_id;
+  const { useBatches } = useAcademics();
+  const { data: batchesData = [], isLoading } = useBatches(institutionId);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const classes = useMemo(() => {
+    return batchesData.map(batch => ({
+      id: batch.id,
+      name: batch.course?.name || 'Unknown Course',
+      section: batch.name || 'N/A',
+      classTeacher: 'Unassigned', // Backend doesn't have class teacher in Batch model yet
+      students: batch.capacity, // Using capacity as students for now or if enrollments are returned
+      subjects: 5, // Mocked
+      status: batch.is_active ? 'active' : 'inactive',
+      room: batch.timing || 'N/A', // Using timing as room for now
+    }));
+  }, [batchesData]);
 
   const filteredClasses = useMemo(() => {
     return classes.filter(cls => {
@@ -41,7 +44,7 @@ export default function ClassManagement() {
       const matchesStatus = statusFilter === 'all' || cls.status === statusFilter;
       return matchesSearch && matchesStatus;
     });
-  }, [searchTerm, statusFilter]);
+  }, [classes, searchTerm, statusFilter]);
 
   const paginatedClasses = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -52,6 +55,12 @@ export default function ClassManagement() {
     { value: 'all', label: 'All Status' },
     { value: 'active', label: 'Active' },
     { value: 'inactive', label: 'Inactive' },
+  ];
+
+  const classStats = [
+    { icon: 'school', label: 'Total Classes/Courses', value: new Set(classes.map(c => c.name)).size.toString(), change: 'Stable', helper: 'Active', tone: 'blue' },
+    { icon: 'group', label: 'Total Sections/Batches', value: classes.length.toString(), change: '+0', helper: 'From last year', tone: 'emerald' },
+    { icon: 'people', label: 'Total Capacity', value: classes.reduce((sum, c) => sum + (c.students || 0), 0).toString(), change: '+0', helper: 'Capacity', tone: 'purple' },
   ];
 
   return (
@@ -111,15 +120,21 @@ export default function ClassManagement() {
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Class</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">Section</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Class Teacher</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Students</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Capacity</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">Subjects</th>
-                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Room</th>
+                <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Timing</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Status</th>
                 <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-600 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {paginatedClasses.length === 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="8" className="py-8 text-center text-slate-500">
+                    Loading classes...
+                  </td>
+                </tr>
+              ) : paginatedClasses.length === 0 ? (
                 <tr>
                   <td colSpan="8" className="py-8 text-center text-slate-500">
                     No classes found matching your criteria.
